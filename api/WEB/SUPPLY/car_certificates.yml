@@ -1,0 +1,45 @@
+config:
+    name: 编辑车辆合格证信息
+    variables:
+      - carId: ${carId}
+    verify: False
+    base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 登录 login
+    testcase: api/WEB/WebLogin.yml
+    extract:
+        - access_token
+        - refresh_token
+
+-   name: 上传图片 upload
+    variables:
+      - file_path: /Users/a1/Desktop/personal/pic/img60.png
+        file_name: img60.png
+        file_type: image/png
+    testcase: api/WEB/upload.yml
+    extract:
+        - fileurl
+
+-   name: 保存车辆合格证 /supplychain/api/car-certificates
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+            Content-Type: application/json;charset=UTF-8
+        json:
+            carId: ${carId}
+            content:
+                eligibilityNo: '00001'
+                eligibilityVoucher:
+                - ${fileurl}
+            type: 1
+        method: POST
+        url: /supplychain/api/car-certificates
+    validate:
+    -   eq: [status_code, 201]
+    -   eq: [content.carId, ${carId}]
+    -   eq: [content.deleteStatus, 0]
+
+
+
+

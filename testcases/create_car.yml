@@ -1,0 +1,23 @@
+config:
+    name: case_创建车辆
+    verify: False
+    base_url: ${ENV(base_url)}
+
+
+teststeps:
+-   name: 登录
+    testcase: api/WEB/WebLogin.yml
+    extract:
+        - access_token
+        - refresh_token
+
+-   name: 新增车辆信息
+    variables:
+        engineNumber: "00015"
+    testcase: api/WEB/SUPPLY/create_car.yml
+    extract:
+        - carId
+
+
+
+

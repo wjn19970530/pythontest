@@ -1,0 +1,265 @@
+config:
+    name: 创建车辆API
+    variables:
+        access_token: ${access_token}
+        refresh_token: ${refresh_token}
+    verify: False
+    base_url: ${ENV(base_url)}
+    export:
+        - carId
+
+teststeps:
+-   name: 查询车辆品牌信息 /mall/api/v0.1/back-end/car-brands
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        url: /mall/api/v0.1/back-end/car-brands
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 查询车辆详细信息 /mall/api/v0.1/back-end/car-types/params
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        params:
+            page: '0'
+            size: '20'
+            timestr: '1566814106928'
+        url: /mall/api/v0.1/back-end/car-types/params
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 查询仓库信息 /supplychain/api/warehouses
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        params:
+            page: '0'
+            size: '20'
+            sort: id,DESC
+            timestr: '1566814132371'
+        url: /supplychain/api/warehouses
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 获取车辆列表 /supplychain/api/cars
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        params:
+            page: '0'
+            size: '20'
+            timestr: '1566814134884'
+        url: /supplychain/api/cars
+    validate:
+    -   eq: [status_code, 200]
+
+
+-   name: 查询仓库归属列表 /supplychain/api/warehouses/menu-list
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        params:
+            timestr: '1566814157862'
+        url: /supplychain/api/warehouses/menu-list
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 车辆产权归属列表 /supplychain/api/cars/property-list
+    request:
+        data: ''
+        headers:
+            Authorization: Bearer ${access_token}
+        method: POST
+        url: /supplychain/api/cars/property-list
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 采购方列表 /usercenter/api/v0.1/organizations/root
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        params:
+            timestr: '1566814157889'
+        url: /usercenter/api/v0.1/organizations/root
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 采购方列表-平台-公司 /mall/api/v0.1/back-end/companies
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        params:
+            timestr: '1566814157889'
+        url: /mall/api/v0.1/back-end/companies
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 供应商列表 /mall/api/v0.1/suppliers/menu-list
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        params:
+            timestr: '1566814157914'
+        url: /mall/api/v0.1/suppliers/menu-list
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 获取品牌车系 /mall/api/v0.1/back-end/car-brands/2/car-series
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        url: /mall/api/v0.1/back-end/car-brands/2/car-series
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 获取车型 /mall/api/v0.1/back-end/car-series/3/type
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        url: /mall/api/v0.1/back-end/car-series/3/type
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 获取车辆颜色 /mall/api/v0.1/back-end/sku-properties/car-type-id
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+        method: GET
+        params:
+            carTypeId: '2'
+            timestr: '1566814171358'
+        url: /mall/api/v0.1/back-end/sku-properties/car-type-id
+    validate:
+    -   eq: [status_code, 200]
+
+-   name: 保存车辆基本信息 /supplychain/api/cars
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+            Content-Type: application/json;charset=UTF-8
+        json:
+            brandId: '2'
+            carStatus: 4
+            colorId: '39'
+            engineNumber: ${engineNumber}
+            licensePlate: 闽A${engineNumber}
+            propertyId: '3479189832092106757'
+            purchasePrice: 9${engineNumber}
+            purchaserId: '1'
+            purchaserType: '1'
+            seriesId: '2'
+            shareFlag: true
+            supplierId: '1'
+            typeId: '2'
+            vin: ${engineNumber}
+            warehouseId: '1'
+        method: POST
+        url: /supplychain/api/cars
+    extract:
+        carId: content.carId
+    validate:
+      - eq: [content.brandId, '2']
+      - eq: [content.seriesId, '2']
+      - eq: [content.typeId, '2']
+      - eq: [content.brandName, 奥迪]
+      - eq: [content.seriesName, 奥迪]
+      - eq: [content.typeName, A4]
+      - eq: [content.colorId, '39']
+      - eq: [content.colorName, 红色]
+      - eq: [content.licensePlate, 闽A$engineNumber]
+      - eq: [content.vin, $engineNumber]
+      - eq: [content.engineNumber, $engineNumber]
+      - eq: [content.purchasePrice, 9$engineNumber]
+      - eq:
+          - content.carNoId
+          - '2'
+      - eq:
+          - content.carNoName
+          - 闽A
+      - eq:
+          - content.warehouseId
+          - '1'
+      - eq:
+          - content.warehouseName
+          - st_东南区仓库
+      - eq:
+          - content.carStatus
+          - 4
+      - eq:
+          - content.propertyBelongType
+          - null
+      - eq:
+          - content.propertyId
+          - '3479189832092106757'
+      - eq:
+          - content.propertyName
+          - null
+      - eq:
+          - content.purchaserType
+          - 1
+      - eq:
+          - content.purchaserId
+          - '1'
+      - eq:
+          - content.purchaserName
+          - null
+      - eq:
+          - content.shareFlag
+          - true
+      - eq:
+          - content.supplierId
+          - '1'
+      - eq:
+          - content.supplierName
+          - null
+
+      - eq:
+          - content.gmtSold
+          - null
+      - eq:
+          - content.deleteStatus
+          - 0
+      - eq:
+          - content.externalShareFlag
+          - true
+      - eq:
+          - content.source
+          - 1
+      - eq:
+          - content.tenantCode
+          - '1001'
+      - eq:
+          - content.tradeNo
+          - null
+      - eq:
+          - content.stockAge
+          - null
+      - eq:
+          - content.operateUserPhone
+          - null
+      - eq:
+          - content.operateRemark
+          - null
+      - eq:
+          - content.fullName
+          - null
+      - eq:
+          - content.carSerialId
+          - null
+      - eq:
+          - content.locked
+          - false
+      - eq:
+          - content.sold
+          - false
