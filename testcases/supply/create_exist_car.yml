@@ -1,0 +1,28 @@
+config:
+    name: 车架号已存在时，保存车辆基本信息
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+      verifyCode: ${ENV(verifyCode)}
+      access_token: ${get_token(access_token)}
+      refresh_token: ${get_token(refresh_token)}
+      engineNumber: '00025'
+    base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 保存新的车辆基本信息
+    api: api/WEB/supplychain/POST_Cars.yml
+    variables:
+      engineNumber: $engineNumber
+    extract:
+      carId: content.carId
+    validate:
+      - eq: ["status_code", 201]
+
+-   name: 车架号已存在时，保存车辆基本信息
+    api: api/WEB/supplychain/POST_Cars.yml
+    variables:
+      engineNumber: $engineNumber
+    validate:
+      - eq: [content.errorCode, 10001]
+      - eq: [content.message, '非法参数:该车架号已存在']
+

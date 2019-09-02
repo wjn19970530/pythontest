@@ -7,7 +7,7 @@ config:
 
 teststeps:
 -   name: 登录 login
-    testcase: api/WEB/WebLogin.yml
+    testcase: api/WEB/WebLogin_可删.yml
     extract:
         - access_token
         - refresh_token
@@ -37,7 +37,7 @@ teststeps:
         url: /supplychain/api/car-certificates
     validate:
     -   eq: [status_code, 201]
-    -   eq: [content.carId, ${carId}]
+    -   eq: [content.carId, $carId]
     -   eq: [content.deleteStatus, 0]
 
 

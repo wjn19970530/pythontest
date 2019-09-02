@@ -1,0 +1,46 @@
+config:
+    name: 创建车辆并设置合格证信息
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+      verifyCode: ${ENV(verifyCode)}
+      access_token: ${get_token(access_token)}
+      refresh_token: ${get_token(refresh_token)}
+    base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 保存新的车辆基本信息
+    api: api/WEB/supplychain/POST_Cars.yml
+    variables:
+      engineNumber: '00033'
+    extract:
+      carId: content.carId
+    validate:
+      - eq: ["status_code", 201]
+
+-   name: 上传图片 upload
+    variables:
+      - file_path: /Users/a1/Desktop/personal/pic/img60.png
+        file_name: img60.png
+        file_type: image/png
+    testcase: api/WEB/upload.yml
+    extract:
+        - fileurl
+
+-   name: 保存车辆合格证 /supplychain/api/car-certificates
+    request:
+        headers:
+            Authorization: Bearer ${access_token}
+            Content-Type: application/json;charset=UTF-8
+        json:
+            carId: ${carId}
+            content:
+                eligibilityNo: '00001'
+                eligibilityVoucher:
+                - ${fileurl}
+            type: 1
+        method: POST
+        url: /supplychain/api/car-certificates
+    validate:
+    -   eq: [status_code, 201]
+    -   eq: [content.carId, $carId]
+    -   eq: [content.deleteStatus, 0]

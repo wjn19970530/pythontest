@@ -1,0 +1,28 @@
+name: 保存车辆基本信息 /supplychain/api/cars
+variables:
+    access_token: ${access_token}
+    engineNumber: ${engineNumber}
+base_url: ${ENV(base_url)}
+request:
+    url: /supplychain/api/cars
+    method: POST
+    headers:
+        Authorization: Bearer ${access_token}
+        Content-Type: application/json;charset=UTF-8
+    json:
+        brandId: '2'
+        carStatus: 4
+        colorId: '39'
+        engineNumber: ${engineNumber}
+        licensePlate: 闽A${engineNumber}
+        propertyId: '3479189832092106757'
+        purchasePrice: 9${engineNumber}
+        purchaserId: '1'
+        purchaserType: '1'
+        seriesId: '2'
+        shareFlag: true
+        supplierId: '1'
+        typeId: '2'
+        vin: ${engineNumber}
+        warehouseId: '1'
+

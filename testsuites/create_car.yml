@@ -1,0 +1,21 @@
+config:
+    name: 创建车辆
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+      verifyCode: ${ENV(verifyCode)}
+      access_token: ${get_token(access_token)}
+      refresh_token: ${get_token(refresh_token)}
+    base_url: ${ENV(base_url)}
+
+testcases:
+-   name: 保存新的车辆基本信息
+    testcase: testcases/supply/create_car.yml
+    variables:
+      - engineNumber: '00031'
+
+-   name: 车架号已存在时，保存车辆基本信息
+    testcase: testcases/supply/create_exist_car.yml
+    variables:
+      - engineNumber: '00032'
+
+

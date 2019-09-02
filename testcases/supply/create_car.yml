@@ -1,0 +1,50 @@
+config:
+    name: 创建车辆
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+      verifyCode: ${ENV(verifyCode)}
+      access_token: ${get_token(access_token)}
+      refresh_token: ${get_token(refresh_token)}
+      engineNumber: '00027'
+    base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 保存新的车辆基本信息
+    api: api/WEB/supplychain/POST_Cars.yml
+    variables:
+      engineNumber: $engineNumber
+    extract:
+      carId: content.carId
+    validate:
+      - eq: ["status_code", 201]
+      - eq: [content.brandId, '2']
+      - eq: [content.seriesId, '2']
+      - eq: [content.typeId, '2']
+      - eq: [content.brandName, 奥迪]
+      - eq: [content.seriesName, 奥迪]
+      - eq: [content.typeName, A4]
+      - eq: [content.colorId, '39']
+      - eq: [content.colorName, 红色]
+      - eq: [content.licensePlate, 闽A$engineNumber]
+      - eq: [content.vin, $engineNumber]
+      - eq: [content.engineNumber, $engineNumber]
+      - eq: [content.purchasePrice, 9$engineNumber]
+      - eq: [content.carNoId, '2']
+      - eq: [content.carNoName, 闽A]
+      - eq: [content.warehouseId, '1']
+      - eq: [content.warehouseName, 'st_东南区仓库']
+      - eq: [content.carStatus, 4]
+      - eq: [content.propertyId, '3479189832092106757']
+      - eq: [content.purchaserType, 1]
+      - eq: [content.purchaserId, '1']
+      - eq: [content.shareFlag, true]
+      - eq: [content.shareFlag, true]
+      - eq: [content.supplierId, '1']
+      - eq: [content.deleteStatus, 0]
+      - eq: [content.externalShareFlag, true]
+      - eq: [content.source, 1]
+      - eq: [content.tenantCode, '1001']
+      - eq: [content.locked, false]
+      - eq: [content.sold, false]
+
+
