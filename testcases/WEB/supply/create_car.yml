@@ -12,7 +12,7 @@ config:
 
 teststeps:
 -   name: 保存新的车辆基本信息
-    api: api/WEB/supplychain/POST_Cars.yml
+    api: api/supplychain/POST_Cars.yml
     variables:
       engineNumber: $engineNumber
     extract:

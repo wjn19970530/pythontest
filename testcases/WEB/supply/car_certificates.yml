@@ -10,12 +10,12 @@ config:
 
 teststeps:
 -   name: 保存新的车辆基本信息
-    testcase: testcases/supply/create_car.yml
+    testcase: testcases/WEB/supply/create_car.yml
     extract:
       carId: content.carId
 
 -   name: 上传图片 upload
-    api: api/WEB/file/upload.yml
+    api: api/file/upload.yml
     variables:
       file_path: data/img/car03.jpg
       file_name: car03.jpg
@@ -24,7 +24,7 @@ teststeps:
       fileurl: (.*)
 
 -   name: 保存车辆合格证 /supplychain/api/car-certificates
-    api: api/WEB/supplychain/POST_CarCertificates.yml
+    api: api/supplychain/POST_CarCertificates.yml
     variables:
       carId: $carId
     validate:

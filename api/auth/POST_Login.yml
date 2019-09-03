@@ -2,12 +2,13 @@ name: 登录 /auth/login
 variables:
     phoneNum: ${ENV(phoneNum)}
     verifyCode: ${ENV(verifyCode)}
+    endpoint: pc-web
 base_url: ${ENV(base_url)}
 request:
     headers:
         Content-Type: application/json;charset=UTF-8
     json:
-        endpoint: pc-web
+        endpoint: $endpoint
         grantType: verify_code
         phoneNum: ${phoneNum}
         productCode: image-char-captcha
@@ -19,6 +20,6 @@ extract:
     - access_token: content.access_token
     - refresh_token: content.refresh_token
 teardown_hooks:
-    - ${response_refresh_token($response)}
+    - ${response_refresh_token($response, $endpoint)}
 
 

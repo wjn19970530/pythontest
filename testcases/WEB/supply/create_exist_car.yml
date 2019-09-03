@@ -10,7 +10,7 @@ config:
 
 teststeps:
 -   name: 保存新的车辆基本信息
-    api: api/WEB/supplychain/POST_Cars.yml
+    api: api/supplychain/POST_Cars.yml
     variables:
       engineNumber: $engineNumber
     extract:
@@ -19,7 +19,7 @@ teststeps:
       - eq: ["status_code", 201]
 
 -   name: 车架号已存在时，保存车辆基本信息
-    api: api/WEB/supplychain/POST_Cars.yml
+    api: api/supplychain/POST_Cars.yml
     variables:
       engineNumber: $engineNumber
     validate:

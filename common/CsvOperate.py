@@ -1,4 +1,5 @@
 import csv
+import os
 
 from common.BaseCommon import BaseCommon
 
@@ -30,26 +31,33 @@ class CsvOperate(BaseCommon):
         self.log().debug("获取字段【%s】的值是【%s】" % (field, value))
         return value
 
-    def write_token_csv(self, file_name, access_token, refresh_token):
+    def write_token_csv(self, file_name, source, access_token, refresh_token):
         """
         写入token信息到csv文件
         :param file_name:文件路径
         :param access_token:写入access_token
         :param refresh_token:写入refresh_token
+        :param source:平台来源：app/web
         :return:
         """
         now_time = self.get_time()['now_time']
         now_day = self.get_time()['now_date']
-        self.log().debug('写入的access_token是:【%s】, refresh_token是:【%s】' % (access_token, refresh_token))
-        content_dict = [{'create day': now_day, 'access_token': access_token,
-                        'refresh_token': refresh_token, 'create time': now_time}]
+        self.log().debug('写入的平台是：【%s】,access_token是:【%s】, refresh_token是:【%s】' % (source, access_token, refresh_token))
+        content_dict = [{'create source': source, 'create time': now_time,
+                         'access_token': access_token, 'refresh_token': refresh_token}]
         with open(file_name, 'w+') as f:
             try:
-                headers = [k for k in content_dict[0]]
-                writer = csv.DictWriter(f, fieldnames=headers)
-                writer.writeheader()
-                for item in content_dict:
-                    writer.writerow(item)
+                lines = f.readlines()
+                # 如果文件是空的，则增加文件头
+                if lines < 1:
+                    headers = [k for k in content_dict[0]]
+                    writer = csv.DictWriter(f, fieldnames=headers)
+                    writer.writeheader()
+                for line in lines:
+
+
+                    for item in content_dict:
+                        writer.writerow(item)
             finally:
                 f.close()
 

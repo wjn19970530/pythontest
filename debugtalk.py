@@ -9,7 +9,7 @@ def sleep(n_secs):
     time.sleep(n_secs)
 
 
-def refresh_token(accesstoken, refreshtoken):
+def refresh_token(source, accesstoken, refreshtoken):
     """
     每次调用登录接口都更新一次csv的token
     :param access_token:
@@ -19,7 +19,7 @@ def refresh_token(accesstoken, refreshtoken):
     # 获取当前日期
     # now_date = get_time()['now_date']
     # 获取csv中当前日期
-    CsvOperate().write_token_csv('data/token.csv', accesstoken, refreshtoken)
+    CsvOperate().write_token_csv('data/token.csv', source, accesstoken, refreshtoken)
 
 
 def get_token(token_type):
@@ -35,10 +35,10 @@ def get_token(token_type):
         refresh_token_value: str = CsvOperate().read_row_csv('data/token.csv', 1, 'refresh_token')
         return refresh_token_value
     else:
-        log.debug('仅支持获取"access_token"和"refresh_token"，请检查输入')
+        log.error('仅支持获取"access_token"和"refresh_token"，请检查输入')
 
 
-def response_refresh_token(response):
+def response_refresh_token(response, endpoint):
     """
     获取登录接口的token，并更新csv中的token信息
     :param response:
@@ -46,7 +46,12 @@ def response_refresh_token(response):
     """
     accesstoken = response.json["access_token"]
     refreshtoken = response.json["refresh_token"]
-    refresh_token(accesstoken, refreshtoken)
+    if str(endpoint).lower() == 'pc-web':
+        refresh_token('WEB', accesstoken, refreshtoken)
+    elif str(endpoint).lower() == 'mobile':
+        refresh_token('MOBILE', accesstoken, refreshtoken)
+    else:
+        log.error("平台来源无法识别，请检查")
 
 
 if __name__ == '__main__':
@@ -54,8 +59,8 @@ if __name__ == '__main__':
     # refresh_token = '444555666'
     # CsvOperate.write_token_csv('data/token.csv', access_token, refresh_token)
     # print(CsvOperate().read_row_csv('data/token.csv', 1, 'access_token'))
-    refresh_token(accesstoken='111222333', refreshtoken='444555666')
-    get_token('access_token')
+    refresh_token(source='mobile', accesstoken='111222333', refreshtoken='444555666')
+    # get_token('access_token')
 
 
 

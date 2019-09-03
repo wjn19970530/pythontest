@@ -1,0 +1,25 @@
+config:
+    name: 登录APP测试用例
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+      verifyCode: ${ENV(verifyCode)}
+      endpoint: mobile
+    base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 获取验证码
+    api: api/account/GET_VeriCode.yml
+
+-   name: 登录
+    api: api/auth/POST_Login.yml
+    validate:
+        - eq: [status_code, 200]
+
+-   name: 获取账户信息
+    api: api/account/GET_Account.yml
+    validate:
+    - eq: [status_code, 200]
+    - eq: [content.userId, '3479189832092106759']
+    - eq: [content.login, $phoneNum]
+    - eq: [content.phoneNum, $phoneNum]
+    - eq: [content.tenantCode, '1001']
