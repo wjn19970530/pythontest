@@ -1,0 +1,13 @@
+name: 供应商列表 /mall/api/v0.1/suppliers/menu-list
+variables:
+  access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    params:
+        timestr: '1566814157914'
+    url: /mall/api/v0.1/suppliers/menu-list
+validate:
+-   eq: [status_code, 200]

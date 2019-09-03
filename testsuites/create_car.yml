@@ -11,11 +11,16 @@ testcases:
 -   name: 保存新的车辆基本信息
     testcase: testcases/supply/create_car.yml
     variables:
-      - engineNumber: '00031'
+      - engineNumber: '00053'
 
 -   name: 车架号已存在时，保存车辆基本信息
     testcase: testcases/supply/create_exist_car.yml
     variables:
-      - engineNumber: '00032'
+      - engineNumber: '00054'
+
+-   name: 车辆完善认证信息
+    testcase: testcases/supply/car_certificates.yml
+    variables:
+      - engineNumber: '00055'
 
 

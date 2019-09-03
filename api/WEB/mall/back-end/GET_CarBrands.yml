@@ -1,10 +1,10 @@
 name: 查询车辆品牌信息 /mall/api/v0.1/back-end/car-brands
 variables:
-    access_token: ${access_token}
+    access_token: ${get_token(access_token)}
 base_url: ${ENV(base_url)}
 request:
     headers:
-        Authorization: Bearer ${access_token}
+        Authorization: Bearer $access_token
     method: GET
     url: /mall/api/v0.1/back-end/car-brands
 validate:

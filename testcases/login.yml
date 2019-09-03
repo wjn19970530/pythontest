@@ -11,14 +11,11 @@ teststeps:
 
 -   name: 登录
     api: api/WEB/auth/POST_Login.yml
-    extract:
-        - access_token: content.access_token
-        - refresh_token: content.refresh_token
+    validate:
+        - eq: [status_code, 200]
 
 -   name: 获取账户信息
     api: api/WEB/account/GET_Account.yml
-    setup_hooks:
-        - ${refresh_token($access_token, $refresh_token)}
     validate:
     - eq: [status_code, 200]
     - eq: [content.userId, '3479189832092106759']

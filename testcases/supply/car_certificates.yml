@@ -5,42 +5,31 @@ config:
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
+      engineNumber: '00058'
     base_url: ${ENV(base_url)}
 
 teststeps:
 -   name: 保存新的车辆基本信息
-    api: api/WEB/supplychain/POST_Cars.yml
-    variables:
-      engineNumber: '00033'
+    testcase: testcases/supply/create_car.yml
     extract:
       carId: content.carId
-    validate:
-      - eq: ["status_code", 201]
 
 -   name: 上传图片 upload
+    api: api/WEB/file/upload.yml
     variables:
-      - file_path: /Users/a1/Desktop/personal/pic/img60.png
-        file_name: img60.png
-        file_type: image/png
-    testcase: api/WEB/upload.yml
+      file_path: data/img/car03.jpg
+      file_name: car03.jpg
+      file_type: image/jpg
     extract:
-        - fileurl
+      fileurl: (.*)
 
 -   name: 保存车辆合格证 /supplychain/api/car-certificates
-    request:
-        headers:
-            Authorization: Bearer ${access_token}
-            Content-Type: application/json;charset=UTF-8
-        json:
-            carId: ${carId}
-            content:
-                eligibilityNo: '00001'
-                eligibilityVoucher:
-                - ${fileurl}
-            type: 1
-        method: POST
-        url: /supplychain/api/car-certificates
+    api: api/WEB/supplychain/POST_CarCertificates.yml
+    variables:
+      carId: $carId
     validate:
-    -   eq: [status_code, 201]
-    -   eq: [content.carId, $carId]
-    -   eq: [content.deleteStatus, 0]
+    - eq: [status_code, 201]
+    - eq: [content.carId, $carId]
+    - eq: [content.deleteStatus, 0]
+
+

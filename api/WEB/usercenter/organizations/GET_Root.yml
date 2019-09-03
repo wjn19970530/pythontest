@@ -1,0 +1,13 @@
+name: 采购方列表 /usercenter/api/v0.1/organizations/root
+variables:
+    access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    params:
+        timestr: '1566814157889'
+    url: /usercenter/api/v0.1/organizations/root
+validate:
+-   eq: [status_code, 200]

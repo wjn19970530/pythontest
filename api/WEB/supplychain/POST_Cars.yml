@@ -1,7 +1,7 @@
 name: 保存车辆基本信息 /supplychain/api/cars
 variables:
-    access_token: ${access_token}
-    engineNumber: ${engineNumber}
+    access_token: ${get_token(access_token)}
+    engineNumber: '00039'
 base_url: ${ENV(base_url)}
 request:
     url: /supplychain/api/cars

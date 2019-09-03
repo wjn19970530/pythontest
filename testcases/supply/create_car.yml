@@ -7,6 +7,8 @@ config:
       refresh_token: ${get_token(refresh_token)}
       engineNumber: '00027'
     base_url: ${ENV(base_url)}
+    export:
+      - carId
 
 teststeps:
 -   name: 保存新的车辆基本信息
@@ -46,5 +48,4 @@ teststeps:
       - eq: [content.tenantCode, '1001']
       - eq: [content.locked, false]
       - eq: [content.sold, false]
-
 

@@ -1,35 +1,24 @@
-config:
-    name: 上传文件
-    variables:
-      access_token: ${access_token}
-      refresh_token: ${refresh_token}
-      file_path: ${file_path}
-      file_name: ${file_name}
-      file_type: ${file_type}
-    verify: False
-    base_url: ${ENV(base_url)}
-    export:
-      - fileurl
+name: 上传文件 /api/file/upload
+variables:
+    access_token: ${get_token(access_token)}
+    refresh_token: ${get_token(refresh_token)}
+    file_path: data/img/car03.jpg
+    file_name: car03.jpg
+    file_type: image/jpg
+    mode: "rb"
+base_url: ${ENV(base_url)}
+request:
+    files:
+        file:
+          - ${file_name}
+          - ${open($file_path,$mode)}
+          - ${file_type}
+    headers:
+        Authorization: Bearer ${access_token}
+        X-Requested-With: XMLHttpRequest
+    method: POST
+    url: /api/file/upload
+validate:
+-   eq: [status_code, 200]
+-   eq: [headers.Content-Type, text/plain;charset=UTF-8]
 
-teststeps:
--   name: 上传文件 /api/file/upload
-    variables:
-        - file_path: ${file_path}
-        - file_name: ${file_name}
-        - mode: "rb"
-    request:
-        files:
-            file:
-              - ${file_name}
-              - ${open($file_path,$mode)}
-              - ${file_type}
-        headers:
-            Authorization: Bearer ${access_token}
-            X-Requested-With: XMLHttpRequest
-        method: POST
-        url: /api/file/upload
-    validate:
-    -   eq: [status_code, 200]
-    -   eq: [headers.Content-Type, text/plain;charset=UTF-8]
-    extract:
-        fileurl: (.*)

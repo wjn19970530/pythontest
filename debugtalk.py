@@ -1,5 +1,8 @@
 from common.CsvOperate import CsvOperate
 import time
+from common.BaseCommon import BaseCommon
+
+log = BaseCommon().log()
 
 
 def sleep(n_secs):
@@ -32,7 +35,18 @@ def get_token(token_type):
         refresh_token_value: str = CsvOperate().read_row_csv('data/token.csv', 1, 'refresh_token')
         return refresh_token_value
     else:
-        print('仅支持获取"access_token"和"refresh_token"，请检查输入')
+        log.debug('仅支持获取"access_token"和"refresh_token"，请检查输入')
+
+
+def response_refresh_token(response):
+    """
+    获取登录接口的token，并更新csv中的token信息
+    :param response:
+    :return:
+    """
+    accesstoken = response.json["access_token"]
+    refreshtoken = response.json["refresh_token"]
+    refresh_token(accesstoken, refreshtoken)
 
 
 if __name__ == '__main__':
@@ -42,4 +56,6 @@ if __name__ == '__main__':
     # print(CsvOperate().read_row_csv('data/token.csv', 1, 'access_token'))
     refresh_token(accesstoken='111222333', refreshtoken='444555666')
     get_token('access_token')
+
+
 

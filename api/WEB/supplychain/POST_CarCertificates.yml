@@ -1,7 +1,13 @@
 name: 保存车辆合格证 /supplychain/api/car-certificates
+variables:
+    access_token: ${get_token(access_token)}
+    engineNumber: '00039'
+    carId: '3479189832092107322'
+    fileurl: http://sanyafcalioss.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/png/20190827/1566901748991--1301008776.png
+base_url: ${ENV(base_url)}
 request:
     headers:
-        Authorization: Bearer ${access_token}
+        Authorization: Bearer $access_token
         Content-Type: application/json;charset=UTF-8
     json:
         carId: ${carId}
@@ -14,5 +20,3 @@ request:
     url: /supplychain/api/car-certificates
 validate:
 -   eq: [status_code, 201]
--   eq: [content.carId, $carId]
--   eq: [content.deleteStatus, 0]

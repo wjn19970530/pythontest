@@ -1,0 +1,16 @@
+name: 查询仓库信息 /supplychain/api/warehouses
+variables:
+    access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    params:
+        page: '0'
+        size: '20'
+        sort: id,DESC
+        timestr: '1566814132371'
+    url: /supplychain/api/warehouses
+validate:
+-   eq: [status_code, 200]

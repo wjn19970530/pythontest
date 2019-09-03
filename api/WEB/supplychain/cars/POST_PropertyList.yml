@@ -1,0 +1,12 @@
+name: 车辆产权归属列表 /supplychain/api/cars/property-list
+variables:
+    access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    data: ''
+    headers:
+        Authorization: Bearer ${access_token}
+    method: POST
+    url: /supplychain/api/cars/property-list
+validate:
+-   eq: [status_code, 200]

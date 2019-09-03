@@ -1,0 +1,11 @@
+name: 获取车型 /mall/api/v0.1/back-end/car-series/3/type
+variables:
+  access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        authorization: bearer ${access_token}
+    method: get
+    url: /mall/api/v0.1/back-end/car-series/3/type
+validate:
+-   eq: [status_code, 200]

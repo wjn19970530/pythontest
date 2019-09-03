@@ -1,0 +1,13 @@
+name: 查询仓库归属列表 /supplychain/api/warehouses/menu-list
+variables:
+    access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    params:
+        timestr: '1566814157862'
+    url: /supplychain/api/warehouses/menu-list
+validate:
+-   eq: [status_code, 200]

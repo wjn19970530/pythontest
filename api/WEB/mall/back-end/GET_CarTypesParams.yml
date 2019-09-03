@@ -1,0 +1,15 @@
+name: 查询车辆详细信息 /mall/api/v0.1/back-end/car-types/params
+variables:
+    access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    params:
+        page: '0'
+        size: '20'
+        timestr: '1566814106928'
+    url: /mall/api/v0.1/back-end/car-types/params
+validate:
+-   eq: [status_code, 200]
