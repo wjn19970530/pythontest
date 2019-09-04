@@ -1,5 +1,5 @@
 config:
-    name: 登录APP测试用例
+    name: 登录APP测试用例 APP/login.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
@@ -23,3 +23,5 @@ teststeps:
     - eq: [content.login, $phoneNum]
     - eq: [content.phoneNum, $phoneNum]
     - eq: [content.tenantCode, '1001']
+    teardown_hooks:
+        - ${sleep(0)}

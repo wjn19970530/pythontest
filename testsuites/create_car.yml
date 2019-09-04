@@ -1,5 +1,5 @@
 config:
-    name: 创建车辆
+    name: 创建车辆 testsuites/create_car.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
@@ -11,16 +11,16 @@ testcases:
 -   name: 保存新的车辆基本信息
     testcase: testcases/WEB/supply/create_car.yml
     variables:
-      - engineNumber: '00053'
+      - engineNumber: '00065'
 
 -   name: 车架号已存在时，保存车辆基本信息
     testcase: testcases/WEB/supply/create_exist_car.yml
     variables:
-      - engineNumber: '00054'
+      - engineNumber: '00066'
 
 -   name: 车辆完善认证信息
     testcase: testcases/WEB/supply/car_certificates.yml
     variables:
-      - engineNumber: '00055'
+      - engineNumber: '00067'
 
 

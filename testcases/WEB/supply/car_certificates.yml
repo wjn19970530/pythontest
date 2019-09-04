@@ -1,5 +1,5 @@
 config:
-    name: 创建车辆并设置合格证信息
+    name: 创建车辆并设置合格证信息 testcases/WEB/supply/car_certificates.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
