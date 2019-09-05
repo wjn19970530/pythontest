@@ -1,0 +1,34 @@
+name: /mall/api/v0.1/car-items/scan-code/payment
+variables:
+  access_token: ${get_token(access_token)}
+  refresh_token: ${get_token(refresh_token)}
+  phoneNum: ${ENV(phoneNum)}
+  orderId: 16
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Content-Type: application/json;charset=UTF-8
+        User-Agent: okhttp/3.8.1
+        android_id: 3c49f7ae1e552213
+        authorization: Bearer $access_token
+        client_b_v: '100'
+        client_v: 1.0.0
+        imei: '359789052172280'
+        islogin: '1'
+        mac: ''
+        os: Android
+        os_name: GT-I9308I
+        os_v: '18'
+        phone: $phoneNum
+        platform: '5'
+        refresh_token: $refresh_token
+        user_id: '3479189832092106759'
+        user_type: '0'
+        uuid: 3c49f7ae1e552213
+    json:
+        orderId: $orderId
+        orderPayType: 1
+    method: POST
+    url: /mall/api/v0.1/car-items/scan-code/payment
+validate:
+-   eq: [status_code, 200]

@@ -23,5 +23,4 @@ teststeps:
     - eq: [content.login, $phoneNum]
     - eq: [content.phoneNum, $phoneNum]
     - eq: [content.tenantCode, '1001']
-    teardown_hooks:
-        - ${sleep(0)}
+

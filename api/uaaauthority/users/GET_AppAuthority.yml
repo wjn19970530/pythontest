@@ -1,0 +1,29 @@
+name: /uaaauthority/api/users/app-authority
+variables:
+  access_token: ${get_token(access_token)}
+  refresh_token: ${get_token(refresh_token)}
+base_url: ${ENV(base_url)}
+extract:
+    - userId: content.userId
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+        Content-Type: application/x-www-form-urlencoded
+        refresh_token: ${refresh_token}
+        User-Agent: okhttp/3.8.1
+        android_id: 3c49f7ae1e552213
+        baseUrl: http://120.77.255.134
+        client_b_v: '100'
+        client_v: 1.0.0
+        imei: '359789052172280'
+        mac: ''
+        os: Android
+        os_name: GT-I9308I
+        os_v: '18'
+        platform: '5'
+        uuid: 3c49f7ae1e552213
+    method: GET
+    url: /uaaauthority/api/users/app-authority
+validate:
+-   eq: [status_code, 200]
+

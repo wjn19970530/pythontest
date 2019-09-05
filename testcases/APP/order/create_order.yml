@@ -1,0 +1,41 @@
+config:
+    name: 创建订单并提交  testcases/APP/order/create_order.yml
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+      verifyCode: ${ENV(verifyCode)}
+      access_token: ${get_token(access_token)}
+      refresh_token: ${get_token(refresh_token)}
+    base_url: ${ENV(base_url)}
+    export:
+      - orderId
+
+teststeps:
+-   name: 创建订单
+    api: api/mall/car-items/POST_SellerCreate.yml
+    extract:
+      orderId: content.orderId
+    validate:
+      - eq: [status_code, 200]
+      - eq: [content.orderStatus, 4]
+
+-   name: 订单选择支付方式
+    api: api/mall/car-items/POST_ScanCodePayment.yml
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 上传支付图片
+    api: api/usercenter/aliyun/POST_OssImg.yml
+    validate:
+      - eq: [status_code, 200]
+    extract:
+      - ossUrl: content.ossUrl
+
+-   name: 提交订单
+    api: api/mall/offline-payments/submit.yml
+    variables:
+      orderId: $orderId
+      billImages: $ossUrl
+    validate:
+      - eq: [status_code, 200]

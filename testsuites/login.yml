@@ -1,0 +1,13 @@
+config:
+    name: WEB和APP重新登录 testsuites/create_car.yml
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+      verifyCode: ${ENV(verifyCode)}
+    base_url: ${ENV(base_url)}
+
+testcases:
+-   name: WEB端登录
+    testcase: testcases/WEB/login.yml
+
+-   name: APP端登录
+    testcase: testcases/APP/login.yml
