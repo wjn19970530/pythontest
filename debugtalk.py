@@ -1,9 +1,9 @@
 from common.CsvOperate import CsvOperate
 import time
-from common.BaseCommon import BaseCommon
+from common.BaseCommon import BaseCommon as BCommon
 from common.DBOperate import DBOperate
 
-log = BaseCommon().log()
+log = BCommon.log()
 
 
 def sleep(n_secs):
@@ -67,6 +67,26 @@ def response_refresh_token(response, endpoint):
         log.error("平台来源无法识别，请检查")
 
 
+def generate_number() -> str:
+    """
+    生成时间戳
+    :return: str，如20190906104443
+    """
+    now_time = BCommon.get_time()['now_time']
+    now_time = str(now_time).replace('-', '').replace(':', '').replace(' ', '')
+    return now_time
+
+
+def add(x, y) -> str:
+    """
+    对两个数相加
+    :param x:
+    :param y:
+    :return:
+    """
+    return str(int(x)+y)
+
+
 def sql_init_order(phone_num):
     """
     创建订单前，让用户没有订单信息
@@ -90,6 +110,8 @@ if __name__ == '__main__':
     # content = c.generate_text('data/token.csv', 'WEB', access_token, refresh_token)
     # c.write_token_csv('data/token.csv', content)
     # print(get_token('refresh_token'))
-    sql_init_order('15060138093')
+    # sql_init_order('15060138093')
+    generate_number()
+    print(add(generate_number(), 1))
 
 

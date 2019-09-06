@@ -1,5 +1,5 @@
 config:
-    name: testcase description
+    name: web端创建车辆库存信息
     variables:
         phoneNum: ${ENV(phoneNum)}
         verifyCod: ${ENV(verifyCode)}

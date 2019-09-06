@@ -1,0 +1,21 @@
+name: APP发起退款 /mall/api/v0.1/orders/prepare-return
+variables:
+  access_token: ${get_token(access_token)}
+  refresh_token: ${get_token(refresh_token)}
+  orderId: '19'
+  sellerId: '3479189832092106759'
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Content-Type: application/json;charset=UTF-8
+        authorization: Bearer ${access_token}
+    json:
+        orderId: $orderId
+        sellerId: $sellerId
+    method: PUT
+    params:
+        orderId: $orderId
+        sellerId: $sellerId
+    url: /mall/api/v0.1/orders/prepare-return
+validate:
+-  eq: [status_code, 200]

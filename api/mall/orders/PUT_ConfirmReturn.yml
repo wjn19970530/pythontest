@@ -1,0 +1,15 @@
+name: WEB端确认退款 /mall/api/v0.1/orders/confirm-return
+variables:
+  access_token: ${get_token(access_token)}
+  refresh_token: ${get_token(refresh_token)}
+  orderId: '19'
+base_url: ${ENV(base_url)}
+request:
+  headers:
+      Authorization: Bearer ${access_token}
+  method: PUT
+  params:
+      orderId: $orderId
+  url: /mall/api/v0.1/orders/confirm-return
+validate:
+-   eq: [status_code, 200]

@@ -1,0 +1,30 @@
+config:
+    name: 订单退款  testcases/APP/order/return_order.yml
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+      verifyCode: ${ENV(verifyCode)}
+      access_token: ${get_token(access_token)}
+      refresh_token: ${get_token(refresh_token)}
+    base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 创建订单并支付
+    testcase: testcases/APP/order/create_order.yml
+    extract:
+      orderId: content.orderId
+
+-   name: APP端退款
+    api: api/mall/orders/PUT_PrepareReturn.yml
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code, 200]
+
+-   name: WEB端确认退款
+    api: api/mall/orders/PUT_ConfirmReturn.yml
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code, 200]
+
+

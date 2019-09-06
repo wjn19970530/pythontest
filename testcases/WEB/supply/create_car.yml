@@ -5,7 +5,7 @@ config:
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
-      engineNumber: '00027'
+      engineNumber: ${generate_number()}
     base_url: ${ENV(base_url)}
     export:
       - carId

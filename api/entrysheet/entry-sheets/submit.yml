@@ -1,0 +1,86 @@
+name: /entrysheet/api/entry-sheets/submit
+variables:
+  access_token: ${get_token(access_token)}
+  refresh_token: ${get_token(refresh_token)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer $access_token
+        Content-Type: application/json;charset=UTF-8
+        User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36
+            (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36
+    json:
+        audit:
+            auditOpinion: API自动化初审通过
+            auditResult: '1'
+            hasTelephoneCheck: '0'
+            isAnomaly: '0'
+            isKeyInfoComplete: '1'
+            isMaterialClear: '1'
+            needBail: '0'
+            needConcern: '0'
+            needInvest: '0'
+            taskId: 12345678-cf9b-11e9-8ef1-00163e0a1bd2
+        currentVersion: 0
+        entrySheetMaterials:
+        -   adoptNote: 自动化采纳
+            attachmentData: '[{"type":"image","url":"http://mall-cms.oss-cn-shenzhen.aliyuncs.com/dev-1565164020559-047A3BF4-3CCD-4023-A227-41A694967B8E.jpg"},{"type":"image","url":"http://mall-cms.oss-cn-shenzhen.aliyuncs.com/dev-1565164159556-F6321225-49FF-48B5-93E9-C8F7C538E6A0.jpg"}]'
+            auditor: null
+            detail: '350104198903154420'
+            entrySheetId: '42'
+            gmtAudit: null
+            gmtCreate: '2019-09-05T13:10:21+08:00'
+            gmtModified: '2019-09-05T13:10:58+08:00'
+            gmtUpload: '2019-09-05T13:10:21+08:00'
+            id: '92'
+            infoSource: 1
+            isAdopt: 0
+            isAudit: null
+            isDelete: null
+            materialId: '1'
+            materialName: 身份证明
+            systemAudit: 身份证与姓名一致
+            verifyApproach: 5
+        -   adoptNote: 自动化采纳
+            attachmentData: '[{"type":"image","url":"http://mall-cms.oss-cn-shenzhen.aliyuncs.com/dev-1565164168582-DB0F93EC-0652-49EC-9435-14E2F620536D.jpg"},{"type":"image","url":"http://mall-cms.oss-cn-shenzhen.aliyuncs.com/dev-1565164177951-B7314202-7625-4118-898F-BB23ACCF8A87.jpg"}]'
+            auditor: null
+            detail: '350104198903154420'
+            entrySheetId: '42'
+            gmtAudit: null
+            gmtCreate: '2019-09-05T13:10:21+08:00'
+            gmtModified: '2019-09-05T13:10:58+08:00'
+            gmtUpload: '2019-09-05T13:10:21+08:00'
+            id: '93'
+            infoSource: 1
+            isAdopt: 0
+            isAudit: null
+            isDelete: null
+            materialId: '2'
+            materialName: 驾驶证
+            systemAudit: 未发现问题
+            verifyApproach: 5
+        -   adoptNote: 自动化采纳
+            attachmentData: '[{"type":"image","url":"http://images.mall.taoqicar.com/dev-1565603184574-01D1E6E0-86F5-416F-B96D-3581DEC44A34.jpeg"}]'
+            auditor: null
+            detail: null
+            entrySheetId: '42'
+            gmtAudit: null
+            gmtCreate: '2019-09-05T13:10:21+08:00'
+            gmtModified: '2019-09-05T13:10:58+08:00'
+            gmtUpload: '2019-09-05T13:10:21+08:00'
+            id: '91'
+            infoSource: 1
+            isAdopt: 0
+            isAudit: null
+            isDelete: null
+            materialId: '28'
+            materialName: 手持身份证照
+            systemAudit: 未发现问题
+            verifyApproach: 5
+        id: '42'
+    method: PUT
+    url: http://120.77.255.134/entrysheet/api/entry-sheets/submit
+validate:
+-   eq: [status_code, 200]
+-   eq: [headers.Content-Type, application/json;charset=UTF-8]
+
