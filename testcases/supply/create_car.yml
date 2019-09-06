@@ -1,5 +1,5 @@
 config:
-    name: 创建车辆  testcases/WEB/supply/create_car.yml
+    name: 创建车辆  testcases/supply/create_car.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}

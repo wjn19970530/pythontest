@@ -9,7 +9,7 @@ config:
 
 testcases:
 -   name: 下订单支付并退款
-    testcase: testcases/APP/order/return_order.yml
+    testcase: testcases/order/return_order.yml
 
 
 

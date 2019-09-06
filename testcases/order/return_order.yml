@@ -9,7 +9,7 @@ config:
 
 teststeps:
 -   name: 创建订单并支付
-    testcase: testcases/APP/order/create_order.yml
+    testcase: testcases/order/create_order.yml
     extract:
       orderId: content.orderId
 

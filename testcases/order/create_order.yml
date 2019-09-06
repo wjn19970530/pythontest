@@ -33,7 +33,7 @@ teststeps:
       - ossUrl: content.ossUrl
 
 -   name: 提交订单
-    api: api/mall/offline-payments/submit.yml
+    api: api/mall/offline-payments/POST_Submit.yml
     variables:
       orderId: $orderId
       billImages: $ossUrl

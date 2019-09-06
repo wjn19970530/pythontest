@@ -1,9 +1,9 @@
 config:
-    name: 登录APP测试用例 APP/login.yml
+    name: 登录WEB测试用例 testcases/WEB/app_login.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
-      endpoint: mobile
+      endpoint: pc-web
     base_url: ${ENV(base_url)}
 
 teststeps:

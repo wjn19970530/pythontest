@@ -10,17 +10,17 @@ config:
 
 testcases:
 -   name: 保存新的车辆基本信息
-    testcase: testcases/WEB/supply/create_car.yml
+    testcase: testcases/supply/create_car.yml
     variables:
       - engineNumber: ${generate_number()}
 
 -   name: 车架号已存在时，保存车辆基本信息
-    testcase: testcases/WEB/supply/create_exist_car.yml
+    testcase: testcases/supply/create_exist_car.yml
     variables:
       - engineNumber: ${add($number, 1)}
 
 -   name: 车辆完善认证信息
-    testcase: testcases/WEB/supply/car_certificates.yml
+    testcase: testcases/supply/car_certificates.yml
     variables:
       - engineNumber: ${add($number, 2)}
 

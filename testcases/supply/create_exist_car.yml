@@ -1,5 +1,5 @@
 config:
-    name: 车架号已存在时，保存车辆基本信息 testcases/WEB/supply/create_exist_car.yml
+    name: 车架号已存在时，保存车辆基本信息 testcases/supply/create_exist_car.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}

@@ -1,5 +1,5 @@
 config:
-    name: 创建车辆并设置合格证信息 testcases/WEB/supply/car_certificates.yml
+    name: 创建车辆并设置合格证信息 testcases/supply/car_certificates.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
@@ -10,7 +10,7 @@ config:
 
 teststeps:
 -   name: 保存新的车辆基本信息
-    testcase: testcases/WEB/supply/create_car.yml
+    testcase: testcases/supply/create_car.yml
     extract:
       carId: content.carId
 
