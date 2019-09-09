@@ -5,17 +5,19 @@ config:
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
-      engineNumber: '00058'
+      number: ${generate_number()}
     base_url: ${ENV(base_url)}
 
 teststeps:
 -   name: 保存新的车辆基本信息
     testcase: testcases/supply/create_car.yml
+    variables:
+      engineNumber: ${add($number, 2)}
     extract:
       carId: content.carId
 
 -   name: 上传图片 upload
-    api: api/file/upload.yml
+    api: api/file/POST_Upload.yml
     variables:
       file_path: data/img/car03.jpg
       file_name: car03.jpg

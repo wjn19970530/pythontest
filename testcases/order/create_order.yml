@@ -6,6 +6,8 @@ config:
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
     base_url: ${ENV(base_url)}
+    setup_hooks:
+      - ${sql_init_order($phoneNum)}
     export:
       - orderId
 

@@ -5,14 +5,14 @@ config:
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
-      engineNumber: '00025'
+      number: ${generate_number()}
     base_url: ${ENV(base_url)}
 
 teststeps:
 -   name: 保存新的车辆基本信息
     api: api/supplychain/POST_Cars.yml
     variables:
-      engineNumber: $engineNumber
+      engineNumber: ${add($number, 1)}
     extract:
       carId: content.carId
     validate:
@@ -21,7 +21,7 @@ teststeps:
 -   name: 车架号已存在时，保存车辆基本信息
     api: api/supplychain/POST_Cars.yml
     variables:
-      engineNumber: $engineNumber
+      engineNumber: ${add($number, 1)}
     validate:
       - eq: [content.errorCode, 10001]
       - eq: [content.message, '非法参数:该车架号已存在']

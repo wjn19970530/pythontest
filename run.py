@@ -7,9 +7,11 @@ if __name__ == '__main__':
     runner = HttpRunner(log_level="DEBUG", log_file=log_file)
     # runner.run("testsuites/order.yml")
     runner.run("testsuites")
+    # runner.run("testcases/supply")
     # runner.run("testcases/WEB/app_login.yml")
     # runner.run("api")
     # runner.run("testcases/WEB/supply/create_car.yml")
+
     # 获取用例执行情况
     summary = runner.summary
     print(summary)
