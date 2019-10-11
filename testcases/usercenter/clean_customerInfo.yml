@@ -1,0 +1,17 @@
+config:
+    name: 清除客户信息  testcases/usercenter/clean_customerInfo.yml
+teststeps:
+  - name: 清除认证信息  api/usercenter/users/PUT_CleanCertificateInfo.yml
+    api: api/usercenter/users/PUT_CleanCertificateInfo.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 清除用户信息  api/usercenter/users/PUT_CleanUserInfo.yml
+    api: api/usercenter/users/PUT_CleanUserInfo.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 解绑  api/usercenter/users/PUT_CleanUserId.yml
+    api: api/usercenter/users/PUT_CleanUserId.yml
+    validate:
+      - eq: [status_code,200]

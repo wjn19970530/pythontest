@@ -1,0 +1,7 @@
+config:
+    name: 购车认证-跳过人脸认证 testcases/usercenter/purchase_cerification.yml
+teststeps:
+  - name: 跳过人脸认证  api/usercenter/back-end/users/PUT_SkipFaceCert.yml
+    api: api/usercenter/back-end/users/PUT_SkipFaceCert.yml
+    validate:
+      - eq: [status_code,200]

@@ -1,0 +1,12 @@
+name: 清除用户信息  api/usercenter/users/PUT_CleanUserInfo
+variables:
+    access_token: ${get_token(access_token)}
+    phoneNum: ${ENV(phoneNum)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: PUT
+    url: /usercenter/api/v0.1/users/perfect-user-info/clean/${phoneNum}
+validate:
+  - eq: [status_code,200]

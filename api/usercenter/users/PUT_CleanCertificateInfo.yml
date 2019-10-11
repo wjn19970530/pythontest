@@ -1,0 +1,14 @@
+name: 清除认证信息  api/usercenter/users/PUT_CleanCertificateInfo
+variables:
+    access_token: ${get_token(access_token)}
+    phoneNum: ${ENV(phoneNum)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    data:
+        $phoneNum
+    method: PUT
+    url: /usercenter/api/v0.1/users/clean-certificate-info
+validate:
+  - eq: [status_code,200]

@@ -3,39 +3,42 @@ config:
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
-      access_token: ${get_token(access_token)}
-      refresh_token: ${get_token(refresh_token)}
+      access_token: ${get_token(access_token, source=APP)}
+      refresh_token: ${get_token(refresh_token, source=APP)}
     base_url: ${ENV(base_url)}
     setup_hooks:
       - ${sql_init_order($phoneNum)}
-      - ${sleep(2)}
+      - sleep(2)
     export:
+      - orderId
+    output:
       - orderId
 
 teststeps:
--   name: 创建订单
+-   name: 创建订单  api/mall/car-items/POST_SellerCreate.yml
     api: api/mall/car-items/POST_SellerCreate.yml
+    setup_hooks:
+      - sleep(5)
     extract:
       orderId: content.orderId
     validate:
       - eq: [status_code, 200]
-#      - eq: [content.orderStatus, 4]
 
--   name: 订单选择支付方式
+-   name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
     api: api/mall/car-items/POST_ScanCodePayment.yml
     variables:
       orderId: $orderId
     validate:
       - eq: [status_code, 200]
 
--   name: 上传支付图片
+-   name: 上传支付图片  api/usercenter/aliyun/POST_OssImg.yml
     api: api/usercenter/aliyun/POST_OssImg.yml
     validate:
       - eq: [status_code, 200]
     extract:
       - ossUrl: content.ossUrl
 
--   name: 提交订单
+-   name: 提交订单  api/mall/offline-payments/POST_Submit.yml
     api: api/mall/offline-payments/POST_Submit.yml
     variables:
       orderId: $orderId

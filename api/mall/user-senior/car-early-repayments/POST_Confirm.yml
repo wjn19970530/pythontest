@@ -1,0 +1,56 @@
+name: 确认提前还款表 api/mall/user-senior/car-early-repayments/POST_Confirm
+variables:
+    access_token: ${get_token(access_token)}
+    sellerId: ${ENV(sellerId)}
+    orderId: 316
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/user-senior/car-early-repayments/confirm?orderId=${orderId}
+    method: POST
+    headers:
+        Authorization: Bearer ${access_token}
+        Content-Type: application/json;charset=UTF-8
+        Referer: ${ENV(base_url)}/cms/
+        Accept-Encoding: gzip, deflate
+        Origin: ${ENV(base_url)}
+    json:
+      guidedPrice: '100000'
+      tax: '1'
+      insuranceFee: '1'
+      otherFee: '1'
+      flowCommission: '1'
+      earlyRepaymentJson:
+        - period: 1
+        - period: 10
+        - period: 2
+        - period: 11
+        - period: 3
+        - period: 12
+        - period: 4
+        - period: 13
+          residualPrincipal: '42149'
+          liquidatedDamages: '540'
+          total: '42689'
+        - period: 5
+        - period: 14
+          residualPrincipal: '39149'
+          liquidatedDamages: '450'
+          total: '39599'
+        - period: 6
+        - period: 15
+          residualPrincipal: '36149'
+          liquidatedDamages: '360'
+          total: '36509'
+        - period: 7
+        - period: 16
+          residualPrincipal: '33149'
+          liquidatedDamages: '270'
+          total: '33419'
+        - period: 8
+        - period: 17
+          residualPrincipal: '30149'
+          liquidatedDamages: '180'
+          total: '30329'
+        - period: 9
+validate:
+  - eq: [status_code,200]

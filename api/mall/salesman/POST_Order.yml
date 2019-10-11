@@ -1,0 +1,28 @@
+name: APP端查询订单列表  api/mall/salesman/POST_Order
+variables:
+    access_token: ${get_token(access_token)}
+    sellerId: ${ENV(sellerId)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+        Content-Type: application/json;charset=UTF-8
+    json:
+        type: 0
+        salesmanId: ${sellerId}
+        adminUserId: null
+        organizationId: null
+        carBelongType: null
+        queryName: null
+        queryTradeNo: null
+        orderStatus: null
+        orderSubStatus: null
+        areaId: null
+        carItemStatus: null
+    method: POST
+    url: /mall/api/v0.1/salesman/orders?page=0&size=20
+validate:
+  - eq: [status_code,200]
+extract:
+  - orderId: content.0.orderId
+  - tradeNo: content.0.tradeNo

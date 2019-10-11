@@ -1,0 +1,17 @@
+name: WEB端获取订单列表    /mall/api/v0.1/back-end/orders/POST_Params
+variables:
+    access_token: ${get_token(access_token)}
+    phoneNum: ${ENV(phoneNum)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer $access_token
+    json:
+      page: 0
+      phoneNum: ${phoneNum}
+    method: POST
+    url: /mall/api/v0.1/back-end/orders/params?page=0
+validate:
+    - eq: [status_code,200]
+extract:
+    - orderId: content.0.order.id

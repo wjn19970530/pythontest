@@ -1,0 +1,27 @@
+config:
+    name: 提车流程
+    variables:
+        orderId: 2
+    export:
+      - orderId
+teststeps:
+-   name: 查询订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+       - eq: [status_code,200]
+    extract:
+       - orderId: content.0.orderId
+
+-   name: 发起出库流程  api/mall/orders/POST_LaunchDelivery.yml
+    api: api/mall/orders/POST_LaunchDelivery.yml
+    variables:
+        orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+
+-   name: 确认提车  api/mall/orders/PUT_ComfirmOrder.yml
+    api: api/mall/orders/PUT_ComfirmOrder.yml
+    variables:
+        orderId: $orderId
+    validate:
+      - eq: [status_code,200]

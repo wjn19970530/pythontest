@@ -1,0 +1,16 @@
+name: 获取未审核列表
+variables:
+    access_token: ${get_token(access_token)}
+    name: ${ENV(name)}
+base_url: http://120.77.255.134
+request:
+    headers:
+        Authorization: Bearer $access_token
+    method: GET
+    url: /entrysheet/api/entry-sheet/workflow/query/list?searchKey=${name}&page=0&workflowType=1&sort=submitTime,DESC
+extract:
+-   id: content.0.entrySheet.id
+-   task_id: content.0.unFinishTaskId
+validate:
+-   eq: [status_code,200]
+-   eq: [headers.Content-Type,application/json;charset=UTF-8]

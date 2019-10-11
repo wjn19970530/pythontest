@@ -1,0 +1,20 @@
+name: APP端发起出库流程  api/mall/order/order/POST_LaunchDelivery
+variables:
+    access_token: ${get_token(access_token)}
+    sellerId: ${ENV(sellerId)}
+    orderId: 213
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+        Content-Type: application/json;charset=UTF-8
+    json:
+        orderId: ${orderId}
+        deliveryType: 1
+        obtainTime: "2019-10-09T01:35:12.395Z"
+        obtainAddress: "北京市市辖区东城区 qwe"
+        sellerId: ${sellerId}
+    method: POST
+    url: /mall/api/v0.1/order-deliveries/launch-delivery
+validate:
+  - eq: [status_code,200]

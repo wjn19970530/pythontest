@@ -1,0 +1,17 @@
+name: 取消订单 /mall/api/v0.1/orders/cancel-order
+variables:
+  access_token: ${get_token(access_token)}
+  refresh_token: ${get_token(refresh_token)}
+  orderId: '19'
+  sellerId: ${ENV(sellerId)}
+base_url: ${ENV(base_url)}
+request:
+  headers:
+      Authorization: Bearer ${access_token}
+  method: PUT
+  params:
+      orderId: $orderId
+      sellerId: ${sellerId}
+  url: /mall/api/v0.1/orders/cancel-order
+validate:
+-   eq: [status_code, 200]

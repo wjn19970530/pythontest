@@ -1,0 +1,40 @@
+config:
+  name: 审核订单  testcases/order/audit_order.yml
+  variables:
+    phoneNum: ${ENV(phoneNum)}
+    token: ${get_token(access_token)}
+  base_url: ${ENV(base_url)}
+teststeps:
+-   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    setup_hooks:
+      - ${sleep(120)}
+    extract:
+      -  id: content.0.entrySheet.id
+      -  task_id: content.0.unFinishTaskId
+    validate:
+      -  eq: [status_code,200]
+
+-   name: 初审信息提交  api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
+    api: api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
+    variables:
+      id: $id
+      task_id: $task_id
+    validate:
+      -  eq: [status_code,200]
+
+-   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    extract:
+      - id: content.0.entrySheet.id
+      - task_id: content.0.unFinishTaskId
+    validate:
+      - eq: [status_code,200]
+
+-   name: 复审信息提交  api/entrysheet/entry-sheets/PUT_SubmitReview.yml
+    api: api/entrysheet/entry-sheets/PUT_SubmitReview.yml
+    variables:
+      id: $id
+      task_id: $task_id
+    validate:
+      -  eq: [status_code,200]

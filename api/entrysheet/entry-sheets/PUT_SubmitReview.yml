@@ -1,0 +1,19 @@
+name: 提交初审信息   /entrysheet/api/entry-sheets/submit
+variables:
+    access_token: ${get_token(access_token)}
+    task_id: e38343ad-e8a1-11e9-b7e4-00163e0a1bd2
+    id: 126
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer $access_token
+        Content-Type: application/json;charset=UTF-8
+    json:
+        currentVersion : 0
+        id: ${id}
+        audit: {"auditResult":"1","auditOpinion":"自动化复审通过","taskId":"${task_id}"}
+    method: PUT
+    url: /entrysheet/api/entry-sheets/submit
+validate:
+-   eq: [status_code,200]
+-   eq: [headers.Content-Type,application/json;charset=UTF-8]

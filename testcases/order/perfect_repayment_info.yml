@@ -1,0 +1,24 @@
+config:
+    name: APP端完善还款信息
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+    export:
+      - orderId
+    setup_hooks:
+      - ${sql_init_repayment($phoneNum)}
+      - ${sleep(5)}
+
+teststeps:
+-   name: 获取订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.orderId
+
+-   name: 完善还款信息  api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
+    api: api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
+    variables:
+        orderId: $orderId
+    validate:
+      - eq: [status_code,200]

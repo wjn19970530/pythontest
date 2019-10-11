@@ -1,0 +1,25 @@
+name: APP添加客户 api/usercenter/credit/custom-check/POST_Universal
+variables:
+    access_token: ${get_token(access_token)}
+    sellerId: ${ENV(sellerId)}
+    phoneNum: ${ENV(phoneNum)}
+    IDNum: ${ENV(IDNum)}
+    name: ${ENV(name)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        authorization: Bearer $access_token
+        Content-Type: application/json;charset=UTF-8
+        Accept-Encoding: gzip
+    json:
+        name: $name
+        idString: $IDNum
+        phoneNum: $phoneNum
+        blackQueryRecordId: ""
+        verifyCode: "121212"
+        codeAuth: "add-custom"
+        userId: $sellerId
+    method: POST
+    url: /usercenter/api/v0.1/credit/custom-check/universal
+validate:
+    - eq: [status_code,200]

@@ -1,0 +1,12 @@
+config:
+    name: 签署合同  testcases/contracts/sign_contract.yml
+
+teststeps:
+  - name: 获取订单列表  api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.order.id
+    teardown_hooks:
+      - ${sql_init_contract($response)}

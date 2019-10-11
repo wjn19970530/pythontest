@@ -1,0 +1,17 @@
+name: 签署合同跳过人脸认证  api/usercenter/back-end/users/PUT_SkipFaceCertV2
+variables:
+    access_token: ${get_token(access_token)}
+    customerId: ${ENV(customerId)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer $access_token
+        Content-Type: application/json;charset=UTF-8
+    method: PUT
+    json:
+        userId: $customerId
+        reason: "接口自动化跳过人脸认证"
+        attachments: \"IMG_4432.PNG-":\"http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/PNG/20191008/1570500410255--225148522.PNG\"
+    url: /usercenter/api/v0.1/back-end/users/skip-face-cert-v2
+validate:
+  - eq: [status_code, 200]

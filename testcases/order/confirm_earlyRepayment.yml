@@ -1,0 +1,18 @@
+config:
+    name: 确认提前还款表 testcase/order/confirm_earlyRepayment.yml
+    export:
+      - orderId
+teststeps:
+  - name: 查询订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.orderId
+
+  - name: 确认提前还款表 api/mall/user-senior/car-early-repayments/POST_Confirm.yml
+    api: api/mall/user-senior/car-early-repayments/POST_Confirm.yml
+    variables:
+        orderId: content.0.orderId
+    validate:
+      - eq: [status_code,200]
