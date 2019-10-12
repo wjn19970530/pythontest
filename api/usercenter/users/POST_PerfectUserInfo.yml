@@ -1,0 +1,28 @@
+name: 完善个人信息  api/usercenter/users/perfect-user-info
+variables:
+  outerKey: ${ENV(outerKey)}
+base_url: ${ENV(base_url)}
+request:
+  headers:
+    Accept-Encoding: gzip, deflate
+    Content-Type: application/json;charset=UTF-8
+  json:
+    bankCardBackUrl: ""
+    bankCardMainUrl: ""
+    userContactInfoList:
+      - {"name":"父母名字","occupation":1,"phone":"13222222222","relation":0,"type":"0","unitAddress":"内蒙古自治区 乌海市 海南区 父母单位","unitDuty":"服务职务","unitName":"13212312312","unitPhone":"13233312312","userId":""}
+      - {"name":"第二关系","occupation":6,"phone":"13412312312","relation":2,"type":"1","unitAddress":"辽宁省 抚顺市 东洲区 第二关系单位地址","unitDuty":"第二关系职务","unitName":"第二关系单位","unitPhone":"13512312312","userId":""}
+    userId: ""
+    bankCard: ""
+    receivesFilesAddress: "北京市 市辖区 朝阳区 个人居住地址"
+    handheldIdentityCardUrl: "http://images.mall.taoqicar.com/dev-1570445511516-IMG_4432.PNG"
+    maritalStatus: 0
+    occupation: 1
+    unitName: "单位名称"
+    unitDuty: "职务"
+    unitPhone: "13111111111"
+    unitAddress: "北京市 市辖区 西城区 单位地址"
+  method: POST
+  url: /usercenter/api/users/perfect-user-info?step=3&outerKey=${outerKey}&state=3&showType=0
+validate:
+  - eq: [status_code,200]

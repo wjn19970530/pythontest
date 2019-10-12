@@ -1,0 +1,20 @@
+name: 完善还款信息 /mall/api/find/TongLianInfo/outerKey
+variables:
+  access_token: ${get_token(access_token)}
+  refresh_token: ${get_token(refresh_token)}
+  outerKey: ${ENV(outerKey)}
+  orderId: "213"
+  userId: ${ENV(customerId)}
+base_url: ${ENV(base_url)}
+request:
+  headers:
+      Authorization: Bearer ${access_token}
+  method: GET
+  params:
+      orderId: ${orderId}
+      userId: ${userId}
+      repaymentMethod: "3"
+      outerKey: ${outerKey}
+  url: /mall/api/find/TongLianInfo/${outerKey}
+validate:
+-   eq: [status_code, 200]

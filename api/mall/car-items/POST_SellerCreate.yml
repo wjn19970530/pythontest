@@ -3,18 +3,22 @@ variables:
   access_token: ${get_token(access_token)}
   refresh_token: ${get_token(refresh_token)}
   phoneNum: ${ENV(phoneNum)}
+  itemId: "8"
+  leasePlanId: "18"
+  sellerId: ${ENV(sellerId)}
+  skuId: "1914"
 base_url: ${ENV(base_url)}
-extract:
-  - orderId: content.orderId
+#extract:
+#  - orderId: content.orderId
 request:
     headers:
         authorization: Bearer ${access_token}
     json:
-        itemId: '5'
-        leasePlanId: '4'
+        itemId: ${itemId}
+        leasePlanId: ${leasePlanId}
         phone: $phoneNum
-        sellerId: '3479189832092106759'
-        skuId: '1721'
+        sellerId: ${sellerId}
+        skuId: ${skuId}
     method: POST
     url: /mall/api/v0.1/car-items/orders/seller-create
 validate:

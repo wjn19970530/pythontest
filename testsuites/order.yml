@@ -11,6 +11,9 @@ testcases:
 -   name: 下订单支付
     testcase: testcases/order/create_order.yml
 
+-   name: 审核订单
+    testcase: testcases/order/audit_order.yml
+
 -   name: 下订单支付并退款
     testcase: testcases/order/return_order.yml
 

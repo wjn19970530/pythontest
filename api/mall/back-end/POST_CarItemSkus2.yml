@@ -1,0 +1,792 @@
+name: 保存B端商品信息  api/mall/back-end/POST_CarItemSkus2
+variables:
+    access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/back-end/car-item-skus/2
+    method: POST
+    headers:
+        Authorization: Bearer ${access_token}
+    json:
+        - id: '1676'
+          skuProperties:
+              - id: '2'
+                name: 闽A
+                type: 1
+                areaName:
+              - id: '38'
+                name: 白色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '2'
+          carNoName: 闽A
+          carColor: '38'
+          carColorName: 白色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 150
+          storageInventory: 0
+          transitInventory: 2
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1677'
+          skuProperties:
+              - id: '2'
+                name: 闽A
+                type: 1
+                areaName:
+              - id: '39'
+                name: 红色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '2'
+          carNoName: 闽A
+          carColor: '39'
+          carColorName: 红色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 150
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1678'
+          skuProperties:
+              - id: '2'
+                name: 闽A
+                type: 1
+                areaName:
+              - id: '40'
+                name: 蓝色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '2'
+          carNoName: 闽A
+          carColor: '40'
+          carColorName: 蓝色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1679'
+          skuProperties:
+              - id: '3'
+                name: 闽D
+                type: 1
+                areaName:
+              - id: '38'
+                name: 白色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '3'
+          carNoName: 闽D
+          carColor: '38'
+          carColorName: 白色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1680'
+          skuProperties:
+              - id: '3'
+                name: 闽D
+                type: 1
+                areaName:
+              - id: '39'
+                name: 红色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '3'
+          carNoName: 闽D
+          carColor: '39'
+          carColorName: 红色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1681'
+          skuProperties:
+              - id: '3'
+                name: 闽D
+                type: 1
+                areaName:
+              - id: '40'
+                name: 蓝色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '3'
+          carNoName: 闽D
+          carColor: '40'
+          carColorName: 蓝色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1682'
+          skuProperties:
+              - id: '4'
+                name: 粤E
+                type: 1
+                areaName:
+              - id: '38'
+                name: 白色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '4'
+          carNoName: 粤E
+          carColor: '38'
+          carColorName: 白色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1683'
+          skuProperties:
+              - id: '4'
+                name: 粤E
+                type: 1
+                areaName:
+              - id: '39'
+                name: 红色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '4'
+          carNoName: 粤E
+          carColor: '39'
+          carColorName: 红色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1684'
+          skuProperties:
+              - id: '4'
+                name: 粤E
+                type: 1
+                areaName:
+              - id: '40'
+                name: 蓝色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '4'
+          carNoName: 粤E
+          carColor: '40'
+          carColorName: 蓝色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1685'
+          skuProperties:
+              - id: '5'
+                name: 桂A
+                type: 1
+                areaName:
+              - id: '38'
+                name: 白色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '5'
+          carNoName: 桂A
+          carColor: '38'
+          carColorName: 白色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1686'
+          skuProperties:
+              - id: '5'
+                name: 桂A
+                type: 1
+                areaName:
+              - id: '39'
+                name: 红色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '5'
+          carNoName: 桂A
+          carColor: '39'
+          carColorName: 红色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1687'
+          skuProperties:
+              - id: '5'
+                name: 桂A
+                type: 1
+                areaName:
+              - id: '40'
+                name: 蓝色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '5'
+          carNoName: 桂A
+          carColor: '40'
+          carColorName: 蓝色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1688'
+          skuProperties:
+              - id: '6'
+                name: 冀A
+                type: 1
+                areaName:
+              - id: '38'
+                name: 白色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '6'
+          carNoName: 冀A
+          carColor: '38'
+          carColorName: 白色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1689'
+          skuProperties:
+              - id: '6'
+                name: 冀A
+                type: 1
+                areaName:
+              - id: '39'
+                name: 红色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '6'
+          carNoName: 冀A
+          carColor: '39'
+          carColorName: 红色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1690'
+          skuProperties:
+              - id: '6'
+                name: 冀A
+                type: 1
+                areaName:
+              - id: '40'
+                name: 蓝色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '6'
+          carNoName: 冀A
+          carColor: '40'
+          carColorName: 蓝色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1694'
+          skuProperties:
+              - id: '7'
+                name: 豫A
+                type: 1
+                areaName:
+              - id: '38'
+                name: 白色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '7'
+          carNoName: 豫A
+          carColor: '38'
+          carColorName: 白色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1695'
+          skuProperties:
+              - id: '7'
+                name: 豫A
+                type: 1
+                areaName:
+              - id: '39'
+                name: 红色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '7'
+          carNoName: 豫A
+          carColor: '39'
+          carColorName: 红色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 1
+          used: false
+        - id: '1696'
+          skuProperties:
+              - id: '7'
+                name: 豫A
+                type: 1
+                areaName:
+              - id: '40'
+                name: 蓝色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '7'
+          carNoName: 豫A
+          carColor: '40'
+          carColorName: 蓝色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 0
+          used: false
+        - id: '1697'
+          skuProperties:
+              - id: '8'
+                name: 鄂A
+                type: 1
+                areaName:
+              - id: '38'
+                name: 白色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '8'
+          carNoName: 鄂A
+          carColor: '38'
+          carColorName: 白色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 0
+          used: false
+        - id: '1698'
+          skuProperties:
+              - id: '8'
+                name: 鄂A
+                type: 1
+                areaName:
+              - id: '39'
+                name: 红色
+                type: 2
+                areaName:
+          itemId: '2'
+          inventory:
+          display: 0
+          itemIds:
+          saleStatus:
+          deliveryDays:
+          gmtCreate: '2019-08-09T08:41:10.000Z'
+          gmtModify: '2019-10-09T05:19:32.000Z'
+          deleteStatus: 0
+          erpCarTypeId:
+          erpAreaId:
+          strategyInventory:
+          carNo: '8'
+          carNoName: 鄂A
+          carColor: '39'
+          carColorName: 红色
+          warehouseId: '1'
+          warehouseAlias: st_东南区仓库
+          warehouseTypeName: 公共仓
+          sellingInventory: 0
+          storageInventory: 0
+          transitInventory: 0
+          waitingInventory: 88888
+          sellingDeliveryDays:
+          storageDeliveryDays:
+          transitDeliveryDays:
+          waitingDeliveryDays:
+          collectFlag: 0
+          used: false
+validate:
+  - eq: [status_code,200]

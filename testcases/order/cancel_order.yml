@@ -1,0 +1,22 @@
+config:
+    name: 取消订单 testcases/order/cancel_order.yml
+    variables:
+      phoneNum: 16621368448
+      token: ${get_token(access_token)}
+    base_url: http://120.77.25.134
+    export:
+      - orderId
+teststeps:
+  - name: 创建订单  api/mall/car-items/POST_SellerCreate.yml
+    api: api/mall/car-items/POST_SellerCreate.yml
+    extract:
+      - orderId: content.orderId
+    validate:
+      - eq: [status_code, 200]
+
+  - name: 取消订单  api/mall/orders/PUT_CancelOrder.yml
+    api: api/mall/orders/PUT_CancelOrder.yml
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code, 200]

@@ -1,0 +1,13 @@
+config:
+    name: APP端添加客户  testcases/usercenter/add_customer.yml
+    variables:
+      accsee_token: ${get_token(access_token,source="APP"}
+teststeps:
+  - name: 获取验证码 api/usercenter/credit/custom-check/GET_VerifyCode.yml
+    api: api/usercenter/credit/custom-check/GET_VerifyCode.yml
+    validate:
+      - eq: [status_code,200]
+  - name: 添加客户信息  api/usertcenter/credit/custom-check/POST_Universal.yml
+    api: api/usercenter/credit/custom-check/POST_Universal.yml
+    validate:
+      - eq: [status_code,200]

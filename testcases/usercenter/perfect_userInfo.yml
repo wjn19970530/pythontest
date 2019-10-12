@@ -1,0 +1,12 @@
+config:
+    name: 完善个人信息  testcases/usercenter/perfect_userInfo.yml
+    variables:
+      phoneNum: ${ENV(phoneNum)}
+    setup_hooks:
+     -  ${sql_init_contract_info($phoneNum)}
+     -  ${sleep(2}
+teststeps:
+  - name: 完善个人信息  api/usercenter/users/POST_PerfectUserInfo.yml
+    api: api/usercenter/users/POST_PerfectUserInfo.yml
+    validate:
+      - eq: [status_code,200]
