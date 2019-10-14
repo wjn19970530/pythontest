@@ -43,5 +43,5 @@ if __name__ == '__main__':
 
 
     # 获取用例执行情况
-    summary = runner.summary
-    print(summary)
+    # summary = runner.summary
+    # print(summary)
