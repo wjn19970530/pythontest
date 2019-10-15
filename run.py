@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     # runner.run("api/supplychain/POST_Cars.yml")
 
-    # runner.run("testcases/transaction/create_car.yml")
+    runner.run("testcases/transaction/create_car.yml")
 
     # runner.run("testcases/contracts/sign_contract.yml")
     # runner.run("api/usercenter/credit/custom-check/GET_VerifyCode.yml")
