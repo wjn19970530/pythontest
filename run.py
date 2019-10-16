@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # runner.run("testcases/usercenter/clean_customerInfo.yml")
     # runner.run("testcases/usercenter/add_customer.yml")
     # runner.run("testcases/usercenter/purchase_certification.yml")
-    # runner.run("testcases/supply/create_car.yml")
+    runner.run("testcases/supply/create_car.yml")
     # runner.run("testcases/usercenter/perfect_userInfo.yml")
     # runner.run("testcases/order/APP_create_order.yml")
     # runner.run("testcases/order/audit_order.yml")
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     # runner.run("api/supplychain/POST_Cars.yml")
 
-    runner.run("testcases/transaction/create_car.yml")
+    # runner.run("testcases/transaction/create_car.yml")
 
     # runner.run("testcases/contracts/sign_contract.yml")
     # runner.run("api/usercenter/credit/custom-check/GET_VerifyCode.yml")
