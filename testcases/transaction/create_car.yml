@@ -17,6 +17,11 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
+  - name: 客户完善个人信息  testcases/usercenter/perfect_userInfo.yml
+      testcase: testcases/usercenter/perfect_userInfo.yml
+      validate:
+        - eq: [status_code,200]
+
   - name: 添加待售车辆  testcases/supply/create_car.yml
     testcase: testcases/supply/create_car.yml
     validate:
@@ -27,27 +32,47 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 客户完善个人信息  testcases/usercenter/perfect_userInfo.yml
-    testcase: testcases/usercenter/perfect_userInfo.yml
-    validate:
-      - eq: [status_code,200]
+  - name: 搜索订单，验证订单状态（等待审核） api/mall/back-end/orders/POST_Params.yml
+      api: api/mall/back-end/orders/POST_Params.yml
+      validate:
+        - eq: [content.0.orderStatusDesc,"等待审核"]
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
     validate:
       - eq: [status_code,200]
 
+  - name: 搜索订单，验证订单状态（订单处理中） api/mall/back-end/orders/POST_Params.yml
+      api: api/mall/back-end/orders/POST_Params.yml
+      validate:
+        - eq: [content.0.orderStatusDesc,"订单处理中"]
+
   - name: 客户完善还款信息  testcases/order/perfect_repayment_info.yml
     testcase: testcases/order/perfect_repayment_info.yml
     validate:
       - eq: [status_code,200]
+
+  - name: 搜索订单，验证订单状态（待签署合同） api/mall/back-end/orders/POST_Params.yml
+      api: api/mall/back-end/orders/POST_Params.yml
+      validate:
+        - eq: [content.0.orderStatusDesc,"待签署合同"]
 
   - name: 签署合同  testcases/contracts/sign_contract.yml
     testcase: testcases/contracts/sign_contract.yml
     validate:
       - eq: [status_code,200]
 
+  - name: 搜索订单，验证订单状态（待确认提车） api/mall/back-end/orders/POST_Params.yml
+      api: api/mall/back-end/orders/POST_Params.yml
+      validate:
+        - eq: [content.0.orderStatusDesc,"待确认提车"]
+
   - name: 提车 testcases/order/mention_car.yml
     testcase: testcases/order/mention_car.yml
     validate:
       - eq: [status_code,200]
+
+  - name: 搜索订单，验证订单状态（交易完成） api/mall/back-end/orders/POST_Params.yml
+      api: api/mall/back-end/orders/POST_Params.yml
+      validate:
+        - eq: [content.0.orderStatusDesc,"交易完成"]

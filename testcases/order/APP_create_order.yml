@@ -1,5 +1,5 @@
 config:
-    name: 创建代售车辆订单并提交  testcases/APP/order/create_order.yml
+    name: 创建代售车辆订单并提交  testcases/order/APP_create_order.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
@@ -23,6 +23,11 @@ teststeps:
       orderId: content.orderId
     validate:
       - eq: [status_code, 200]
+
+-   name: 搜索订单，验证订单状态(待支付)  api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    validate:
+      - eq: [content.0.orderStatusDesc,"待支付"]
 
 -   name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
     api: api/mall/car-items/POST_ScanCodePayment.yml
