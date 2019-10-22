@@ -1,0 +1,7 @@
+usercenter = "autotest-usercenter_1001"
+mall = "autotest-mall_1001"
+uaa_authority = "autotest-uaa-authority_1001"
+# carBrandName = "AutoTestCarBrand"
+# carFullName = "AutoTestCarBrandA2S"
+carBrandName = "A"
+carFullName = "AA123"
