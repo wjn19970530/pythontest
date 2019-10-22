@@ -1,11 +1,10 @@
 name: APP端确认提车  api/mall/order/order/PUT_ComfirmOrder
 variables:
     access_token: ${get_token(access_token,source=APP)}
-    sellerId: ${ENV(sellerId)}
+    sellerPhoneNum: ${ENV(sellerPhoneNum)}
+    sellerId: ${sql_get_seller_id($sellerPhoneNum)}
     orderId: 240
 base_url: ${ENV(base_url)}
-#setup_hooks:
-#    - ${sleep(60)}
 request:
     headers:
         Authorization: Bearer ${access_token}

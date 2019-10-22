@@ -1,7 +1,8 @@
 name: 购车认证跳过人脸识别  api/usercenter/back-end/PUT_SkipFaceCert
 variables:
     access_token: ${get_token(access_token)}
-    customerId: ${ENV(customerId)}
+    phoneNum: ${ENV(phoneNum)}
+    customerId: ${sql_get_user_id($phoneNum)}
     cardNo: ${ENV(cardNo)}
     name: ${ENV(name)}
     IDNum: ${ENV(IDNum)}
@@ -12,9 +13,9 @@ request:
         Content-Type: application/json;charset=UTF-8
     method: PUT
     json:
-#        idCardFace: {"picUrl":"http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/png/20191010/1570675549117-2018046061.png","name":"张一","num":"350430196704174066","sex":"女","nationality":"汉","address":"福建省福州市晋安区"}
+#        idCardFace: {"picUrl":"http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/png/20191010/1570675549117-2018046061.png","name":"$name","num":"350430196704174066","sex":"女","nationality":"汉","address":"福建省福州市晋安区"}
 #        idCardBack: {"picUrl":"http://mall-cms.oss-cn-shenzhen.aliyuncs.com/dev-1570440874616-image.jpg","validPeriod":"20060622-20160622","issue":"蒋句族彝自治县公安局","start_date":"20060622","end_date":"20160622"}
-#        driverLicenseMain: {"picUrl":"http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/jpg/20191010/1570675813786-172652930.jpg","name":"张一","num":"350430196704174066","firstIssueDate":"2019-10-07T09:40:54.280Z","start_date":"20191007","validPeriod":"20060622-20160622","vehicle_type":"C1","sex":"女","nationality":"中国","address":"发送到","end_date":"20191007"}
+#        driverLicenseMain: {"picUrl":"http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/jpg/20191010/1570675813786-172652930.jpg","name":"$name","num":"350430196704174066","firstIssueDate":"2019-10-07T09:40:54.280Z","start_date":"20191007","validPeriod":"20060622-20160622","vehicle_type":"C1","sex":"女","nationality":"中国","address":"发送到","end_date":"20191007"}
 #        driverLicenseBack: {"picUrl":"http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/jpg/20191007/1570441245254--178035012.jpg"}
 #        driverLicenseFileNo: "123123123123"
 #        bankCard: "6227000734730752257"

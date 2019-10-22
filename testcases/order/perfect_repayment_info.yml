@@ -1,5 +1,5 @@
 config:
-    name: APP端完善还款信息
+    name: 端完善还款信息 testcases/order/perfect-repayment_info.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
     export:

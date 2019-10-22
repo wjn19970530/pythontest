@@ -6,7 +6,14 @@ config:
      -  ${sql_init_contract_info($phoneNum)}
      -  ${sleep(2}
 teststeps:
+  - name: 获取outerKey  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    validate:
+      - eq: [status_code,200]
+
   - name: 完善个人信息  api/usercenter/users/POST_PerfectUserInfo.yml
     api: api/usercenter/users/POST_PerfectUserInfo.yml
+    variables:
+        outerKey: ${get_outer_key()}
     validate:
       - eq: [status_code,200]

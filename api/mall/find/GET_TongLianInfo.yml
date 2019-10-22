@@ -1,4 +1,4 @@
-name: 完善还款信息 /mall/api/find/TongLianInfo/outerKey
+name: 完善还款信息 api/mall/find/GET_TongLianInfo
 variables:
   access_token: ${get_token(access_token)}
   refresh_token: ${get_token(refresh_token)}

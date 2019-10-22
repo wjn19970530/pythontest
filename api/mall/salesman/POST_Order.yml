@@ -1,7 +1,9 @@
 name: APP端查询订单列表  api/mall/salesman/POST_Order
 variables:
-    access_token: ${get_token(access_token)}
-    sellerId: ${ENV(sellerId)}
+    access_token: ${get_token(access_token,source=APP)}
+    sellerPhoneNum: ${ENV(sellerPhoneNum)}
+    sellerId: ${sql_get_seller_id($sellerPhoneNum)}
+    queryName: ${ENV(name)}
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -13,12 +15,18 @@ request:
         adminUserId: null
         organizationId: null
         carBelongType: null
-        queryName: null
-        queryTradeNo: null
+        queryName: ${queryName}
+        queryTradeNo: ''
         orderStatus: null
         orderSubStatus: null
         areaId: null
         carItemStatus: null
+        authStatus: null
+        timeType: 1
+        queryBeginTime: null
+        queryEndTime: null
+        sellerIds: null
+        selected: false
     method: POST
     url: /mall/api/v0.1/salesman/orders?page=0&size=20
 validate:

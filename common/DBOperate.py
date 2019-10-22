@@ -8,10 +8,10 @@ class DBOperate(BaseCommon):
         self.db = db
 
     def connect_saas_test_db(self):
-        return pymysql.connect(host='120.77.255.134',
+        return pymysql.connect(host='10.0.25.28',
                                port=3306,
                                user='root',
-                               password='Taoqi123!@#',
+                               password='123456',
                                database=self.db)
 
     def query_sql(self, sql_str):

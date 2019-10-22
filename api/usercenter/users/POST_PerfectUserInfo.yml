@@ -1,6 +1,6 @@
 name: 完善个人信息  api/usercenter/users/perfect-user-info
 variables:
-  outerKey: ${ENV(outerKey)}
+  outerKey: 123
 base_url: ${ENV(base_url)}
 request:
   headers:

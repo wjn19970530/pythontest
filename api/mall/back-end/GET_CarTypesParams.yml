@@ -1,6 +1,7 @@
-name: 查询车辆详细信息 /mall/api/v0.1/back-end/car-types/params
+name: 查询车辆详细信息 api/mall/back-end/GET_CarTypesParams
 variables:
     access_token: ${get_token(access_token)}
+    brandId: ${tmp_file_get_brand_id()}
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -10,6 +11,7 @@ request:
         page: '0'
         size: '20'
         timestr: '1566814106928'
+        brandId: ${brandId}
     url: /mall/api/v0.1/back-end/car-types/params
 validate:
 -   eq: [status_code, 200]

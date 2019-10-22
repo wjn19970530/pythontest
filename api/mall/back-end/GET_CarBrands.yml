@@ -1,6 +1,7 @@
-name: 查询车辆品牌信息 /mall/api/v0.1/back-end/car-brands
+name: 查询车辆品牌信息 api/mall/back-end/GET_CarBrands
 variables:
     access_token: ${get_token(access_token)}
+    keyword: ${get_config(carBrandName)}
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -9,3 +10,5 @@ request:
     url: /mall/api/v0.1/back-end/car-brands
 validate:
 -   eq: [status_code, 200]
+teardown_hooks:
+    - ${response_get_car_brand_id($response,$keyword)}

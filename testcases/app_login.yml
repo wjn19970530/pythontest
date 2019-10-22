@@ -1,7 +1,7 @@
 config:
     name: 登录APP测试用例 APP/app_login.yml
     variables:
-      phoneNum: ${ENV(phoneNum)}
+      phoneNum: ${ENV(sellerPhoneNum)}
       verifyCode: ${ENV(verifyCode)}
       endpoint: mobile
     base_url: ${ENV(base_url)}
@@ -14,13 +14,14 @@ teststeps:
     api: api/auth/POST_Login.yml
     validate:
         - eq: [status_code, 200]
+    teardown_hooks:
+        - ${response_refresh_token($response, $endpoint)}
 
 -   name: 获取账户信息
     api: api/account/GET_Account.yml
     validate:
     - eq: [status_code, 200]
-    - eq: [content.userId, '3479189832092106759']
-    - eq: [content.login, $phoneNum]
-    - eq: [content.phoneNum, $phoneNum]
+    - eq: [content.login, '$phoneNum']
+    - eq: [content.phoneNum, '$phoneNum']
     - eq: [content.tenantCode, '1001']
 

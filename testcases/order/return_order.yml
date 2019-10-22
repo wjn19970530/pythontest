@@ -1,5 +1,5 @@
 config:
-    name: 订单退款  testcases/APP/order/return_order.yml
+    name: 从创建代售车辆到下单到退款  testcases/APP/order/return_order.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
@@ -8,8 +8,13 @@ config:
     base_url: ${ENV(base_url)}
 
 teststeps:
+-   name: 创建代售车辆  testcases/supply/create_car.yml
+    testcase: testcases/supply/create_car.yml
+    validate:
+      - eq: [status_code,200]
+
 -   name: 创建订单并支付
-    testcase: testcases/order/create_order.yml
+    testcase: testcases/order/APP_create_order.yml
     extract:
       orderId: content.orderId
 
@@ -26,5 +31,3 @@ teststeps:
       orderId: $orderId
     validate:
       - eq: [status_code, 200]
-
-

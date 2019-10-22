@@ -1,7 +1,8 @@
 name: 解绑  api/usercenter/users/PUT_CleanUserId
 variables:
     access_token: ${get_token(access_token)}
-    userId: ${ENV(customerId)}
+    phoneNum: ${ENV(phoneNum)}
+    userId: ${sql_get_user_id($phoneNum)}
 base_url: ${ENV(base_url)}
 request:
     headers:

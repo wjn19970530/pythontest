@@ -2,7 +2,6 @@ from httprunner.api import HttpRunner
 
 from common.BaseCommon import BaseCommon
 import json
-
 from time import sleep
 
 if __name__ == '__main__':
@@ -11,16 +10,17 @@ if __name__ == '__main__':
     # runner.run("testsuites/order.yml")
     # runner.run("testsuites")
     # runner.run("testcases/supply")
-    # runner.run("testcases/WEB/app_login.yml")
+    # runner.run("testcases/web_login.yml")
 
-    # runner.run("api/mall/user-senior/car-early-repayments/POST_Confirm.yml")
+    # runner.run("api/mall/car-items/GET_CarItemDetails.yml")
+    # runner.run("api/supplychain/POST_Cars.yml")
 
 
     # runner.run("testcases/usercenter/clean_customerInfo.yml")
     # runner.run("testcases/usercenter/add_customer.yml")
     # runner.run("testcases/usercenter/purchase_certification.yml")
-    runner.run("testcases/supply/create_car.yml")
     # runner.run("testcases/usercenter/perfect_userInfo.yml")
+    # runner.run("testcases/supply/create_car.yml")
     # runner.run("testcases/order/APP_create_order.yml")
     # runner.run("testcases/order/audit_order.yml")
     # runner.run("testcases/order/perfect_repayment_info.yml")
@@ -31,6 +31,8 @@ if __name__ == '__main__':
     # runner.run("api/supplychain/POST_Cars.yml")
 
     # runner.run("testcases/transaction/create_car.yml")
+
+    runner.run("testsuites/order.yml")
 
     # runner.run("testcases/contracts/sign_contract.yml")
     # runner.run("api/usercenter/credit/custom-check/GET_VerifyCode.yml")
@@ -47,7 +49,7 @@ if __name__ == '__main__':
     # runner.run("testcases/order/refund/confirm_return.yml")
 
     # runner.run("testcases/supply/save_inventory.yml")
-
+    # runner.run("api/supplychain/GET_Cars.yml")
 
     # 获取用例执行情况
     summary = runner.summary

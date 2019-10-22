@@ -1,7 +1,11 @@
-name: 保存车辆基本信息 /supplychain/api/cars
+name: 保存车辆基本信息 api/supplychain/POST_Cars.yml
 variables:
     access_token: ${get_token(access_token)}
     engineNumber: ${generate_number()}
+    brandId: 29
+    seriesId: 33
+    typeId: 52
+    propertyId: 3694609620539547688
 base_url: ${ENV(base_url)}
 request:
     url: /supplychain/api/cars
@@ -10,39 +14,20 @@ request:
         Authorization: Bearer ${access_token}
         Content-Type: application/json;charset=UTF-8
     json:
-#        brandId: '6'
-#        carStatus: 4
-#        colorId: '40'
-#        engineNumber: ${engineNumber}
-#        licensePlate: 闽A${engineNumber}
-#        propertyId: '3479189832092106757'
-#        purchasePrice: 9${engineNumber}
-#        purchaserId: '1'
-#        purchaserType: '2'
-#        seriesId: '7'
-#        shareFlag: true
-#        supplierId: '1'
-#        typeId: '8'
-#        vin: ${engineNumber}
-#        warehouseId: '1'
-        brandId: '15'
-        seriesId: '17'
-        typeId: '19'
+        brandId: '${brandId}'
+        seriesId: '${seriesId}'
+        typeId: '${typeId}'
         carStatus: 4
-        purchaserType: '2'
-        purchaserId: '1'
+        purchaserType: '1'
+        purchaserId: 'null'
         colorId: '38'
         warehouseId: '1'
         vin: ${engineNumber}
         licensePlate: 闽A${engineNumber}
         purchasePrice: 9${engineNumber}
-        propertyId: '3479189832092106757'
+        propertyId: '${propertyId}'
         shareFlag: true
         supplierId: '1'
         engineNumber: ${engineNumber}
 validete:
     - eq: [status_code, 201]
-    - eq: [content.brandId, '6']
-    - eq: [content.seriesId, '7']
-    - eq: [content.typeId, '8']
-    - eq: [content.colorId, '40']

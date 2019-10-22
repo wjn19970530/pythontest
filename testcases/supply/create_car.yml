@@ -7,15 +7,37 @@ config:
       refresh_token: ${get_token(refresh_token)}
       engineNumber: ${generate_number()}
     base_url: ${ENV(base_url)}
-    export:
-      - carId
 
 teststeps:
+-   name: 获取brandId api/mall/back-end/GET_CarBrands.yml
+    api: api/mall/back-end/GET_CarBrands.yml
+    validate:
+      - eq: ["status_code", 200]
+
+-   name: 获取产权归属  api/supplychain/cars/POST_PropertyList.yml
+    api: api/supplychain/cars/POST_PropertyList.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - propertyId: content.0.signPartId
+
+-   name: 获取车辆详细信息  api/mall/back-end/GET_CarTypesParams.yml
+    api: api/mall/back-end/GET_CarTypesParams.yml
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_car_details_info($response)}
+
 -   name: 保存新的车辆基本信息  api/supplychain/POST_Cars.yml
     api: api/supplychain/POST_Cars.yml
     variables:
       engineNumber: $engineNumber
+      brandId: ${tmp_file_get_brand_id()}
+      seriesId: ${get_series_id()}
+      typeId: ${get_type_id()}
+      propertyId: ${propertyId}
     extract:
       carId: content.carId
+      vin: content.vin
     validate:
       - eq: ["status_code", 201]

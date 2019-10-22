@@ -5,29 +5,59 @@ config:
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token, source=APP)}
       refresh_token: ${get_token(refresh_token, source=APP)}
+      keyword: ${get_config(carFullName)}
     base_url: ${ENV(base_url)}
     setup_hooks:
       - ${sql_init_order($phoneNum)}
-      - sleep(2)
+      - ${sleep(5)}
     export:
-      - orderId
-    output:
       - orderId
 
 teststeps:
+-   name: 获取商品列表  api/mall/back-end/car-items/POST_List.yml
+    api: api/mall/back-end/car-items/POST_List.yml
+    variables:
+      keyword: ${keyword}
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - carId: content.0.id
+
+-   name: 获取车辆详细信息  api/mall/car-items/GET_CarItemDetails.yml
+    api: api/mall/car-items/GET_CarItemDetails.yml
+    variables:
+      carId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - leasePlanId: content.carLeasePlanList.0.id
+      - skuId: content.carItemSkuWrapperDTO.selectTrees.0.children.0.children.0.sku.skuId
+
 -   name: 创建订单  api/mall/car-items/POST_SellerCreate.yml
     api: api/mall/car-items/POST_SellerCreate.yml
-    setup_hooks:
-      - sleep(5)
+    variables:
+        leasePlanId: ${leasePlanId}
+        skuId: ${skuId}
+        itemId: ${carId}
     extract:
       orderId: content.orderId
     validate:
       - eq: [status_code, 200]
 
+-   name: 获取订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - tradeNo: content.0.tradeNo
+
 -   name: 搜索订单，验证订单状态(待支付)  api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+        tradeNo: ${tradeNo}
     validate:
       - eq: [content.0.orderStatusDesc,"待支付"]
+      - eq: [content.0.orderDetail.carItemStatus, 7]
 
 -   name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
     api: api/mall/car-items/POST_ScanCodePayment.yml

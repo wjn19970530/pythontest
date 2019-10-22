@@ -1,4 +1,4 @@
-name: 车辆产权归属列表 /supplychain/api/cars/property-list
+name: 车辆产权归属列表 api/supplychain/cars/POST_PropertyList
 variables:
     access_token: ${get_token(access_token)}
 base_url: ${ENV(base_url)}
@@ -10,3 +10,5 @@ request:
     url: /supplychain/api/cars/property-list
 validate:
 -   eq: [status_code, 200]
+extract:
+    propertyId: content.0.signPartId

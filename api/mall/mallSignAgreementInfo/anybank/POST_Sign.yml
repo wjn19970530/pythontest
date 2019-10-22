@@ -2,7 +2,7 @@ name: 开通银行卡 api/mall/mallSignAgreementInfo/anybank/POST_Sign
 variables:
     access_token: ${get_token(access_token)}
     refresh_token: ${get_token(refresh_token)}
-    outerKey: ${ENV(outerKey)}
+    outerKey: ${get_outer_key()}
     orderId: "254"
     phoneNum: ${ENV(phoneNum)}
     cardNo: ${ENV(cardNo)}

@@ -1,7 +1,8 @@
 name: APP端发起出库流程  api/mall/order/order/POST_LaunchDelivery
 variables:
     access_token: ${get_token(access_token)}
-    sellerId: ${ENV(sellerId)}
+    sellerPhoneNum: ${ENV(sellerPhoneNum)}
+    sellerId: ${sql_get_seller_id($sellerPhoneNum)}
     orderId: 213
 base_url: ${ENV(base_url)}
 request:

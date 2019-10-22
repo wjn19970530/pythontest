@@ -18,7 +18,8 @@ def get_message():
         status = 'Fail'
     if status == 1:
         status = 'Success'
-    message = " 【自动化执行结果】-  RESULT: %s  -  TOTAL: %s  -  SUCCESS: %s  -  FAIL: %s" % (status, totalNum, successNum, failNum)
+    message = " 【自动化执行结果】-  RESULT: %s  -  TOTAL: %s  -  SUCCESS: %s  -  FAIL: %s" \
+              % (status, totalNum, successNum, failNum)
     return message
 
 
