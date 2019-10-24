@@ -24,8 +24,8 @@ def get_message():
     if status == 1:
         status = 'Success'
     message = "【自动化执行结果】=  RESULT: %s  =  TOTAL: %s  =  SUCCESS: %s  =  FAIL: %s  =  TESTSTEPS：total-%s  success-%s  " \
-              "fail-%s  error-%s" % (status, totalNum, successNum, failNum, steps_totalNum, steps_successNum,
-                                     steps_failNum, steps_errorNum)
+              "fail-%s  error-%s  skip-%s" % (status, totalNum, successNum, failNum, steps_totalNum, steps_successNum,
+                                              steps_failNum, steps_errorNum, steps_skipNum)
     return message
 
 
