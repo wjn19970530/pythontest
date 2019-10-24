@@ -37,7 +37,7 @@ teststeps:
     output:
       - vin
 
-  - name: 验证车辆状态:未锁车、代售  api/supplychain/GET_Cars.yml
+  - name: 验证车辆状态:未锁车、待售  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
         vin: ${vin}
@@ -52,7 +52,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 验证库存：已锁车、代售  api/supplychain/GET_Cars.yml
+  - name: 验证库存：已锁车、待售  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
        vin: ${vin}

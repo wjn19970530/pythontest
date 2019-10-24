@@ -32,11 +32,10 @@ teststeps:
     teardown_hooks:
       - ${save_car_details_info($response,$carFullName)}
 
--   name: 获取代售车辆数量  api/supplychain/GET_UnlockedCars.yml
+-   name: 获取待售车辆数量  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
       carTypeName: ${get_config(carFullName)}
-#      isLocked: 0
     validate:
       - eq: [status_code,200]
     teardown_hooks:
@@ -56,19 +55,3 @@ teststeps:
       vin: content.vin
     validate:
       - eq: ["status_code", 201]
-#    teardown_hooks:
-#      - ${sleep(5)}
-
-#-   name: 获取代售车辆  api/supplychain/GET_UnlockedCars.yml
-#    api: api/supplychain/GET_UnlockedCars.yml
-#    variables:
-#        carFullName: ${get_config(carFullName)}
-#        isLocked: 0
-#        key: "vin"
-#    validate:
-#      - eq: [status_code,200]
-#    extract:
-#        vin: content.0.vin
-#    teardown_hooks:
-#      - ${save_message_to_tmp(${key},${vin}}
-#      - ${sleep(10)}
