@@ -1,6 +1,7 @@
-name: 获取品牌车系 /mall/api/v0.1/back-end/car-brands/2/car-series
+name: 获取品牌车系 api/mall/car-brands/GET_CarSeries.yml
 variables:
   access_token: ${get_token(access_token)}
+  ccarSeriesName: ${get_config(carSeriesName)}
 base_url: ${ENV(base_url)}
 request:
     headers:

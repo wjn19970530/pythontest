@@ -1,8 +1,7 @@
-name: 获取车辆列表 api/supplychain/GET_Cars.yml
+name: 获取车辆列表 api/supplychain/GET_UnlockedCars.yml
 variables:
     access_token: ${get_token(access_token)}
     carTypeName: "AA123"
-    vin: ""
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -13,7 +12,7 @@ request:
         size: '20'
         timestr: '1566814134884'
         carTypeName: ${carTypeName}
-        vin: ${vin}
+        isLocked: 0
     url: /supplychain/api/cars
 validate:
 -   eq: [status_code, 200]

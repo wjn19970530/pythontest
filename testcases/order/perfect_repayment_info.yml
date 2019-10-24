@@ -16,6 +16,11 @@ teststeps:
     extract:
       - orderId: content.0.orderId
 
+-   name: 获取outerKey  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    validate:
+      - eq: [status_code,200]
+
 -   name: 完善还款信息  api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
     api: api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
     variables:

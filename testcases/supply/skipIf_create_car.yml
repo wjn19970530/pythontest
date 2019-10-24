@@ -1,5 +1,5 @@
 config:
-    name: 创建车辆  testcases/supply/create_car.yml
+    name: 创建车辆  testcases/supply/skipIf_create_car.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
@@ -7,6 +7,8 @@ config:
       refresh_token: ${get_token(refresh_token)}
       engineNumber: ${generate_number()}
     base_url: ${ENV(base_url)}
+    teardown_hooks:
+      - ${sleep(5)}
 
 teststeps:
 -   name: 获取brandId api/mall/back-end/GET_CarBrands.yml
@@ -30,9 +32,19 @@ teststeps:
     teardown_hooks:
       - ${save_car_details_info($response,$carFullName)}
 
+-   name: 获取代售车辆数量  api/supplychain/GET_UnlockedCars.yml
+    api: api/supplychain/GET_UnlockedCars.yml
+    variables:
+      carTypeName: ${get_config(carFullName)}
+#      isLocked: 0
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_skip_create_car($response)}
+
 -   name: 保存新的车辆基本信息  api/supplychain/POST_Cars.yml
     api: api/supplychain/POST_Cars.yml
-#    skipIf: ${get_value_from_tmp(skip)}
+    skipIf: ${get_value_from_tmp(skip)}
     variables:
       engineNumber: $engineNumber
       brandId: ${tmp_file_get_brand_id()}
@@ -44,3 +56,19 @@ teststeps:
       vin: content.vin
     validate:
       - eq: ["status_code", 201]
+#    teardown_hooks:
+#      - ${sleep(5)}
+
+#-   name: 获取代售车辆  api/supplychain/GET_UnlockedCars.yml
+#    api: api/supplychain/GET_UnlockedCars.yml
+#    variables:
+#        carFullName: ${get_config(carFullName)}
+#        isLocked: 0
+#        key: "vin"
+#    validate:
+#      - eq: [status_code,200]
+#    extract:
+#        vin: content.0.vin
+#    teardown_hooks:
+#      - ${save_message_to_tmp(${key},${vin}}
+#      - ${sleep(10)}

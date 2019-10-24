@@ -1,9 +1,8 @@
-from common.CsvOperate import CsvOperate
 import time
 from common.BaseCommon import BaseCommon as BCommon
+from common.CsvOperate import CsvOperate
 from common.DBOperate import DBOperate
 from config import *
-import json
 
 log = BCommon.log()
 file = 'data/tmp.json'
@@ -218,20 +217,39 @@ def response_get_outer_key(response, name):
     BCommon.write_tmp_file(file, message)
 
 
-def save_car_details_info(response):
+def save_car_details_info(response, keyword):
     """
     保存车辆seriesId、typeId
-    :param response:
+    :param keyword: 车辆全称
+    :param response: 接口响应
     :return:
     """
     message = BCommon.read_tmp_file(file)
     response = response.json
     for item in response:
-        if carFullName == item["fullName"]:
+        if keyword == item["fullName"]:
             message["seriesId"] = item["seriesId"]
             message["typeId"] = item["typeId"]
     BCommon.write_tmp_file(file, message)
-    # sleep(2)
+
+
+def save_car_info(response, brand_name, series_name, type_name):
+    """
+
+    :param response:
+    :param brand_name:
+    :param series_name:
+    :param type_name:
+    :return:
+    """
+    message = BCommon.read_tmp_file(file)
+    response = response.json
+    keyword = brand_name + series_name + type_name
+    for item in response:
+        if keyword == item["fullName"]:
+            message["seriesId"] = item["seriesId"]
+            message["typeId"] = item["typeId"]
+    BCommon.write_tmp_file(file, message)
 
 
 def get_series_id():
@@ -260,12 +278,78 @@ def get_config(key):
     :param key:
     :return:
     """
-    value= ''
+    value = ''
     if key == "carBrandName":
         value = carBrandName
     if key == "carFullName":
         value = carFullName
+    if key == "carSeriesName":
+        value = carSeriesName
+    if key == "carTypeName":
+        value = carTypeName
+    if key == "addCarFullName":
+        value = addCarFullName
     return value
+
+
+def save_contract_suite_info(response, contract_name):
+    """
+    保存合同套件信息
+    :param contract_name: 合同套件名称
+    :param response: 接口响应
+    :return:
+    """
+    message = BCommon.read_tmp_file(file)
+    contract_data = response.json
+    for item in contract_data:
+        if item["title"] == contract_name:
+            message["contract_id"] = item["id"]
+            message["contract_title"] = item["title"]
+            message["contract_fundCompanyId"] = item["fundCompanyId"]
+            message["contract_fundCompanyName"] = item["fundCompanyName"]
+            message["contract_fundRepaymentMethod"] = item["fundRepaymentMethod"]
+            message["contract_needConfirmErTable"] = item["needConfirmErTable"]
+            message["contract_organizationCode"] = item["organizationCode"]
+            message["contract_gmtCreate"] = item["gmtCreate"]
+            message["contract_gmtModified"] = item["gmtModified"]
+            message["contract_bindContractTemplates"] = item["bindContractTemplates"]
+            message["contract_bindContractTemplatesDesc"] = item["bindContractTemplatesDesc"]
+            message["contract_remark"] = item["remark"]
+            contractFields = item["contractFields"]
+            contractFields = contractFields.replace('\"value\":\"\"', '\"value\":100')
+            message["contract_contractFields"] = contractFields
+            message["contract_organizationCount"] = item["organizationCount"]
+            message["contract_contractSuiteId"] = item["contractSuiteId"]
+    BCommon.write_tmp_file(file, message)
+
+
+def get_value_from_tmp(keyword):
+    """
+    从data/tmp.json中读取所要数据
+    :param keyword: 关键字
+    :return: value
+    """
+    value = ""
+    message = BCommon.read_tmp_file(file)
+    value = message[keyword]
+    return value
+
+
+def save_organizations_info(response, keyword):
+    """
+    保存渠道信息到data/tmp.json
+    :param response: 接口响应
+    :param keyword: 要保存的参数名称
+    :return:
+    """
+    message = BCommon.read_tmp_file(file)
+    response = response.json
+    organizations_info = []
+    for item in response:
+        organizations_info.append(item[keyword])
+    message["organizations_info"] = organizations_info
+    BCommon.write_tmp_file(file,message)
+
 
 def get_outer_key():
     """
@@ -277,8 +361,37 @@ def get_outer_key():
     return outer_key
 
 
-def print_str(msg):
-    print(msg)
+def save_skip_create_car(response):
+    """
+    根据代售车辆数量确认是否跳过用例
+    :param response: 接口响应
+    :return:
+    """
+    message = BCommon.read_tmp_file(file)
+    response = response.json
+    if len(response) == 0:
+        message["skip"] = False
+    else:
+        message["skip"] = True
+        message["vin"] = response[0]["vin"]
+    BCommon.write_tmp_file(file, message)
+
+
+def save_message_to_tmp(key, value):
+    """
+    将键值对保存至data/tmp.json
+    :param response: 接口响应
+    :param key: 保存的Key
+    :param value: 保存的value
+    :return:
+    """
+    message = BCommon.read_tmp_file(file)
+    print(message)
+    message[key] = value
+    print(message)
+    BCommon.write_tmp_file(file, message)
+
+
 
 if __name__ == '__main__':
     c = CsvOperate()
@@ -294,5 +407,9 @@ if __name__ == '__main__':
     # print(get_token('refresh_token'))
     # sql_init_order('15012340001')
     # sql_init_contract_info('15060138093')
+    key = "vin"
+    message = BCommon.read_tmp_file(file)
+    message[key] = 123
+    BCommon.write_tmp_file(file, message)
 
 
