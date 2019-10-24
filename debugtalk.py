@@ -363,7 +363,7 @@ def get_outer_key():
 
 def save_skip_create_car(response):
     """
-    根据代售车辆数量确认是否跳过用例
+    根据待售车辆数量确认是否跳过用例
     :param response: 接口响应
     :return:
     """

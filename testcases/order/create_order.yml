@@ -1,5 +1,5 @@
 config:
-    name: 创建代售车辆订单并提交  testcases/APP/order/create_order.yml
+    name: 创建待售车辆订单并提交  testcases/APP/order/create_order.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}

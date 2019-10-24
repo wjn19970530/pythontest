@@ -24,17 +24,18 @@ class BaseCommon(object):
     @staticmethod
     def read_tmp_file(file):
         if not os.path.exists(file):
-            f = open(file, "w")
+            f = open(file, "w", encoding="utf-8")
             f.write("{}")
             f.close()
-        with open(file, "r") as f:
+        with open(file, "r", encoding="utf-8") as f:
             message = json.load(f)
         f.close()
         return message
 
     @staticmethod
     def write_tmp_file(file, message):
-        with open(file, "w") as f:
+        with open(file, "w", encoding="utf-8") as f:
             json.dump(message, f)
         f.close()
+
 
