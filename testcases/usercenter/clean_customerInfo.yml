@@ -13,5 +13,6 @@ teststeps:
 
   - name: 解绑  api/usercenter/users/PUT_CleanUserId.yml
     api: api/usercenter/users/PUT_CleanUserId.yml
+    skipIf: ${get_value_from_tmp(skip_CleanUserId)}
     validate:
       - eq: [status_code,200]

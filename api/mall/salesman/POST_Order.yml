@@ -2,7 +2,7 @@ name: APP端查询订单列表  api/mall/salesman/POST_Order
 variables:
     access_token: ${get_token(access_token,source=APP)}
     sellerPhoneNum: ${ENV(sellerPhoneNum)}
-    sellerId: ${sql_get_seller_id($sellerPhoneNum)}
+    sellerId: ${get_value_from_tmp(sellerId)}
     queryName: ${ENV(name)}
 base_url: ${ENV(base_url)}
 request:

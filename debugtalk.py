@@ -198,22 +198,46 @@ def response_order_id(response):
     return order_id
 
 
-def response_get_outer_key(response, name):
+def save_seller_id_form_response(response):
+    """
+    从获取账户信息接口获取sellerId
+    :param response: 接口响应
+    :return:
+    """
+    message = BCommon.read_tmp_file(file)
+    response = response.json
+    sellerId = response['userId']
+    message['sellerId'] = sellerId
+    BCommon.write_tmp_file(file, message)
+
+
+
+def response_get_outer_key(response, phone):
     """
     获取response中的outerKey
     :param name: 客户名称
     :param response: 接口response
     :return:
     """
-    response = response.json
-    outerKey = ''
-    for item in response:
-        item = str(item)
-        if name in item:
-            item = eval(item)
-            outerKey = item["outerKey"]
     message = BCommon.read_tmp_file(file)
-    message["outerKey"] = outerKey
+    start_length = len(message)
+    response = response.json
+    # outerKey = ''
+    for item in response:
+        if item["phoneNum"] == phone:
+            message["outerKey"] = item['outerKey']
+            message["userId"] = item['userId']
+            message["sellerId"] = item['sellerId']
+        # item = str(item)
+        # if name in item:
+        #     item = eval(item)
+        #     outerKey = item["outerKey"]
+    # message["outerKey"] = outerKey
+    end_length = len(message)
+    if end_length == start_length:
+        message['skip_CleanUserId'] = True
+    else:
+        message['skip_CleanUserId'] = False
     BCommon.write_tmp_file(file, message)
 
 
@@ -233,6 +257,17 @@ def save_car_details_info(response, keyword):
     BCommon.write_tmp_file(file, message)
 
 
+def get_car_full_name(brand_name, series_name, type_name):
+    """
+    拼接车辆全名
+    :param brand_name:
+    :param series_name:
+    :param type_name:
+    :return:
+    """
+    return brand_name + series_name + type_name
+
+
 def save_car_info(response, brand_name, series_name, type_name):
     """
 
@@ -244,7 +279,7 @@ def save_car_info(response, brand_name, series_name, type_name):
     """
     message = BCommon.read_tmp_file(file)
     response = response.json
-    keyword = brand_name + series_name + type_name
+    keyword = get_car_full_name(brand_name, series_name, type_name)
     for item in response:
         if keyword == item["fullName"]:
             message["seriesId"] = item["seriesId"]
@@ -351,14 +386,14 @@ def save_organizations_info(response, keyword):
     BCommon.write_tmp_file(file,message)
 
 
-def get_outer_key():
-    """
-    从tmp中获取保存的outer_key
-    :return: outer_key
-    """
-    message = BCommon.read_tmp_file(file)
-    outer_key = message["outerKey"]
-    return outer_key
+# def get_outer_key():
+#     """
+#     从tmp中获取保存的outer_key
+#     :return: outer_key
+#     """
+#     message = BCommon.read_tmp_file(file)
+#     outer_key = message["outerKey"]
+#     return outer_key
 
 
 def save_skip_create_car(response):
@@ -371,9 +406,12 @@ def save_skip_create_car(response):
     response = response.json
     if len(response) == 0:
         message["skip"] = False
+        carNum = 1
     else:
         message["skip"] = True
         message["vin"] = response[0]["vin"]
+        carNum = len(response) + 1
+    message["carNum"] = carNum
     BCommon.write_tmp_file(file, message)
 
 

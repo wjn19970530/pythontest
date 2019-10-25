@@ -2,7 +2,7 @@ name: 解绑  api/usercenter/users/PUT_CleanUserId
 variables:
     access_token: ${get_token(access_token)}
     phoneNum: ${ENV(phoneNum)}
-    userId: ${sql_get_user_id($phoneNum)}
+    userId: ${get_value_from_tmp(userId)}
 base_url: ${ENV(base_url)}
 request:
     headers:

@@ -1,1 +1,3 @@
-create source,create time,access_token,refresh_tokenWEB,2019-10-17 13:20:34,dd0524cb-2f37-4f71-b96f-26ae7a7ee915,e34af4c6-4c48-410e-b1e9-a1eb83d03049APP,2019-10-17 13:15:41,6ca91057-e04e-4996-b45d-19bafd5ff918,64e23fcb-e461-4b82-a164-a40d99a63c05
+create source,create time,access_token,refresh_token
+WEB,2019-10-25 10:45:45,b9e3e3cc-1aa8-4b3f-8865-07660e808a61,fd1406a5-58a5-45d9-9b81-f559c45828af
+APP,2019-10-17 13:15:41,6ca91057-e04e-4996-b45d-19bafd5ff918,64e23fcb-e461-4b82-a164-a40d99a63c05

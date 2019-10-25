@@ -14,6 +14,6 @@ teststeps:
   - name: 完善个人信息  api/usercenter/users/POST_PerfectUserInfo.yml
     api: api/usercenter/users/POST_PerfectUserInfo.yml
     variables:
-        outerKey: ${get_outer_key()}
+        outerKey: ${get_value_from_tmp(outerKey)}
     validate:
       - eq: [status_code,200]

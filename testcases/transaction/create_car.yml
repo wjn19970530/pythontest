@@ -2,6 +2,20 @@ config:
     name: 从添加用户到提车、交易完成链路  testcases/transaction/create_car.yml
 
 teststeps:
+  - name: 获取账户信息
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
+  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    variables:
+        queryName: ${ENV(phoneNum)}
+    validate:
+      - eq: [status_code,200]
+
   - name: 清除客户信息  testcases/usercenter/clean_customerInfo.yml
     testcase: testcases/usercenter/clean_customerInfo.yml
     validate:
@@ -9,6 +23,11 @@ teststeps:
 
   - name: 添加客户  testcases/usercenter/add_customer.yml
     testcase: testcases/usercenter/add_customer.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
     validate:
       - eq: [status_code,200]
 

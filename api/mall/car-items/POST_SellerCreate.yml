@@ -6,7 +6,7 @@ variables:
     sellerPhoneNum: ${ENV(sellerPhoneNum)}
     itemId: "8"
     leasePlanId: "18"
-    sellerId: ${sql_get_seller_id($sellerPhoneNum)}
+    sellerId: ${get_value_from_tmp(sellerId)}
     skuId: "1914"
 base_url: ${ENV(base_url)}
 request:

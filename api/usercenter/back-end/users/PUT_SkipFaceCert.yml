@@ -2,7 +2,7 @@ name: 购车认证跳过人脸识别  api/usercenter/back-end/PUT_SkipFaceCert
 variables:
     access_token: ${get_token(access_token)}
     phoneNum: ${ENV(phoneNum)}
-    customerId: ${sql_get_user_id($phoneNum)}
+    customerId: ${get_value_from_tmp(userId)}
     cardNo: ${ENV(cardNo)}
     name: ${ENV(name)}
     IDNum: ${ENV(IDNum)}

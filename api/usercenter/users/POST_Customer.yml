@@ -1,9 +1,11 @@
 name: 获取客户列表  api/usercenter/users/POST_Customer.yml
 variables:
     sellerPhoneNum: ${ENV(sellerPhoneNum)}
-    sellerId: ${sql_get_seller_id($sellerPhoneNum)}
+    sellerId: ${get_value_from_tmp(sellerId)}
     name: ${ENV(name)}
     access_token: ${get_token(access_token,source=APP)}
+    queryName: ''
+    phoneNum: ${ENV(phoneNum)}
 base_url: ${ENV(base_url)}
 request:
     url: /usercenter/api/v0.1/user/customer/${sellerId}
@@ -13,8 +15,8 @@ request:
     json:
       userId: '${sellerId}'
       type: 0
-      queryName: ''
+      queryName: ${queryName}
 validate:
   - eq: [status_code,200]
 teardown_hooks:
-  - ${response_get_outer_key($response, $name)}
+  - ${response_get_outer_key($response, $phoneNum)}
