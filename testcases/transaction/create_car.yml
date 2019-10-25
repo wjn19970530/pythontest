@@ -2,7 +2,7 @@ config:
     name: 从添加用户到提车、交易完成链路  testcases/transaction/create_car.yml
 
 teststeps:
-  - name: 获取账户信息
+  - name: 获取账户信息  api/account/GET_Account.yml
     api: api/account/GET_Account.yml
     validate:
       - eq: [status_code, 200]
