@@ -137,7 +137,6 @@ def sql_get_seller_id(phone_num):
     """
     sql = "SELECT user_id from tq_user where phone_num='"+phone_num+"'"
     user_id = str(DBOperate(uaa_authority).query_sql(sql)[0])
-    # print(user_id)
     return user_id
 
 
@@ -220,21 +219,13 @@ def response_get_outer_key(response, phone):
     :return:
     """
     message = BCommon.read_tmp_file(file)
-    start_length = len(message)
     response = response.json
-    # outerKey = ''
     for item in response:
         if item["phoneNum"] == phone:
             message["outerKey"] = item['outerKey']
             message["userId"] = item['userId']
             message["sellerId"] = item['sellerId']
-        # item = str(item)
-        # if name in item:
-        #     item = eval(item)
-        #     outerKey = item["outerKey"]
-    # message["outerKey"] = outerKey
-    end_length = len(message)
-    if end_length == start_length:
+    if len(response) == 0:
         message['skip_CleanUserId'] = True
     else:
         message['skip_CleanUserId'] = False
@@ -386,16 +377,6 @@ def save_organizations_info(response, keyword):
     BCommon.write_tmp_file(file,message)
 
 
-# def get_outer_key():
-#     """
-#     从tmp中获取保存的outer_key
-#     :return: outer_key
-#     """
-#     message = BCommon.read_tmp_file(file)
-#     outer_key = message["outerKey"]
-#     return outer_key
-
-
 def save_skip_create_car(response):
     """
     根据待售车辆数量确认是否跳过用例
@@ -424,11 +405,8 @@ def save_message_to_tmp(key, value):
     :return:
     """
     message = BCommon.read_tmp_file(file)
-    print(message)
     message[key] = value
-    print(message)
     BCommon.write_tmp_file(file, message)
-
 
 
 if __name__ == '__main__':
