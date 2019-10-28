@@ -1,7 +1,10 @@
-name: 获取商品列表  api/mall/back-end/car-items/POST_List.yml
+name: 获取商品列表以保存相关id  api/mall/back-end/car-items/POST_List.yml
 variables:
     access_token: ${get_token(access_token)}
-    keyword : "AutoTestCarBrandA1S"
+    brand: ${get_config(carBrandName)}
+    series: ${get_config(carSeriesName)}
+    type: addCar
+    keyword : ${get_car_full_name($brand,$series,$type)}
 base_url: ${ENV(base_url)}
 request:
     url: /mall/api/v0.1/back-end/car-items/list?size=20&page=0
@@ -14,5 +17,3 @@ request:
       page: 0
 validate:
   - eq: [status_code,200]
-extract:
-  - carId: content.0.id

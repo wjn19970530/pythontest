@@ -241,10 +241,14 @@ def save_car_details_info(response, keyword):
     """
     message = BCommon.read_tmp_file(file)
     response = response.json
-    for item in response:
-        if keyword == item["fullName"]:
-            message["seriesId"] = item["seriesId"]
-            message["typeId"] = item["typeId"]
+    if type(response) is dict:
+        message["seriesId"] = response["seriesId"]
+        message["typeId"] = response["typeId"]
+    elif type(response) is list:
+        for item in response:
+            if keyword == item["fullName"]:
+                message["seriesId"] = item["seriesId"]
+                message["typeId"] = item["typeId"]
     BCommon.write_tmp_file(file, message)
 
 
@@ -396,6 +400,18 @@ def save_skip_create_car(response):
     BCommon.write_tmp_file(file, message)
 
 
+def get_car_full_name(brand, series, type):
+    """
+    返回车辆全名
+    :param brand: 品牌
+    :param series:  系列
+    :param type:  车型
+    :return: full_name  全名
+    """
+    full_name = brand + series + type
+    return full_name
+
+
 def save_message_to_tmp(key, value):
     """
     将键值对保存至data/tmp.json
@@ -407,6 +423,20 @@ def save_message_to_tmp(key, value):
     message = BCommon.read_tmp_file(file)
     message[key] = value
     BCommon.write_tmp_file(file, message)
+
+
+def save_skip(response):
+    """
+    根据接口响应内容判断是否跳过接口
+    :param response: 接口响应
+    :return:
+    """
+    response = response.json
+    if len(response) == 1:
+        save_message_to_tmp("skip", True)
+    if len(response) == 0:
+        save_message_to_tmp("skip", False)
+
 
 
 if __name__ == '__main__':

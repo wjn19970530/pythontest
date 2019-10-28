@@ -1,0 +1,44 @@
+config:
+    name: 添加车辆  testcases/supply/add_car.yml
+    variables:
+        brandName: ${get_config(carBrandName)}
+        seriesName: ${get_config(carSeriesName)}
+        typeName: addCar
+        full_name: ${get_car_full_name($brandName,$seriesName,$typeName)}
+
+teststeps:
+  - name: 新建车型  api/mall/back-end/POST_CarTypes.yml
+    api: api/mall/back-end/POST_CarTypes.yml
+    validate:
+      - eq: [status_code,201]
+    extract:
+        carId: content.id
+    output:
+      - carId
+
+  - name: 获取brandId
+    api: api/mall/back-end/GET_CarBrands.yml
+    variables:
+        keyword: ${get_config(carBrandName)}
+    validate:
+      - eq: [status_code,200]
+
+  - name: 获取车辆详细信息  api/mall/back-end/car-items/POST_List.yml
+    api: api/mall/back-end/car-items/POST_List.yml
+    variables:
+        type: addCar
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_skip($response)}
+
+  - name: 新增车辆信息  api/mall/back-end/car-items/POST_CreateEmpty.yml
+    api: api/mall/back-end/car-items/POST_CreateEmpty.yml
+    skipIf: ${get_value_from_tmp(skip)}
+    variables:
+        brand: ${get_value_from_tmp(brand_id)}
+        series: ${get_value_from_tmp(seriesId)}
+        carTypeId: ${get_value_from_tmp(typeId)}
+        name: ${full_name}
+    validate:
+      - eq: [status_code,201]

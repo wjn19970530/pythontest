@@ -1,0 +1,29 @@
+name: 新建车型  api/mall/back-end/POST_CarTypes.yml
+variables:
+    access_token: ${get_token(access_token)}
+    brand: ${get_config(carBrandName)}
+    series: ${get_config(carSeriesName)}
+    type: addCar
+    full_name: ${get_car_full_name($brand,$series,$type)}
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/back-end/car-types
+    method: POST
+    headers:
+        Authorization: Bearer $access_token
+    json:
+      brand: ${brand}
+      series: ${series}
+      type: ${type}
+      carColorIds:
+        - '38'
+        - '39'
+        - '41'
+      sweptVolume: 2
+      guidePrice: 10000000
+      oneYearResidual: 1000000
+      needOverride: true
+validate:
+  - eq: [status_code,201]
+teardown_hooks:
+  - ${save_car_details_info($response,$full_name)}
