@@ -11,8 +11,6 @@ if __name__ == '__main__':
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
     # runner.run("testsuites/order.yml")
-    # runner.run("testsuites")
-    # runner.run("testcases/supply")
     # runner.run("testcases/web_login.yml")
 
     # runner.run("api/mall/car-items/GET_CarItemDetails.yml")
