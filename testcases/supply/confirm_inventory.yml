@@ -1,0 +1,10 @@
+config:
+    name: 选择已生成SKU的车辆，验证车辆数据正确  testcases/supply/confirm_inventory.yml
+
+teststeps:
+  - name:  生成库存  testcases/supply/generate_inventory.yml
+    testcase: testcases/supply/generate_inventory.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: APP端验证代售车辆数量

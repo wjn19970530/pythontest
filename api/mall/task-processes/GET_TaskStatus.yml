@@ -1,0 +1,14 @@
+name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
+variables:
+    access_token: ${get_token(access_token)}
+    timestr: 1572252411693
+    sku_task_id: 3700605429244519880
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/task-processes/${sku_task_id}/status?timestr=${timestr}
+    method: GET
+    headers:
+        Authorization: Bearer ${access_token}
+validate:
+  - eq: [status_code,200]
+  - eq: [content.describe,"车辆sku生成"]

@@ -13,8 +13,11 @@ if __name__ == '__main__':
     # runner.run("testsuites/order.yml")
     # runner.run("testcases/web_login.yml")
 
-    # runner.run("api/mall/car-items/GET_CarItemDetails.yml")
-    # runner.run("api/mall/back-end/car-lease-plans/POST_Item.yml")
+    # runner.run("testcases/supply/add_car.yml")
+    runner.run("testcases/supply/generate_inventory.yml")
+    # runner.run("api/usercenter/organizations/GET_Root.yml")
+    # runner.run("api/mall/back-end/car-item-skus/GET_Generate.yml")
+    # runner.run("api/supplychain/GET_UnlockedCars.yml")
 
 
     # runner.run("testcases/usercenter/clean_customerInfo.yml")
@@ -31,7 +34,7 @@ if __name__ == '__main__':
 
     # runner.run("api/mall/back-end/GET_CarTypesParams.yml")
 
-    runner.run("testcases/transaction/create_car.yml")
+    # runner.run("testcases/transaction/create_car.yml")
     #
     # runner.run("testsuites/order.yml")
 

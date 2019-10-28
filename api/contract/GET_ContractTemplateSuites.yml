@@ -1,0 +1,15 @@
+name: 获取合同套件  api/contract/GET_ContractTemplateSuites.yml
+variables:
+    access_token: ${get_token(access_token)}
+    contract_name: "研发组测试套件"
+base_url: ${ENV(base_url)}
+request:
+    url: /contract/api/v0.1/contract-template-suites?page=0&size=20
+    method: GET
+    headers:
+        authorization: Bearer ${access_token}
+        Accept-Encoding: gzip, deflate
+validate:
+  - eq: [status_code,200]
+teardown_hooks:
+  - ${save_contract_suite_info($response,$contract_name)}

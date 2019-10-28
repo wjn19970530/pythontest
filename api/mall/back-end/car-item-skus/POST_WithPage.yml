@@ -1,0 +1,16 @@
+name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
+variables:
+    access_token: ${get_token(access_token)}
+    itemId: 63
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/back-end/car-item-skus/with-page?page=0&size=20
+    method: POST
+    headers:
+        Authorization: Bearer ${access_token}
+    json:
+      page: 0
+      size: 20
+      itemId: ${itemId}
+validate:
+  - eq: [status_code,200]

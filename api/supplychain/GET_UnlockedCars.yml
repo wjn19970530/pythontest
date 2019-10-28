@@ -1,4 +1,4 @@
-name: 获取车辆列表 api/supplychain/GET_UnlockedCars.yml
+name: 获取未锁定车辆列表 api/supplychain/GET_UnlockedCars.yml
 variables:
     access_token: ${get_token(access_token)}
     carTypeName: "AA123"

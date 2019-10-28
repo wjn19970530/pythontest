@@ -1,0 +1,125 @@
+config:
+    name: 生成库存  testcases/supply/generate_inventory.yml
+    variables:
+        brandName: ${get_config(carBrandName)}
+        seriesName: ${get_config(carSeriesName)}
+        typeName: addCar
+        fullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
+
+teststeps:
+  - name: 新建车辆和车型 testcases/supply/add_car.yml
+    testcase: testcases/supply/add_car.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 获取车辆详细信息  api/mall/back-end/car-items/POST_List.yml
+    api: api/mall/back-end/car-items/POST_List.yml
+    variables:
+      type: addCar
+    validate:
+      - eq: [status_code,200]
+    extract:
+        carId: content.0.id
+    output:
+      - carId
+
+  - name: 获取合同套件  api/contract/GET_ContractTemplateSuites.yml
+    api: api/contract/GET_ContractTemplateSuites.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 配置金融方案  api/mall/back-end/car-lease-plans/POST_Item.yml
+    api: api/mall/back-end/car-lease-plans/POST_Item.yml
+    variables:
+        itemId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    extract:
+      id: content.0.id
+
+  - name: 保存车辆基本信息  api/mall/back-end/POST_CarItemsBaseInfo.yml
+    api: api/mall/back-end/POST_CarItemsBaseInfo.yml
+    variables:
+        itemId: ${carId}
+        brandId: ${get_value_from_tmp(brand_id)}
+        brandName: ${get_config(carBrandName)}
+        seriesName: ${get_config(carSeriesName)}
+        typeName: addCar
+        seriesId: ${get_value_from_tmp(seriesId)}
+        typeId: ${get_value_from_tmp(typeId)}
+        name: ${get_car_full_name($brandName,$seriesName,$typeName)}
+    validate:
+      - eq: [status_code,200]
+
+  - name: 获取渠道列表  api/usercenter/organizations/GET_Root.yml
+    api: api/usercenter/organizations/GET_Root.yml
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_organizations_info($response, id)}
+
+  - name: 关联渠道  api/usercenter/organization-cars/POST_Bind.yml
+    api: api/usercenter/organization-cars/POST_Bind.yml
+    variables:
+        itemId: $carId
+        bindOrganizationList: ${get_value_from_tmp(organizations_info)}
+    validate:
+      - eq: [status_code,200]
+
+  - name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
+    api: api/mall/back-end/car-item-skus/GET_Generate.yml
+    variables:
+        itemId: $carId
+    validate:
+      - eq: [status_code,200]
+
+  - name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
+    api: api/mall/task-processes/GET_TaskStatus.yml
+    variables:
+        sku_task_id: ${get_value_from_tmp(sku_process)}
+    validate:
+      - eq: [status_code,200]
+
+#  - name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
+#    api: api/mall/back-end/car-item-skus/POST_WithPage.yml
+#    variables:
+#        itemId: $carId
+#    validate:
+#      - eq: [status_code,200]
+#    teardown_hooks:
+#      - ${save_selling_inventory($response)}
+
+  - name: 获取未锁定车辆列表 api/supplychain/GET_UnlockedCars.yml
+    api: api/supplychain/GET_UnlockedCars.yml
+    variables:
+        carTypeName: $fullName
+    teardown_hooks:
+      - ${save_selling_inventory($response)}
+
+  - name: 获取产权归属  api/supplychain/cars/POST_PropertyList.yml
+    api: api/supplychain/cars/POST_PropertyList.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - propertyId: content.0.signPartId
+
+  - name: 新建一辆车 api/supplychain/POST_Cars.yml
+    api: api/supplychain/POST_Cars.yml
+    variables:
+        brandId: ${get_value_from_tmp(brand_id)}
+        seriesId: ${get_value_from_tmp(seriesId)}
+        typeId: ${get_value_from_tmp(typeId)}
+        propertyId: ${propertyId}
+    validate:
+      - eq: [status_code, 201]
+    teardown_hooks:
+      - ${sleep(5)}
+
+  - name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
+    api: api/mall/back-end/car-item-skus/POST_WithPage.yml
+    variables:
+        itemId: $carId
+        selling_inventory: ${get_value_from_tmp(selling_inventory)}
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.sellingInventory,$selling_inventory]

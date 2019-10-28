@@ -42,3 +42,14 @@ teststeps:
         name: ${full_name}
     validate:
       - eq: [status_code,201]
+
+  - name: 获取车辆详细信息  api/mall/back-end/car-items/POST_List.yml
+    api: api/mall/back-end/car-items/POST_List.yml
+    variables:
+      type: addCar
+    validate:
+      - eq: [status_code,200]
+    extract:
+      carId: content.0.id
+    teardown_hooks:
+      - ${save_message_to_tmp(carId,$carId)}

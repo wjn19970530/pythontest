@@ -315,10 +315,6 @@ def get_config(key):
         value = carFullName
     if key == "carSeriesName":
         value = carSeriesName
-    if key == "carTypeName":
-        value = carTypeName
-    if key == "addCarFullName":
-        value = addCarFullName
     return value
 
 
@@ -378,7 +374,7 @@ def save_organizations_info(response, keyword):
     for item in response:
         organizations_info.append(item[keyword])
     message["organizations_info"] = organizations_info
-    BCommon.write_tmp_file(file,message)
+    BCommon.write_tmp_file(file, message)
 
 
 def save_skip_create_car(response):
@@ -438,6 +434,37 @@ def save_skip(response):
         save_message_to_tmp("skip", False)
 
 
+def save_task_process(response):
+    """
+    保存skus任务号
+    :param response:
+    :return:
+    """
+    response = response.json
+    save_message_to_tmp("sku_process", response)
+
+
+def save_selling_inventory(response):
+    """
+    保存代售数量
+    :param response:
+    :return:
+    """
+    response = response.json
+    num = response[0]["sellingInventory"]
+    save_message_to_tmp("sellingInventory", num+1)
+
+
+def save_selling_inventory(response):
+    """
+    保存代售车辆数量
+    :param response: 接口响应
+    :return:
+    """
+    response = response.json
+    length = len(response)
+    save_message_to_tmp("selling_inventory", length+1)
+
 
 if __name__ == '__main__':
     c = CsvOperate()
@@ -453,9 +480,7 @@ if __name__ == '__main__':
     # print(get_token('refresh_token'))
     # sql_init_order('15012340001')
     # sql_init_contract_info('15060138093')
-    key = "vin"
-    message = BCommon.read_tmp_file(file)
-    message[key] = 123
-    BCommon.write_tmp_file(file, message)
+    sell = get_value_from_tmp("selling_inventory")
+    print(type(sell), sell)
 
 

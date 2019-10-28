@@ -1,0 +1,15 @@
+name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
+variables:
+    access_token: ${get_token(access_token)}
+    itemId: 63
+    timestr: 1572252405788
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/back-end/car-item-skus/generate?itemId=${itemId}&timestr=${timestr}
+    method: GET
+    headers:
+        Authorization: Bearer ${access_token}
+validate:
+  - eq: [status_code,200]
+teardown_hooks:
+  - ${save_task_process($response)}
