@@ -2,11 +2,14 @@ from httprunner.api import HttpRunner
 
 from common.BaseCommon import BaseCommon
 import json
-from time import sleep
+import os
 
 if __name__ == '__main__':
     log_file = BaseCommon.get_logfile()
     runner = HttpRunner(log_level="DEBUG", log_file=log_file)
+    tmp_file = "data/tmp.json"
+    if os.path.exists(tmp_file):
+        os.remove(tmp_file)
     # runner.run("testsuites/order.yml")
     # runner.run("testsuites")
     # runner.run("testcases/supply")
