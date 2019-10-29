@@ -4,6 +4,21 @@ from common.BaseCommon import BaseCommon
 import json
 import os
 
+
+def get_result(summary):
+    status = summary['success']
+    total = summary['stat']['testcases']['total']
+    success = summary['stat']['testcases']['success']
+    fail = summary['stat']['testcases']['fail']
+    step_total = summary['stat']['teststeps']['total']
+    step_failures = summary['stat']['teststeps']['failures']
+    step_errors = summary['stat']['teststeps']['errors']
+    step_skipped = summary['stat']['teststeps']['skipped']
+    res = {'success': status, 'stat': {'testcases': {'total': total, 'success': success, 'fail': fail},
+                                          'teststeps': {'total': step_total, 'failures': step_failures,
+                                                        'errors': step_errors, 'skipped': step_skipped}}}
+    return res
+
 if __name__ == '__main__':
     log_file = BaseCommon.get_logfile()
     runner = HttpRunner(log_level="DEBUG", log_file=log_file)
@@ -57,8 +72,8 @@ if __name__ == '__main__':
 
     # 获取用例执行情况
     summary = runner.summary
-    # print(summary)
+    result = get_result(summary)
     file = "summary.json"
     with open(file, "w", encoding='utf-8') as f:
-        json.dump(summary, f)
+        json.dump(result, f)
     f.close()
