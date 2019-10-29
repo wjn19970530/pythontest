@@ -1,0 +1,43 @@
+name: 保存车辆基本信息  api/mall/back-end/POST_CarItemsBaseInfo.yml
+variables:
+  access_token: ${get_token(access_token)}
+  itemId: 42
+  brandId: '33'
+  brandName: ${get_config(carBrandName)}
+  seriesName: ${get_config(carSeriesName)}
+  typeName: ${get_config(carTypeName)}
+  seriesId: '15'
+  typeId: '16'
+  name: ""
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/back-end/car-items-base-info
+    method: POST
+    headers:
+        Content-Type: application/json;charset=UTF-8
+        authorization: Bearer ${access_token}
+    json:
+        id: '${itemId}'
+        brandId: ${brandId}
+        brandName: ${brandName}
+        brandIcon: >-
+          http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/jpg/20191010/1570688915780-46728356.jpg
+        seriesId: ${seriesId}
+        carUsage: null
+        seriesName: ${seriesName}
+        typeId: ${typeId}
+        typeName: ${typeName}
+        name: ${name}
+        status: 2
+        belongTo: 0
+        belongType: 0
+        belongChannelId: null
+        transparentPicUrls: >-
+          http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/jpg/20191015/1571126681344-552336071.jpg
+        mainPicUrls: >-
+          "[\"http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/jpg/20191015/1571126683809--1059911449.jpg\"]"
+        guidedPrice: 20000
+        orderAmount: 10000
+        carSaleCategory: null
+validate:
+  - eq: [status_code,200]

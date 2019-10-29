@@ -93,8 +93,10 @@ teststeps:
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
         carTypeName: $fullName
-    teardown_hooks:
-      - ${save_selling_inventory($response)}
+    extract:
+        num: headers.X-Total-Count
+    output:
+      - num
 
   - name: 获取产权归属  api/supplychain/cars/POST_PropertyList.yml
     api: api/supplychain/cars/POST_PropertyList.yml
@@ -119,7 +121,9 @@ teststeps:
     api: api/mall/back-end/car-item-skus/POST_WithPage.yml
     variables:
         itemId: $carId
-        selling_inventory: ${get_value_from_tmp(selling_inventory)}
+        selling_inventory: ${add($num,1)}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.sellingInventory,$selling_inventory]
+    teardown_hooks:
+      - ${save_message_to_tmp(selling_inventory,$selling_inventory)}

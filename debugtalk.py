@@ -106,14 +106,15 @@ def generate_number() -> str:
     return now_time
 
 
-def add(x, y) -> str:
+def add(x, y):
     """
     对两个数相加
     :param x:
     :param y:
     :return:
     """
-    return str(int(x)+y)
+    sum = int(x) + int(y)
+    return sum
 
 
 def sql_get_user_id(phone_num):
@@ -150,6 +151,17 @@ def sql_init_order(phone_num):
     sql = "SELECT user_id from tq_user where phone_num='"+phone_num+"'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
     DBOperate(mall).execute_sql("update tq_order set status='12' where user_id='"+user_id+"'")
+
+
+def sql_delete_car_item(car_name):
+    """
+    创建车辆前，确保数据库无此车辆
+    操作：删除数据库中的额车辆
+    :param: car_name    车辆名称
+    :return:
+    """
+    sql = "delete from tq_car_item where name='"+car_name+"'"
+    DBOperate(mall).execute_sql(sql)
 
 
 def sql_init_contract(response):
@@ -444,15 +456,16 @@ def save_task_process(response):
     save_message_to_tmp("sku_process", response)
 
 
-def save_selling_inventory(response):
+def save_selling_inventory_from_headers(response):
     """
-    保存代售数量
+    保存未锁定车辆数量
     :param response:
     :return:
     """
-    response = response.json
-    num = response[0]["sellingInventory"]
-    save_message_to_tmp("sellingInventory", num+1)
+    headers = response.headers
+    num = headers["X-Total-Count"]
+    num = int(num)
+    save_message_to_tmp("selling_inventory", num+1)
 
 
 def save_selling_inventory(response):
@@ -463,6 +476,7 @@ def save_selling_inventory(response):
     """
     response = response.json
     length = len(response)
+    print(length)
     save_message_to_tmp("selling_inventory", length+1)
 
 

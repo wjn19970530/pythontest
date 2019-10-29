@@ -1,0 +1,28 @@
+name:  api/mall/car-items/POST_LeaseParams.yml
+variables:
+  access_token: ${get_token(access_token)}
+  refresh_token: ${get_token(refresh_token)}
+  phoneNum: ${ENV(phoneNum)}
+  sellerId: ${get_value_from_tmp(sellerId)}
+  keyword: ""
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        authorization: Bearer ${access_token}
+    json:
+        belongType: 0
+        userId: ${sellerId}
+        sortType: null
+        areaName: null
+        brand: null
+        carSaleStatus: null
+        deliveryDaysType: null
+        lower: null
+        upper: null
+        priceIntervals: []
+        keyword: ${keyword}
+        status: 2
+    method: POST
+    url: /mall/api/v0.1/car-items/leaseParams?page=0&size=20
+validate:
+  - eq: [status_code,200]

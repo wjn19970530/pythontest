@@ -1,0 +1,23 @@
+name: APP端确认提车  api/mall/order/order/PUT_ComfirmOrder
+variables:
+    access_token: ${get_token(access_token,source=APP)}
+    sellerPhoneNum: ${ENV(sellerPhoneNum)}
+    sellerId: ${get_value_from_tmp(sellerId)}
+    orderId: 240
+base_url: ${ENV(base_url)}
+#setup_hooks:
+#    - ${sleep(60)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+        Content-Type: application/json;charset=UTF-8
+    json:
+        deliveryType: 1
+        receiveDate: "2019-10-09T01:35:12.395Z"
+        obtainAddressSelect: "北京 东城区"
+        obtainAddress: "北京市市辖区东城区 qwe"
+        sellerId: ${sellerId}
+    method: PUT
+    url: /mall/api/v0.1/orders/${orderId}/confirm-order
+validate:
+  - eq: [status_code,200]

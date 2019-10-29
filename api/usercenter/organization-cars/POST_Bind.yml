@@ -1,0 +1,17 @@
+name: 绑定渠道  api/usercenter/organization-cars/POST_Bind.yml
+variables:
+    access_token: ${get_token(access_token)}
+    itemId: 37
+    bindOrganizationList: "['1']"
+base_url: ${ENV(base_url)}
+request:
+    url: /usercenter/api/v0.1/organization-cars/organizations/bind
+    method: POST
+    headers:
+        authorization: Bearer ${access_token}
+    json:
+      bindOrganizationList: ${bindOrganizationList}
+      unbindOrganizationList: []
+      carItemId: '${itemId}'
+validate:
+  - eq: [status_code,200]

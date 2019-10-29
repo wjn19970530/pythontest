@@ -2,9 +2,30 @@ config:
     name: 选择已生成SKU的车辆，验证车辆数据正确  testcases/supply/confirm_inventory.yml
 
 teststeps:
-  - name:  生成库存  testcases/supply/generate_inventory.yml
+  - name: 生成库存  testcases/supply/generate_inventory.yml
     testcase: testcases/supply/generate_inventory.yml
     validate:
       - eq: [status_code,200]
 
-  - name: APP端验证代售车辆数量
+  - name: 获取账户信息  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
+  - name: APP端验证代售车辆数量  api/mall/car-items/POST_LeaseParams.yml
+    api: api/mall/car-items/POST_LeaseParams.yml
+    variables:
+        brandName: ${get_config(carBrandName)}
+        seriesName: ${get_config(carSeriesName)}
+        typeName: addCar
+        name: ${get_car_full_name($brandName,$seriesName,$typeName)}
+        keyword: ${name}
+        web_selling_inventory: ${get_value_from_tmp(selling_inventory)}
+    extract:
+        app_selling_inventory: content.0.saleStatusCount.白色.sellingCount
+    validate:
+      - eq: [status_code,200]
+      - eq: [$app_selling_inventory,$web_selling_inventory]
+

@@ -1,0 +1,27 @@
+name: 新增车辆  api/mall/back-end/car-items/POST_CreateEmpty.yml
+variables:
+    access_token: ${get_token(access_token)}
+    brand: "29"
+    series: '37'
+    carTypeId: '73'
+    brandName: ${get_config(carBrandName)}
+    seriesName: ${get_config(carSeriesName)}
+    typeName: addCar
+    name: ${get_car_full_name($brandName,$seriesName,$typeName)}
+base_url: ${ENV(base_url)}
+setup_hooks:
+  - ${sql_delete_car_item($name)}
+request:
+    headers:
+        Content-Type: application/json;charset=UTF-8
+        authorization: Bearer ${access_token}
+    json:
+        brand: ${brand}
+        brandIcon: http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/jpg/20191010/1570688915780-46728356.jpg
+        series: ${series}
+        carTypeId: ${carTypeId}
+        name: ${name}
+    method: POST
+    url: /mall/api/v0.1/back-end/car-items/create-empty
+validate:
+  - eq: [status_code,201]

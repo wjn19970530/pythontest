@@ -1,0 +1,44 @@
+name: 配置金融方案  api/mall/back-end/car-lease-plans/POST_Item
+variables:
+    access_token: ${get_token(access_token)}
+    itemId: 34
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/back-end/car-lease-plans/item/${itemId}
+    method: POST
+    headers:
+        authorization: Bearer ${access_token}
+    json:
+      - titleLabel: 金融方案
+        downPayment: 1000000
+        monthlyPayment: 250000
+        month: 36
+        recommendLabel: null
+        insurance: 1
+        payType: null
+        display: 1
+        recommendIndex: 1
+        recommendContent: '[{"title":"","value":""}]'
+        key: 0
+        carLeaseContractSuites:
+          - bindContractTemplates: ${get_value_from_tmp(contract_bindContractTemplates)}
+            bindContractTemplatesDesc: ${get_value_from_tmp(contract_bindContractTemplatesDesc)}
+            contractFields: ${get_value_from_tmp(contract_contractFields)}
+            contractSuiteId: ${get_value_from_tmp(contract_contractSuiteId)}
+            fundCompanyId: ${get_value_from_tmp(contract_fundCompanyId)}
+            fundCompanyName: ${get_value_from_tmp(contract_fundCompanyName)}
+            fundRepaymentMethod: ${get_value_from_tmp(contract_fundRepaymentMethod)}
+            gmtCreate: ${get_value_from_tmp(contract_gmtCreate)}
+            gmtModified: ${get_value_from_tmp(contract_gmtModified)}
+            id: ${get_value_from_tmp(contract_id)}
+            needConfirmErTable: ${get_value_from_tmp(contract_needConfirmErTable)}
+            organizationCode: ${get_value_from_tmp(contract_organizationCode)}
+            organizationCount: ${get_value_from_tmp(contract_organizationCount)}
+            remark: ${get_value_from_tmp(contract_remark)}
+            title: ${get_value_from_tmp(contract_title)}
+        bindOrganizationCarLeasePlan:
+          carItemId: '${itemId}'
+          bindOrganizationList: []
+          unbindOrganizationList: []
+validate:
+  - eq: [status_code,200]

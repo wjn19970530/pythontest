@@ -34,7 +34,7 @@ teststeps:
 
   - name: 新增车辆信息  api/mall/back-end/car-items/POST_CreateEmpty.yml
     api: api/mall/back-end/car-items/POST_CreateEmpty.yml
-    skipIf: ${get_value_from_tmp(skip)}
+#    skipIf: ${get_value_from_tmp(skip)}
     variables:
         brand: ${get_value_from_tmp(brand_id)}
         series: ${get_value_from_tmp(seriesId)}

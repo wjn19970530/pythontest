@@ -34,7 +34,6 @@ if __name__ == '__main__':
     # runner.run("api/mall/back-end/GET_CarTypesParams.yml")
 
     runner.run("testcases/transaction/create_car.yml")
-    #
     # runner.run("testsuites/order.yml")
 
     # runner.run("testcases/supply/add_car.yml")
