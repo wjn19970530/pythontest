@@ -22,7 +22,7 @@ def get_result(summary):
 
 if __name__ == '__main__':
     log_file = BaseCommon.get_logfile()
-    runner = HttpRunner(log_level="DEBUG", log_file=log_file)
+    runner = HttpRunner(log_level="DEBUG", log_file=log_file, failfast=True)
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     # runner.run("testcases/supply/add_car.yml")
     # runner.run("testcases/supply/generate_inventory.yml")
-    # runner.run("testcases/supply/confirm_inventory.yml")
+    # runner.run("testcases/supply/confir*m_inventory.yml")
     # runner.run("api/mall/back-end/car-item-skus/GET_Generate.yml")
     # runner.run("api/mall/back-end/car-items/POST_CreateEmpty.yml")
 
@@ -50,9 +50,9 @@ if __name__ == '__main__':
 
     # runner.run("api/mall/back-end/GET_CarTypesParams.yml")
 
-    runner.run("testcases/transaction/create_car.yml")
+    # runner.run("testcases/transaction/create_car.yml")
     #
-    # runner.run("testsuites/order.yml")
+
 
     # runner.run("testcases/supply/add_car.yml")
     # runner.run("api/contract/GET_ContractTemplateSuites.yml")
@@ -71,7 +71,12 @@ if __name__ == '__main__':
 
     # runner.run("testcases/supply/save_inventory.yml")
     # runner.run("api/supplychain/GET_Cars.yml")
-    # runner.run("testcases/order/test.yml")
+
+
+
+    # runner.run("testsuites/")
+    # runner.run("testsuites/supply/car.yml")
+    runner.run("testsuites/transaction/order.yml")
 
     # 获取用例执行情况
     summary = runner.summary
