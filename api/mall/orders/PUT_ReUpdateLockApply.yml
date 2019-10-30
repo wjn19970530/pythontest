@@ -1,0 +1,18 @@
+name: 发起锁车  api/mall/orders/PUT_ReUpdateLockApply.yml
+variables:
+    access_token: ${get_token(access_token)}
+    orderId: 345
+    vin: ''
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+        Accept-Encoding: gzip, deflate
+    url: /mall/api/v0.1/orders/re-update-lock-apply
+    method: PUT
+    params:
+        orderId: ${orderId}
+        vin: ${vin}
+validate:
+  - eq: [status_code,200]
+  - eq: [content.updateResult,true]

@@ -1,0 +1,16 @@
+name: 释放车源  api/mall/orders/release-car/PUT_Manual.yml
+variables:
+    access_token: ${get_token(access_token)}
+    orderId: 345
+    remarks: 接口自动化测试-释放车源
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    url: /mall/api/v0.1/orders/release-car/manual
+    method: PUT
+    json:
+        orderId: ${orderId}
+        remarks: ${remarks}
+validate:
+  - eq: [status_code,200]
