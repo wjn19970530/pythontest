@@ -2,11 +2,11 @@ config:
     name: 订单操作 testsuites/order.yml
 
 testcases:
--   name: 从添加用户一直到提车交易完成    testcases/transaction/create_car.yml
+-   name: 【交易链路】从添加用户一直到提车交易完成    testcases/transaction/create_car.yml
     testcase: testcases/transaction/create_car.yml
 
--   name: 发起锁车,使用系统锁车  testcases/order/system_lock_car.yml
+-   name: 【APP】【订单管理】发起锁车-使用系统锁车  testcases/order/system_lock_car.yml
     testcase: testcases/order/system_lock_car.yml
 
--   name: 发起锁车,使用车架号锁车  testcases/order/vin_lock_car.yml
+-   name: 【APP】【订单管理】发起锁车-使用车架号锁车  testcases/order/vin_lock_car.yml
     testcase: testcases/order/vin_lock_car.yml

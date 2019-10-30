@@ -27,6 +27,7 @@ if __name__ == '__main__':
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
     runner.run("testcases/login/")
+    runner.run("testsuites/")
     # runner.run("testsuites/login/order.yml")
     # runner.run("testcases/web_login.yml")
 
@@ -78,7 +79,7 @@ if __name__ == '__main__':
 
 
 
-    runner.run("testsuites/")
+
     # runner.run("testsuites/supply/car.yml")
     # runner.run("testsuites/transaction/order.yml")
 

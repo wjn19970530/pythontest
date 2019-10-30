@@ -14,6 +14,13 @@ config:
       - orderId
 
 teststeps:
+-   name: 获取账户信息  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
 -   name: 获取商品列表  api/mall/back-end/car-items/POST_List.yml
     api: api/mall/back-end/car-items/POST_List.yml
     variables:
