@@ -3,8 +3,8 @@ config:
     variables:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
-      access_token: ${get_token(access_token, source=APP)}
-      refresh_token: ${get_token(refresh_token, source=APP)}
+      access_token: ${get_token(access_token)}
+      refresh_token: ${get_token(refresh_token)}
       keyword: ${get_config(carFullName)}
     base_url: ${ENV(base_url)}
     setup_hooks:

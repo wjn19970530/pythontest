@@ -3,7 +3,7 @@ variables:
     sellerPhoneNum: ${ENV(sellerPhoneNum)}
     sellerId: ${get_value_from_tmp(sellerId)}
     name: ${ENV(name)}
-    access_token: ${get_token(access_token,source=APP)}
+    access_token: ${get_token(access_token)}
     queryName: ''
     phoneNum: ${ENV(phoneNum)}
 base_url: ${ENV(base_url)}

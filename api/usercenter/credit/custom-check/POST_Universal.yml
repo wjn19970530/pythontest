@@ -1,6 +1,6 @@
 name: APP添加客户 api/usercenter/credit/custom-check/POST_Universal
 variables:
-    access_token: ${get_token(access_token,source=APP)}
+    access_token: ${get_token(access_token)}
     phoneNum: ${ENV(phoneNum)}
     sellerPhoneNum: ${ENV(sellerPhoneNum)}
     sellerId: ${get_value_from_tmp(sellerId)}

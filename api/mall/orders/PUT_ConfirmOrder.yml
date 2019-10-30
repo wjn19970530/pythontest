@@ -1,6 +1,6 @@
 name: APP端确认提车  api/mall/order/order/PUT_ComfirmOrder
 variables:
-    access_token: ${get_token(access_token,source=APP)}
+    access_token: ${get_token(access_token)}
     sellerPhoneNum: ${ENV(sellerPhoneNum)}
     sellerId: ${get_value_from_tmp(sellerId)}
     orderId: 240
