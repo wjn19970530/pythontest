@@ -22,7 +22,7 @@ def get_result(summary):
 
 if __name__ == '__main__':
     log_file = BaseCommon.get_logfile()
-    runner = HttpRunner(log_level="DEBUG", log_file=log_file)
+    runner = HttpRunner(log_level="DEBUG", log_file=log_file, failfast=True)
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)

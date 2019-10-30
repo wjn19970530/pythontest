@@ -19,19 +19,23 @@ def get_result(summary):
                                                         'errors': step_errors, 'skipped': step_skipped}}}
     return res
 
+
 if __name__ == '__main__':
     log_file = BaseCommon.get_logfile()
-    runner = HttpRunner(log_level="DEBUG", log_file=log_file)
+    runner = HttpRunner(log_level="DEBUG", log_file=log_file, failfast=True)
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
-    # runner.run("testsuites/order.yml")
-    # runner.run("testsuites")
-    # runner.run("testcases/supply")
+    runner.run("testcases/login/")
+    runner.run("testsuites/")
+    # runner.run("testsuites/login/order.yml")
     # runner.run("testcases/web_login.yml")
 
-    # runner.run("api/mall/car-items/GET_CarItemDetails.yml")
-    # runner.run("api/mall/back-end/car-lease-plans/POST_Item.yml")
+    # runner.run("testcases/supply/add_car.yml")
+    # runner.run("testcases/supply/generate_inventory.yml")
+    # runner.run("testcases/supply/confir*m_inventory.yml")
+    # runner.run("api/mall/back-end/car-item-skus/GET_Generate.yml")
+    # runner.run("api/mall/back-end/car-items/POST_CreateEmpty.yml")
 
 
     # runner.run("testcases/usercenter/clean_customerInfo.yml")
@@ -46,10 +50,14 @@ if __name__ == '__main__':
     # runner.run("testcases/order/mention_car.yml")
 
 
-    # runner.run("api/mall/back-end/GET_CarTypesParams.yml")
+    # runner.run("api/mall/orders/release-car/PUT_Manual.yml")
+    # runner.run("api/mall/orders/PUT_ReUpdateLockApply.yml")
+    # runner.run("testcases/order/system_lock_car.yml")
+    # runner.run("testcases/order/vin_lock_car.yml")
 
     # runner.run("testcases/transaction/create_car.yml")
-    # runner.run("testsuites/order.yml")
+
+
 
     # runner.run("testcases/supply/add_car.yml")
     # runner.run("api/contract/GET_ContractTemplateSuites.yml")
@@ -68,9 +76,12 @@ if __name__ == '__main__':
 
     # runner.run("testcases/supply/save_inventory.yml")
     # runner.run("api/supplychain/GET_Cars.yml")
-    # runner.run("testcases/order/test.yml")
 
-    runner.run("testsuites/transaction/order.yml")
+
+
+
+    # runner.run("testsuites/supply/car.yml")
+    # runner.run("testsuites/transaction/order.yml")
 
     # 获取用例执行情况
     summary = runner.summary
@@ -79,3 +90,5 @@ if __name__ == '__main__':
     with open(file, "w", encoding='utf-8') as f:
         json.dump(result, f)
     f.close()
+
+
