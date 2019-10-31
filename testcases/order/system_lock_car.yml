@@ -22,6 +22,7 @@ teststeps:
     variables:
       carTypeName: ${get_config(carFullName)}
       isLocked: 0
+      carStstus: 4
     validate:
       - eq: [status_code,200]
     extract:
@@ -146,8 +147,8 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 11]
 
-  - name: 发起锁车  api/mall/orders/PUT_ReUpdateLockApply.yml
-    api: api/mall/orders/PUT_ReUpdateLockApply.yml
+  - name: 发起锁车-系统锁车  api/mall/orders/PUT_UpdateLockApply.yml
+    api: api/mall/orders/PUT_UpdateLockApply.yml
     varibales:
         orderId: ${orderId}
     validate:

@@ -36,6 +36,7 @@ teststeps:
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
       carTypeName: ${get_config(carFullName)}
+      carStstus: 4
     validate:
       - eq: [status_code,200]
     teardown_hooks:

@@ -26,7 +26,7 @@ if __name__ == '__main__':
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
-    # runner.run("testcases/login/master_login.yml")
+    runner.run("testcases/login/master_login.yml")
     runner.run("testcases/transaction/master_create_car.yml")
     # runner.run("api/mall/salesman/POST_Order.yml")
     # runner.run("testsuites/login/order.yml")
