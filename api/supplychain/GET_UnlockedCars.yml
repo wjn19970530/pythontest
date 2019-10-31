@@ -2,6 +2,7 @@ name: 获取未锁定车辆列表 api/supplychain/GET_UnlockedCars.yml
 variables:
     access_token: ${get_token(access_token)}
     carTypeName: "AA123"
+    carStatus: 4
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -13,6 +14,7 @@ request:
         timestr: '1566814134884'
         carTypeName: ${carTypeName}
         isLocked: 0
+        carStatus: ${carStatus}
     url: /supplychain/api/cars
 validate:
 -   eq: [status_code, 200]

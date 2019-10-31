@@ -211,27 +211,39 @@
 		  {% endif %}
 		
 		  <td>SKIPPED: {{test_suite_summary.stat.skipped}}</td>		  
-	  {% endif %}	  
-		{% for record in test_suite_summary.records %}
-		{% set record_index = "{}_{}".format(suite_index, loop.index) %}
-		{% set record_meta_datas = record.meta_datas_expanded %}		
-		<td>
-        {% for meta_data in record_meta_datas %}
-        {% set meta_data_index = "{}_{}".format(record_index, loop.index) %}
-        {% if record.attachment %}
-          <a class="button" href="#popup_attachment_{{record_index}}">traceback</a>
-          <div id="popup_attachment_{{record_index}}" class="overlay">
-            <div class="popup">
-              <h2>Traceback Message</h2>
-              <a class="close" href="#record_{{record_index}}">&times;</a>
-              <div class="content"><pre>{{ record.attachment | e }}</pre></div>
-            </div>
-          </div>
-        {% endif %}
-       </td>	   
-		{% endfor %} 
-	    {% endfor %}
-	
+	  {% endif %}
+
+	   {% with i=1 %}	 
+				{% for record in test_suite_summary.records %}
+				{% set record_index = "{}_{}".format(suite_index, loop.index) %}
+				{% set record_meta_datas = record.meta_datas_expanded %}		
+				<!--{% for meta_data in record_meta_datas %}-->
+				{% set meta_data_index = "{}_{}".format(record_index, loop.index) %}
+				    {% if i==1 %}
+						   {% if  record.status == 'failure' or record.status == 'error' %}
+									
+								 {% if record.attachment %}
+								 <td>
+								  <a class="button" href="#popup_attachment_{{record_index}}">traceback</a>
+								  <div id="popup_attachment_{{record_index}}" class="overlay">
+									<div class="popup">
+									  <h2>Traceback Message</h2>
+									  <a class="close" href="#record_{{record_index}}">&times;</a>
+									  <div class="content"><pre>{{ record.attachment | e }}</pre></div>
+									</div>
+								  </div>
+								 
+								</td> 
+								  {% set i=2 %}
+								{% endif %}
+								  
+						   {% endif %}
+						   
+					{% endif %}			   
+				<!--{% endfor %}--> 
+		
+	   {% endfor %}
+	 {% endwith %}
    {% endfor %}
  </tr>   
   </table>  
