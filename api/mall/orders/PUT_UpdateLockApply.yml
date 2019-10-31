@@ -1,8 +1,7 @@
-name: 发起锁车-车架号锁车  api/mall/orders/PUT_ReUpdateLockApply.yml
+name: 发起锁车-系统锁车  api/mall/orders/PUT_UpdateLockApply.yml
 variables:
     access_token: ${get_token(access_token)}
     orderId: 345
-    vin: ''
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -12,7 +11,6 @@ request:
     method: PUT
     params:
         orderId: ${orderId}
-        vin: ${vin}
 validate:
   - eq: [status_code,200]
   - eq: [content.updateResult,true]

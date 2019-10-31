@@ -1,0 +1,65 @@
+config:
+  name: 审核订单  testcases/order/master_audit_order.yml
+  base_url: ${ENV(base_url)}
+  setup_hooks:
+    - ${sleep(120)}
+
+teststeps:
+
+  - name: 登录前获取transactionNo  api/account/GET_TransactionNo.yml
+    api: api/account/GET_TransactionNo.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+        transactionNo: content.transactionNo
+    output:
+      - transactionNo
+
+  - name: 登录  api/auth/POST_Login_master.yml
+    api: api/auth/POST_Login_master.yml
+    variables:
+      transactionNo: ${transactionNo}
+      verifyCaptcha: ${sql_get_verify_code($transactionNo)}
+      username: 18000000000
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - access_token: content.access_token
+
+  - name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    variables:
+      access_token: ${access_token}
+    extract:
+      -  id: content.0.entrySheet.id
+      -  task_id: content.0.unFinishTaskId
+    validate:
+      -  eq: [status_code,200]
+
+  - name: 初审信息提交  api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
+    api: api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
+    variables:
+      id: $id
+      task_id: $task_id
+      access_token: ${access_token}
+    validate:
+      -  eq: [status_code,200]
+
+  - name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    variables:
+      access_token: ${access_token}
+    extract:
+      - id: content.0.entrySheet.id
+      - task_id: content.0.unFinishTaskId
+    validate:
+      - eq: [status_code,200]
+
+  - name: 复审信息提交  api/entrysheet/entry-sheets/PUT_SubmitReview.yml
+    api: api/entrysheet/entry-sheets/PUT_SubmitReview.yml
+    variables:
+      id: $id
+      task_id: $task_id
+      access_token: ${access_token}
+    validate:
+      -  eq: [status_code,200]

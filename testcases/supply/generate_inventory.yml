@@ -93,6 +93,7 @@ teststeps:
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
         carTypeName: $fullName
+        carStstus: 4
     extract:
         num: headers.X-Total-Count
     output:

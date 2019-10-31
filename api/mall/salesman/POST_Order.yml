@@ -1,9 +1,9 @@
-name: APP端查询订单列表  api/mall/salesman/POST_Order
+name: APP端查询订单列表  api/mall/salesman/POST_Order.yml
 variables:
     access_token: ${get_token(access_token)}
-    sellerPhoneNum: ${ENV(sellerPhoneNum)}
+    queryTradeNo: ${ENV(phoneNum)}
     sellerId: ${get_value_from_tmp(sellerId)}
-    queryName: ${ENV(name)}
+    queryName: ''
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -12,20 +12,20 @@ request:
     json:
         type: 0
         salesmanId: ${sellerId}
-        adminUserId: null
-        organizationId: null
-        carBelongType: null
+        adminUserId:
+        organizationId:
+        carBelongType:
         queryName: ${queryName}
-        queryTradeNo: ''
-        orderStatus: null
-        orderSubStatus: null
-        areaId: null
-        carItemStatus: null
-        authStatus: null
+        queryTradeNo: ${queryTradeNo}
+        orderStatus:
+        orderSubStatus:
+        areaId:
+        carItemStatus:
+        authStatus:
         timeType: 1
-        queryBeginTime: null
-        queryEndTime: null
-        sellerIds: null
+        queryBeginTime:
+        queryEndTime:
+        sellerIds:
         selected: false
     method: POST
     url: /mall/api/v0.1/salesman/orders?page=0&size=20

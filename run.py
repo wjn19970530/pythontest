@@ -26,14 +26,16 @@ if __name__ == '__main__':
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
-    runner.run("testcases/login/")
-    runner.run("testsuites/")
-    # runner.run("testsuites/login/order.yml")
-    # runner.run("testcases/web_login.yml")
+    runner.run("testcases/login/web_login.yml")
+    runner.run("testsuites/develop/")
+    # runner.run("testsuites/order.yml")
+    # runner.run("testcases/login/master_login.yml")
+    # runner.run("testcases/login/web_login.yml")
+    # runner.run("api/account/GET_TransactionNo.yml")
 
     # runner.run("testcases/supply/add_car.yml")
     # runner.run("testcases/supply/generate_inventory.yml")
-    # runner.run("testcases/supply/confir*m_inventory.yml")
+    # runner.run("testcases/supply/confirm_inventory.yml")
     # runner.run("api/mall/back-end/car-item-skus/GET_Generate.yml")
     # runner.run("api/mall/back-end/car-items/POST_CreateEmpty.yml")
 

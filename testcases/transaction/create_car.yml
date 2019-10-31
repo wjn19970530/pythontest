@@ -49,6 +49,7 @@ teststeps:
     variables:
       carTypeName: ${get_config(carFullName)}
       isLocked: 0
+      carStstus: 4
     validate:
       - eq: [status_code,200]
     extract:
@@ -115,6 +116,8 @@ teststeps:
 
   - name: 客户完善还款信息  testcases/order/perfect_repayment_info.yml
     testcase: testcases/order/perfect_repayment_info.yml
+    setup_hooks:
+      - ${sql_init_repayment($phoneNum)}
     validate:
       - eq: [status_code,200]
 

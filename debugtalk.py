@@ -175,6 +175,7 @@ def sql_init_contract(response):
     sql = "update tq_order set sub_status='61' where id='"+order_id+"'"
     DBOperate(mall).execute_sql(sql)
 
+
 def sql_init_repayment(phone_num):
     """
         完善还款信息前，设置为未开卡过
@@ -186,6 +187,7 @@ def sql_init_repayment(phone_num):
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
     DBOperate(mall).execute_sql("update sign_agreement_info set user_id='"+user_id+"01' where user_id='"+user_id+"'")
 
+
 def sql_init_contract_info(phone_num):
     """
         完善个人信息前将数据库中已有的联系人信息删除
@@ -196,6 +198,23 @@ def sql_init_contract_info(phone_num):
     sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
     DBOperate(usercenter).execute_sql("delete from tq_user_contact_info where user_id='"+user_id+"'")
+
+
+def sql_get_verify_code(transaction_no):
+    """
+        从数据库获取验证码
+        操作：CommponentCenter.captcha表中根据transaction_no查询answer
+        :param: transaction_no 接口返回transactionNo
+        :return:answer
+    """
+    # if environment.upper() == "DEVELOP":
+    #     CC = "ComponentCenter"
+    # if environment.upper == "MASTER":
+    CC = "saas-componentcenter"
+    sql = "SELECT answer from captcha where transaction_no='" + transaction_no + "'"
+    answer = str(DBOperate("saas-componentcenter").query_sql_get_verify_code(sql)[0])
+    return answer
+
 
 def response_order_id(response):
     """
@@ -220,7 +239,6 @@ def save_seller_id_form_response(response):
     sellerId = response['userId']
     message['sellerId'] = sellerId
     BCommon.write_tmp_file(file, message)
-
 
 
 def response_get_outer_key(response, phone):
@@ -277,11 +295,11 @@ def get_car_full_name(brand_name, series_name, type_name):
 
 def save_car_info(response, brand_name, series_name, type_name):
     """
-
-    :param response:
-    :param brand_name:
-    :param series_name:
-    :param type_name:
+    根据name保存相关id
+    :param response:    接口响应
+    :param brand_name:  车辆品牌名称
+    :param series_name: 车辆系列名称
+    :param type_name:   车辆车型名称
     :return:
     """
     message = BCommon.read_tmp_file(file)
@@ -367,7 +385,7 @@ def get_value_from_tmp(keyword):
     :param keyword: 关键字
     :return: value
     """
-    value = ""
+    # value = ""
     message = BCommon.read_tmp_file(file)
     value = message[keyword]
     return value
@@ -435,7 +453,7 @@ def save_message_to_tmp(key, value):
 
 def save_skip(response):
     """
-    根据接口响应内容判断是否跳过接口
+    根据接口响应内容长度判断是否跳过接口，长度为1跳过，长度为0不跳过
     :param response: 接口响应
     :return:
     """
@@ -494,7 +512,9 @@ if __name__ == '__main__':
     # print(get_token('refresh_token'))
     # sql_init_order('15012340001')
     # sql_init_contract_info('15060138093')
-    sell = get_value_from_tmp("selling_inventory")
-    print(type(sell), sell)
+    # sell = get_value_from_tmp("selling_inventory")
+    # print(type(sell), sell)
+    # transcation_no = "a7767b33ecef4abb8157a522fc935401"
+    # print(sql_get_verify_code(transcation_no))
 
 

@@ -1,0 +1,25 @@
+name: 登录 /auth/login
+variables:
+#    phoneNum: ${ENV(phoneNum)}
+    username: ${ENV(username)}
+    password: ${ENV(password)}
+    endpoint: pc-web
+    transactionNo: ''
+    verifyCaptcha: dvev
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Content-Type: application/json;charset=UTF-8
+    json:
+        endpoint: $endpoint
+        username: ${username}
+        password: ${password}
+        verifyCaptcha: ${verifyCaptcha}
+        productCode: image-char-captcha
+        transactionNo: ${transactionNo}
+        grantType: password
+    method: POST
+    url: /auth/login
+extract:
+    - access_token: content.access_token
+    - refresh_token: content.refresh_token
