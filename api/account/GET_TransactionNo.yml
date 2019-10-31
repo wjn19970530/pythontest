@@ -1,0 +1,8 @@
+name: 登录前获取transactionNo  api/account/GET_TransactionNo.yml
+base_url: ${ENV(base_url)}
+request:
+    url: /captcha/image-char-captcha/generate
+    method: GET
+validate:
+  - eq: [status_code,200]
+

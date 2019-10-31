@@ -1,4 +1,4 @@
-name: WEB端确认退款 /mall/api/v0.1/orders/confirm-return
+name: WEB端确认退款 api/mall/orders/PUT_ConfirmReturn.yml
 variables:
   access_token: ${get_token(access_token)}
   refresh_token: ${get_token(refresh_token)}

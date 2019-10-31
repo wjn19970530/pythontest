@@ -1,14 +1,10 @@
 name: 获取账户信息 /uaaaccount/api/account
 variables:
-    phoneNum: ${ENV(phoneNum)}
-    verifyCode: ${ENV(verifyCode)}
     access_token: ${get_token(access_token)}
-    refresh_token: ${get_token(refresh_token)}
 base_url: ${ENV(base_url)}
 request:
     headers:
         Authorization: Bearer $access_token
-        Refresh: $refresh_token
     method: GET
     url: /uaaaccount/api/account
 validate:
