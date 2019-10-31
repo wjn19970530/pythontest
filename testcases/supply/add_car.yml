@@ -16,7 +16,7 @@ teststeps:
     output:
       - carId
 
-  - name: 获取brandId
+  - name: 获取brandId api/mall/back-end/GET_CarBrands.yml
     api: api/mall/back-end/GET_CarBrands.yml
     variables:
         keyword: ${get_config(carBrandName)}

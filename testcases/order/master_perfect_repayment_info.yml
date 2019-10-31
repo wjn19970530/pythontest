@@ -1,11 +1,10 @@
 config:
-    name: 完善还款信息 testcases/order/perfect_repayment_info.yml
+    name: 端完善还款信息 testcases/order/master_perfect_repayment_info.yml
     variables:
       phoneNum: ${ENV(phoneNum)}
     export:
       - orderId
     setup_hooks:
-#      - ${sql_init_repayment($phoneNum)}
       - ${sleep(5)}
 
 teststeps:
@@ -21,8 +20,8 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
--   name: 完善还款信息  api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
-    api: api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
+-   name: 完善还款信息  api/mall/mallSignAgreementInfo/zry/GET_QueryZyrCardNo.yml
+    api: api/mall/mallSignAgreementInfo/zry/GET_QueryZyrCardNo.yml
     variables:
         orderId: $orderId
     validate:

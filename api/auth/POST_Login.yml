@@ -1,6 +1,6 @@
 name: 登录 /auth/login
 variables:
-    phoneNum: ${ENV(sellerPhoneNum)}
+    phoneNum: ${ENV(phoneNum)}
     verifyCode: ${ENV(verifyCode)}
     endpoint: pc-web
 base_url: ${ENV(base_url)}
@@ -21,6 +21,3 @@ extract:
     - refresh_token: content.refresh_token
 #teardown_hooks:
 #    - ${response_refresh_token($response, $endpoint)}
-
-
-

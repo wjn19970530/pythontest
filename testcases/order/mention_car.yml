@@ -5,6 +5,13 @@ config:
     export:
       - orderId
 teststeps:
+-   name: 获取账户信息  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
 -   name: 查询订单号 api/mall/salesman/POST_Order.yml
     api: api/mall/salesman/POST_Order.yml
     validate:

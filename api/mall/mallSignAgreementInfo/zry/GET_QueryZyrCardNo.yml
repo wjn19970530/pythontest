@@ -1,0 +1,19 @@
+name: 开通银行卡 api/mall/mallSignAgreementInfo/zry/GET_QueryZyrCardNo.yml
+variables:
+    access_token: ${get_token(access_token)}
+    outerKey: ${get_value_from_tmp(outerKey)}
+    IdentityCard: ${ENV(IDNum)}
+    orderId: '45'
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    url: /mall/api/mallSignAgreementInfo/zry/queryZyrCardNo
+    params:
+        outerKey: $outerKey
+        IdentityCard: $IdentityCard
+        orderId: $orderId
+validate:
+  - eq: [status_code,200]
+  - eq: [content.code,"1"]

@@ -1,8 +1,9 @@
-name: WEB端获取订单列表    /mall/api/v0.1/back-end/orders/POST_Params
+name: WEB端获取订单列表    api/mall/back-end/orders/POST_Params.yml
 variables:
     access_token: ${get_token(access_token)}
     phoneNum: ${ENV(phoneNum)}
     tradeNo: ""
+    carItemStatus: ""
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -11,9 +12,10 @@ request:
       page: 0
       phoneNum: ${phoneNum}
       tradeNo: ${tradeNo}
+      carItemStatus: ${carItemStatus}
     method: POST
     url: /mall/api/v0.1/back-end/orders/params?page=0
 validate:
     - eq: [status_code,200]
-extract:
-    - orderId: content.0.order.id
+#extract:
+#    - orderId: content.0.order.id
