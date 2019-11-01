@@ -46,6 +46,7 @@ if __name__ == '__main__':
     # runner.run("testcases/usercenter/perfect_userInfo.yml")
     # runner.run("testcases/supply/create_car.yml")
     # runner.run("testcases/order/APP_create_order.yml")
+    # for i in range(3):
     # runner.run("testcases/order/audit_order.yml")
     # runner.run("testcases/order/perfect_repayment_info.yml")
     # runner.run("testcases/contracts/sign_contract.yml")

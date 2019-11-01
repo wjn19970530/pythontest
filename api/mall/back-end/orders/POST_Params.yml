@@ -4,6 +4,7 @@ variables:
     phoneNum: ${ENV(phoneNum)}
     tradeNo: ""
     carItemStatus: ""
+    orderStatus: ""
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -13,6 +14,7 @@ request:
       phoneNum: ${phoneNum}
       tradeNo: ${tradeNo}
       carItemStatus: ${carItemStatus}
+      orderStatus: ${orderStatus}
     method: POST
     url: /mall/api/v0.1/back-end/orders/params?page=0
 validate:
