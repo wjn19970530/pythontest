@@ -1,0 +1,40 @@
+config:
+    name: master分支用车辆状态为释放车源的有效订单发起退款 testcases/order/master/refund_release_car.yml
+
+teststeps:
+  - name: 获取未取消的车辆状态为释放车源的有效订单  api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+      carItemStatus: 11
+      orderStatus: 11
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_skip($response)}
+
+  - name: 提取订单ID  api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    skipUnless: ${get_value_from_tmp(skip)}
+    variables:
+      carItemStatus: 11
+      orderStatus: 11
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.order.id
+
+  - name: 发起退款  api/mall/orders/PUT_PrepareReturn.yml
+    api: api/mall/orders/PUT_PrepareReturn.yml
+    skipUnless: ${get_value_from_tmp(skip)}
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+
+  - name: 确认退款 api/mall/orders/PUT_ConfirmReturn.yml
+    api: api/mall/orders/PUT_ConfirmReturn.yml
+    skipUnless: ${get_value_from_tmp(skip)}
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code,200]
