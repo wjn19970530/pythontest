@@ -1,0 +1,113 @@
+config:
+    name: 从添加代售车辆到待签署合同   testcases/transaction/create_car.yml
+
+teststeps:
+  - name: 获取账户信息  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
+  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 释放车源状态的有效订单发起退款 testcases/order/master/refund_release_car.yml
+    testcase: testcases/order/master/refund_release_car.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 代售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
+    testcase: testcases/order/master/refund_for_sale.yml
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
+
+  - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
+    testcase: testcases/supply/skipIf_create_car.yml
+
+  - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
+    api: api/supplychain/GET_UnlockedCars.yml
+    variables:
+      carTypeName: ${get_config(carFullName)}
+      isLocked: 0
+      carStstus: 4
+    validate:
+      - eq: [status_code,200]
+    extract:
+      vin: content.0.vin
+    output:
+      - vin
+
+  - name: 验证车辆状态:未锁车、待售  api/supplychain/GET_Cars.yml
+    api: api/supplychain/GET_Cars.yml
+    variables:
+      vin: ${vin}
+      carTypeName: ${get_config(carFullName)}
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.locked, false]
+      - eq: [content.0.sold, false]
+
+  - name: 下单 testcases/order/master/create_order.yml
+    testcase: testcases/order/master/create_order.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 验证库存：已锁车、待售  api/supplychain/GET_Cars.yml
+    api: api/supplychain/GET_Cars.yml
+    variables:
+      vin: ${vin}
+      carTypeName: ${get_config(carFullName)}
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.locked, true]
+      - eq: [content.0.sold, false]
+
+  - name: 获取订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - tradeNo: content.0.tradeNo
+
+  - name: 验证订单状态：等待审核 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+      tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"等待审核"]
+      - eq: [content.0.orderDetail.carItemStatus, 9]
+
+  - name: 审核订单  testcases/order/master/audit_order.yml
+    testcase: testcases/order/master/audit_order.yml
+    variables:
+      phoneNum: 18000000000
+    validate:
+      - eq: [status_code,200]
+
+  - name: 验证订单状态：订单处理中 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+      tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"订单处理中"]
+      - eq: [content.0.orderDetail.carItemStatus, 9]
+    setup_hooks:
+      - ${sleep(10)}
+
+  - name: 完善还款信息  testcases/order/master/perfect_repayment_info.yml
+    testcase: testcases/order/master/perfect_repayment_info.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 搜索订单，验证订单状态：待签署合同 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+      tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"待签署合同"]
+      - eq: [content.0.orderDetail.carItemStatus, 9]

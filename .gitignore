@@ -3,3 +3,4 @@
 /summary.json
 /.idea/
 /data/tmp.json
+.env
