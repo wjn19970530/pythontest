@@ -185,44 +185,40 @@
       <td colspan="2">{{stat.teststeps.total}} ({{stat.teststeps.successes}}/{{stat.teststeps.failures}}/{{stat.teststeps.errors}}/{{stat.teststeps.skipped}})</td>
     </tr>
   </table>
- 	
+  
  <table id="suite" class="details">	
-    	<tr>
-			  <th>TestCase</th>
-				  <th  colspan="5">Result</th>
-				  <th>Error Log</th>
-			 </tr>
-			 
   {% for test_suite_summary in details %}
   {% set suite_index = loop.index %}
         
 	 {% if test_suite_summary.stat.total>test_suite_summary.stat.successes %}
+	      <tr>
+			  <th>TestCase</th>
+				  <th  colspan="5">Result</th>
+				  <th>Error Log</th>
+			 </tr>
 	    <tr>
-		  <td><a class="astyle" title="点击跳转相关测试用例" style="display:block;width:400px;height:70px" href="#suite_{{suite_index}}">{{test_suite_summary.name}}</a></td>
-		  <td>TOTAL: {{test_suite_summary.stat.total}}</td>
-		  <td>SUCCESS: {{test_suite_summary.stat.successes}}</td>
+		  <td><a class="astyle" title="点击跳转相关测试用例" style="display:block;width:380px;height:70px" href="#suite_{{suite_index}}">{{test_suite_summary.name}}</a></td>
+		  <td><font size="1px">TOTAL: {{test_suite_summary.stat.total}}</font></td>
+		  <td><font size="1px"> SUCCESS: {{test_suite_summary.stat.successes}}</font></td>
 		  {% if test_suite_summary.stat.failures>0  %}
-		  <td><font color="red">FAILED: {{test_suite_summary.stat.failures}}</font></td>
+		  <td><font color="red" size="1px">FAILED: {{test_suite_summary.stat.failures}}</font></td>
 		  {% else %}
-		   <td><font>FAILED: {{test_suite_summary.stat.failures}}</font></td>
+		   <td><font size="1px">FAILED: {{test_suite_summary.stat.failures}}</font></td>
 		  {% endif %}	
 		  {% if test_suite_summary.stat.errors>0 %}
-		  		  <td><font color="red">ERROR: {{test_suite_summary.stat.errors}}</font></td>
+		  		  <td><font size="1px" color="red">ERROR: {{test_suite_summary.stat.errors}}</font></td>
 		  {% else %}
-		           <td><font>ERROR: {{test_suite_summary.stat.errors}}</font></td>
+		           <td><font size="1px" >ERROR: {{test_suite_summary.stat.errors}}</font></td>
 		  {% endif %}
 		
-		  <td>SKIPPED: {{test_suite_summary.stat.skipped}}</td>		  
+		  <td><font size="1px">SKIPPED: {{test_suite_summary.stat.skipped}}</font></td>		  
 	  {% endif %}
-
-	   {% with i=1 %}	 
-				{% for record in test_suite_summary.records %}
+        	  
+			{% for record in test_suite_summary.records %}
 				{% set record_index = "{}_{}".format(suite_index, loop.index) %}
 				{% set record_meta_datas = record.meta_datas_expanded %}		
-				<!--{% for meta_data in record_meta_datas %}-->
-				{% set meta_data_index = "{}_{}".format(record_index, loop.index) %}
-				    {% if i==1 %}
-						   {% if  record.status == 'failure' or record.status == 'error' %}
+				       
+						   {% if  record.status == 'failure' or record.status == 'error'  %}
 									
 								 {% if record.attachment %}
 								 <td>
@@ -233,20 +229,16 @@
 									  <a class="close" href="#record_{{record_index}}">&times;</a>
 									  <div class="content"><pre>{{ record.attachment | e }}</pre></div>
 									</div>
-								  </div>
-								 
+								  </div>								 
 								</td> 
-								  {% set i=2 %}
+								
 								{% endif %}
-								  
-						   {% endif %}
-						   
-					{% endif %}			   
-				<!--{% endfor %}--> 
-		
+						   {% endif %}   
+					 						
 	   {% endfor %}
-	 {% endwith %}
    {% endfor %}
+
+
  </tr>   
   </table>  
 
@@ -422,14 +414,29 @@
 <script type="text/javascript">
     function init() { 
         // 初始化内容
-
-		var table = document.getElementById("suite");  
-		var rows = table.getElementsByTagName("tr");  
-		var entryId = rows[1].cells[0].innerText; 		
-		if(entryId=="")
-		{
-		 table.style.display="none";
-		}
+		  var pd =1;
+		   var tableObj = document.getElementById("suite");
+			for (var i = 1; i < tableObj.rows.length; i++) {    //遍历Table的所有Row
+				  
+                   if(tableObj.rows[i].cells.length==6)
+					{
+					  pd=2;
+					}
+				   
+            }
+			
+			if(pd==2)
+			{
+				 tableObj.rows[0].cells[2].style.display="none"
+			}
+			
+		    var tableObj = document.getElementById("suite");
+			for (var i = 0; i < tableObj.rows.length; i++) {    //遍历Table的所有Row
+				for (var j = 7; j < tableObj.rows[i].cells.length; j++) 
+				{   //遍历Row中的每一列
+                     tableObj.rows[i].cells[j].style.display="none"
+				}
+            }				
     }; 
     init(); 
 </script>
