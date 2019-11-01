@@ -190,7 +190,7 @@
   {% for test_suite_summary in details %}
   {% set suite_index = loop.index %}
         
-	 {% if test_suite_summary.stat.total>test_suite_summary.stat.successes %}
+	 {% if test_suite_summary.stat.total > test_suite_summary.stat.successes+test_suite_summary.stat.skipped %}
 	      <tr>
 			  <th>TestCase</th>
 				  <th  colspan="5">Result</th>
