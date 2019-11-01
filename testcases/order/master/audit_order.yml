@@ -1,5 +1,5 @@
 config:
-  name: 审核订单  testcases/order/master_audit_order.yml
+  name: 审核订单  testcases/order/master/audit_order.yml
   base_url: ${ENV(base_url)}
   setup_hooks:
     - ${sleep(120)}

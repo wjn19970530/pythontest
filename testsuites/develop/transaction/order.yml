@@ -1,5 +1,5 @@
 config:
-    name: 订单操作 testsuites/order.yml
+    name: 订单操作 testsuites/develop/transaction/order.yml
 
 testcases:
 -   name: 【交易链路】从添加用户一直到提车交易完成    testcases/transaction/create_car.yml
