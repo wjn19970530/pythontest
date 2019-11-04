@@ -30,6 +30,8 @@ teststeps:
     testcase: testcases/supply/skipIf_create_car.yml
     validate:
       - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(3)}
 
   - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml

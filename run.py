@@ -21,6 +21,7 @@ if __name__ == '__main__':
             runner.run("testcases/order/audit_order_without_sleep.yml")
     runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
+    # summary = runner.run("testcases/order/release_car/")
     # runner.run("testsuites/order.yml")
     # runner.run("testcases/login/master_login.yml")
     # runner.run("testcases/login/web_login.yml")
