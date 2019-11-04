@@ -198,21 +198,21 @@
   {% set suite_index = loop.index %}
         <tr>
 		  <td><a class="astyle" title="点击跳转相关测试用例" style="display:block;width:380px;height:70px" href="#suite_{{suite_index}}">{{test_suite_summary.name}}</a></td>
-		  <td><font size="1px">TOTAL: {{test_suite_summary.stat.total}}</font></td>
-		  <td><font size="1px"> SUCCESS: {{test_suite_summary.stat.successes}}</font></td>
+		  <td width="60px"><font size="1px">TOTAL: {{test_suite_summary.stat.total}}</font></td>
+		  <td width="74px"><font size="1px"> SUCCESS: {{test_suite_summary.stat.successes}}</font></td>
 		  {% if test_suite_summary.stat.failures>0  %}
-		  <td><font color="red" size="1px">FAILED: {{test_suite_summary.stat.failures}}</font></td>
+		  <td width="55px"><font color="red" size="1px">FAILED: {{test_suite_summary.stat.failures}}</font></td>
 		  {% else %}
-		   <td><font size="1px">FAILED: {{test_suite_summary.stat.failures}}</font></td>
+		   <td width="55px"><font size="1px">FAILED: {{test_suite_summary.stat.failures}}</font></td>
 		  {% endif %}	
 		  {% if test_suite_summary.stat.errors>0 %}
-		  		  <td><font size="1px" color="red">ERROR: {{test_suite_summary.stat.errors}}</font></td>
+		  		  <td width="56px"><font size="1px" color="red">ERROR: {{test_suite_summary.stat.errors}}</font></td>
 		  {% else %}
-		           <td><font size="1px" >ERROR: {{test_suite_summary.stat.errors}}</font></td>
+		           <td width="56px"><font size="1px" >ERROR: {{test_suite_summary.stat.errors}}</font></td>
 		  {% endif %}
 		
-		  <td><font size="1px">SKIPPED: {{test_suite_summary.stat.skipped}}</font></td>		  
-        	 <td>
+		  <td width="64px"><font size="1px">SKIPPED: {{test_suite_summary.stat.skipped}}</font></td>		  
+        	 <td width="79px" id="record_{{suite_index}}">
 			{% for record in test_suite_summary.records %}
 				{% set record_index = "{}_{}".format(suite_index, loop.index) %}
 				{% set record_meta_datas = record.meta_datas_expanded %}		
@@ -225,10 +225,10 @@
 								  <div id="popup_attachment_{{record_index}}" class="overlay">
 									<div class="popup">
 									  <h2>Traceback Message</h2>
-									  <a class="close" href="#record_{{record_index}}">&times;</a>
+									  <a class="close" href="#record_{{suite_index}}">&times;</a>
 									  <div class="content"><pre>{{ record.attachment | e }}</pre></div>
 									</div>
-								  </div>								 
+								  </div>							 
 								
 								{% endif %}
 						   {% endif %}   
