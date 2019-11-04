@@ -1,0 +1,19 @@
+config:
+    name: 获取未审核订单数量 testcases/order/nonaudit_order_count.yml
+
+teststeps:
+    - name: 信审账号登录  testcases/login/trial_account_login.yml
+      testcase: testcases/login/trial_account_login.yml
+      validate:
+        - eq: [status_code,200]
+      setup_hooks:
+        - ${sleep(120)}
+
+    - name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+      api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+      variables:
+        token: ${get_value_from_tmp(token)}
+      validate:
+        - eq: [status_code,200]
+      teardown_hooks:
+        - ${save_response_length($response)}

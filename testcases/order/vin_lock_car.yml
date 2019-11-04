@@ -2,6 +2,12 @@ config:
     name: 发起锁车,使用车架号锁车  testcases/order/vin_lock_car.yml
 
 teststeps:
+  - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
+    testcase: testcases/order/nonaudit_order_count.yml
+
+  - name: 审核订单  testcases/order/audit_order_without_sleep.yml
+    testcase: testcases/order/audit_order_without_sleep.yml
+
   - name: 获取账户信息  api/account/GET_Account.yml
     api: api/account/GET_Account.yml
     validate:

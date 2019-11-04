@@ -1,4 +1,4 @@
-httprunner==2.2.5
+httprunner==2.3.2
 har2case==0.3.1
 jsonschema==3.0.2
 PyMySQL==0.9.3

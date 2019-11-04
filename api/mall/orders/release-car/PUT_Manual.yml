@@ -1,8 +1,8 @@
-name: 释放车源  api/mall/orders/release-car/PUT_Manual.yml
+name: 释放车源-立即释放  api/mall/orders/release-car/PUT_Manual.yml
 variables:
     access_token: ${get_token(access_token)}
     orderId: 345
-    remarks: 接口自动化测试-释放车源
+    remarks: 接口自动化测试-释放车源-立即释放
 base_url: ${ENV(base_url)}
 request:
     headers:

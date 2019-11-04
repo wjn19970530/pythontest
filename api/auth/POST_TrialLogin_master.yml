@@ -1,6 +1,6 @@
-name: 登录 /auth/login
+name: 登录 api/auth/POST_TrialLogin_master.yml
 variables:
-    username: ${ENV(username)}
+    trialPhoneNum: ${ENV(trialPhoneNum)}
     password: ${ENV(password)}
     endpoint: pc-web
     transactionNo: ''
@@ -11,7 +11,7 @@ request:
         Content-Type: application/json;charset=UTF-8
     json:
         endpoint: $endpoint
-        username: ${username}
+        username: ${trialPhoneNum}
         password: ${password}
         verifyCaptcha: ${verifyCaptcha}
         productCode: image-char-captcha
