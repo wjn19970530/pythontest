@@ -2,6 +2,17 @@ config:
     name: 发起锁车,使用系统锁车  testcases/order/master/system_lock_car.yml
 
 teststeps:
+
+  - name: 保存未审核订单数量 testcases/order/master/nonaudit_order_count.yml
+    testcase: testcases/order/master/nonaudit_order_count.yml
+    validate:
+      - eq: [status_code, 200]
+
+  - name: 审核订单  testcases/order/master/audit_order_without_sleep.yml
+    testcase: testcases/order/master/audit_order_without_sleep.yml
+    validate:
+      - eq: [status_code, 200]
+
   - name: 获取账户信息  api/account/GET_Account.yml
     api: api/account/GET_Account.yml
     validate:

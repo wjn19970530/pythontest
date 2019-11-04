@@ -1,5 +1,5 @@
 config:
-    name: 从添加代售车辆到待签署合同   testcases/transaction/create_car.yml
+    name: 立即释放车源  testcases/order/master/release_car/immediately_release.yml
 
 teststeps:
   - name: 保存未审核订单数量 testcases/order/master/nonaudit_order_count.yml
@@ -38,6 +38,8 @@ teststeps:
 
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
+    validate:
+      - eq: [status_code,200]
 
   - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
@@ -83,6 +85,7 @@ teststeps:
       - eq: [status_code,200]
     extract:
       - tradeNo: content.0.tradeNo
+      - orderId: content.0.orderId
 
   - name: 验证订单状态：等待审核 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
@@ -92,37 +95,45 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
-  - name: master分支信审账号登录  testcases/login/master_trial_account_login.yml
-    testcase: testcases/login/master_trial_account_login.yml
-    validate:
-      - eq: [status_code,200]
-    setup_hooks:
-      - ${sleep(120)}
-
-  - name: 审核订单  testcases/order/master/audit_order.yml
-    testcase: testcases/order/master/audit_order.yml
+  - name: 释放车源-立即释放 api/mall/orders/release-car/PUT_Manual.yml
+    api: api/mall/orders/release-car/PUT_Manual.yml
+    variables:
+      orderId: ${orderId}
     validate:
       - eq: [status_code,200]
 
-  - name: 验证订单状态：订单处理中 api/mall/back-end/orders/POST_Params.yml
+  - name: 验证订单状态：等待审核、释放车源 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
       tradeNo: ${tradeNo}
     validate:
-      - eq: [content.0.orderStatusDesc,"订单处理中"]
-      - eq: [content.0.orderDetail.carItemStatus, 9]
-    setup_hooks:
-      - ${sleep(10)}
+      - eq: [content.0.orderStatusDesc,"等待审核"]
+      - eq: [content.0.orderDetail.carItemStatus, 11]
 
-  - name: 完善还款信息  testcases/order/master/perfect_repayment_info.yml
-    testcase: testcases/order/master/perfect_repayment_info.yml
+  - name: 发起退款   api/mall/orders/PUT_PrepareReturn.yml
+    api: api/mall/orders/PUT_PrepareReturn.yml
+    variables:
+        orderId: $orderId
     validate:
       - eq: [status_code,200]
 
-  - name: 搜索订单，验证订单状态：待签署合同 api/mall/back-end/orders/POST_Params.yml
+  - name: 验证订单状态：等待审核、待退款 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
       tradeNo: ${tradeNo}
     validate:
-      - eq: [content.0.orderStatusDesc,"待签署合同"]
-      - eq: [content.0.orderDetail.carItemStatus, 9]
+      - eq: [content.0.orderStatusDesc,"待退款"]
+
+  - name: 确认退款  api/mall/orders/PUT_ConfirmReturn.yml
+    api: api/mall/orders/PUT_ConfirmReturn.yml
+    variables:
+        orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+
+  - name: 验证订单状态：交易取消 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+        tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"交易取消"]

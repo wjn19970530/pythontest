@@ -1,0 +1,24 @@
+config:
+    name: master分支信审账号登录  testcases/login/master_trial_account_login.yml
+    variables:
+        phoneNum: 18000000000
+
+teststeps:
+  - name: 登录前获取transactionNo  api/account/GET_TransactionNo.yml
+    api: api/account/GET_TransactionNo.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+        transactionNo: content.transactionNo
+    output:
+      - transactionNo
+
+  - name: 登录  api/auth/POST_TrialLogin_master.yml
+    api: api/auth/POST_TrialLogin_master.yml
+    variables:
+        transactionNo: ${transactionNo}
+        verifyCaptcha: ${sql_get_verify_code($transactionNo)}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_trial_token($response)}

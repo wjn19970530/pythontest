@@ -1,0 +1,10 @@
+config:
+    name: 车辆相关操作  testsuites/master/supply/car.yml
+
+testcases:
+
+  - name: 【供应链系统】【商品管理】创建好的车辆生成商品库存 testcases/supply/master/generate_inventory.yml
+    testcase: testcases/supply/master/generate_inventory.yml
+
+  - name: 【供应链系统】【库存管理】已生成SKU的车辆，验证车辆数据正确 testcases/supply/master/confirm_inventory.yml
+    testcase: testcases/supply/master/confirm_inventory.yml

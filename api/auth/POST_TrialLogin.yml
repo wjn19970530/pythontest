@@ -1,0 +1,23 @@
+name: 登录 api/auth/POST_TrialLogin.yml
+variables:
+    trialPhoneNum: ${ENV(trialPhoneNum)}
+    verifyCode: ${ENV(verifyCode)}
+    endpoint: pc-web
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Content-Type: application/json;charset=UTF-8
+    json:
+        endpoint: $endpoint
+        grantType: verify_code
+        phoneNum: ${trialPhoneNum}
+        productCode: image-char-captcha
+        transactionNo: 91f0cb46ce9d428fa11ce8cc7f25eea5
+        verifyCode: ${verifyCode}
+    method: POST
+    url: /auth/login
+extract:
+    - access_token: content.access_token
+    - refresh_token: content.refresh_token
+#teardown_hooks:
+#    - ${response_refresh_token($response, $endpoint)}

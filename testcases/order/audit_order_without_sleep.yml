@@ -1,11 +1,14 @@
 config:
-  name: 审核订单  testcases/order/master/audit_order.yml
+  name: 审核订单  testcases/order/audit_order_without_sleep.yml
   base_url: ${ENV(base_url)}
+  setup_hooks:
+    - ${sleep(1)}
 
 teststeps:
 
-  - name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+-   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
     api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    skipIf: ${get_value_from_tmp(skip)}
     variables:
       token: ${get_value_from_tmp(token)}
     extract:
@@ -14,7 +17,7 @@ teststeps:
     validate:
       -  eq: [status_code,200]
 
-  - name: 初审信息提交  api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
+-   name: 初审信息提交  api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
     api: api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
     variables:
       id: $id
@@ -23,7 +26,7 @@ teststeps:
     validate:
       -  eq: [status_code,200]
 
-  - name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+-   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
     api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
     variables:
       token: ${get_value_from_tmp(token)}
@@ -33,7 +36,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 复审信息提交  api/entrysheet/entry-sheets/PUT_SubmitReview.yml
+-   name: 复审信息提交  api/entrysheet/entry-sheets/PUT_SubmitReview.yml
     api: api/entrysheet/entry-sheets/PUT_SubmitReview.yml
     variables:
       id: $id

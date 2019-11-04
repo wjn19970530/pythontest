@@ -1,23 +1,10 @@
 from httprunner.api import HttpRunner
+from httprunner.report import gen_html_report
 
 from common.BaseCommon import BaseCommon
 import json
 import os
-
-
-def get_result(summary):
-    status = summary['success']
-    total = summary['stat']['testcases']['total']
-    success = summary['stat']['testcases']['success']
-    fail = summary['stat']['testcases']['fail']
-    step_total = summary['stat']['teststeps']['total']
-    step_failures = summary['stat']['teststeps']['failures']
-    step_errors = summary['stat']['teststeps']['errors']
-    step_skipped = summary['stat']['teststeps']['skipped']
-    res = {'success': status, 'stat': {'testcases': {'total': total, 'success': success, 'fail': fail},
-                                          'teststeps': {'total': step_total, 'failures': step_failures,
-                                                        'errors': step_errors, 'skipped': step_skipped}}}
-    return res
+from debugtalk import get_value_from_tmp
 
 
 if __name__ == '__main__':
@@ -26,12 +13,24 @@ if __name__ == '__main__':
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
+
+    runner.run("testcases/order/master/nonaudit_order_count.yml")
+    times = get_value_from_tmp("length")
+    if times != 0:
+        for i in range(times):
+            runner.run("testcases/order/master/audit_order_without_sleep.yml")
+
     runner.run("testcases/login/master_login.yml")
-    runner.run("testsuites/master/transaction/order.yml")
+    summary = runner.run("testsuites/master/")
+
+    # summary = runner.run("testcases/supply/master/generate_inventory.yml")
+    # summary = runner.run("testcases/supply/master/confirm_inventory.yml")
+
     # runner.run("testcases/transaction/master/create_car.yml")
     # runner.run("testcases/order/master/system_lock_car.yml")
     # runner.run("testcases/order/master/vin_lock_car.yml")
     # runner.run("api/mall/salesman/POST_Order.yml")
+    # runner.run("testcases/order/master/create_order.yml")
     # runner.run("testsuites/login/order.yml")
     # runner.run("testcases/web_login.yml")
     # runner.run("api/mall/back-end/orders/POST_Params.yml")
@@ -89,11 +88,11 @@ if __name__ == '__main__':
     # runner.run("testsuites/transaction/order.yml")
 
     # 获取用例执行情况
-    summary = runner.summary
-    result = get_result(summary)
+    result = BaseCommon.get_result(summary)
     file = "summary.json"
     with open(file, "w", encoding='utf-8') as f:
         json.dump(result, f)
     f.close()
+    gen_html_report(summary, report_template=r"./template/report_template.html")
 
 
