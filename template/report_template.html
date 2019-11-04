@@ -187,16 +187,16 @@
   </table>
   
  <table id="suite" class="details">	
-  {% for test_suite_summary in details %}
-  {% set suite_index = loop.index %}
-        
-	 {% if test_suite_summary.stat.total > test_suite_summary.stat.successes+test_suite_summary.stat.skipped %}
-	      <tr>
+
+    	<tr>
 			  <th>TestCase</th>
 				  <th  colspan="5">Result</th>
-				  <th>Error Log</th>
+				  <th id="errorlog">Error Log</th>
 			 </tr>
-	    <tr>
+			 
+  {% for test_suite_summary in details %}
+  {% set suite_index = loop.index %}
+        <tr>
 		  <td><a class="astyle" title="点击跳转相关测试用例" style="display:block;width:380px;height:70px" href="#suite_{{suite_index}}">{{test_suite_summary.name}}</a></td>
 		  <td><font size="1px">TOTAL: {{test_suite_summary.stat.total}}</font></td>
 		  <td><font size="1px"> SUCCESS: {{test_suite_summary.stat.successes}}</font></td>
@@ -212,8 +212,7 @@
 		  {% endif %}
 		
 		  <td><font size="1px">SKIPPED: {{test_suite_summary.stat.skipped}}</font></td>		  
-	  {% endif %}
-        	  
+        	 <td>
 			{% for record in test_suite_summary.records %}
 				{% set record_index = "{}_{}".format(suite_index, loop.index) %}
 				{% set record_meta_datas = record.meta_datas_expanded %}		
@@ -221,7 +220,7 @@
 						   {% if  record.status == 'failure' or record.status == 'error'  %}
 									
 								 {% if record.attachment %}
-								 <td>
+								
 								  <a class="button" href="#popup_attachment_{{record_index}}">traceback</a>
 								  <div id="popup_attachment_{{record_index}}" class="overlay">
 									<div class="popup">
@@ -230,12 +229,12 @@
 									  <div class="content"><pre>{{ record.attachment | e }}</pre></div>
 									</div>
 								  </div>								 
-								</td> 
 								
 								{% endif %}
 						   {% endif %}   
 					 						
-	   {% endfor %}
+	     {% endfor %}
+	   	</td> 
    {% endfor %}
 
 
@@ -418,7 +417,7 @@
 		   var tableObj = document.getElementById("suite");
 			for (var i = 1; i < tableObj.rows.length; i++) {    //遍历Table的所有Row
 				  
-                   if(tableObj.rows[i].cells.length==6)
+                   if(tableObj.rows[i].cells.length==7)
 					{
 					  pd=2;
 					}
@@ -427,7 +426,10 @@
 			
 			if(pd==2)
 			{
+				 tableObj.rows[0].cells[2].style.display="block"
+			}else{
 				 tableObj.rows[0].cells[2].style.display="none"
+			
 			}
 			
 		    var tableObj = document.getElementById("suite");
@@ -436,7 +438,9 @@
 				{   //遍历Row中的每一列
                      tableObj.rows[i].cells[j].style.display="none"
 				}
-            }				
+            }
+
+			
     }; 
     init(); 
 </script>
