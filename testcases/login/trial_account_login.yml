@@ -1,0 +1,13 @@
+config:
+    name: 信审账号登录  testcases/login/trial_account_login.yml
+
+teststeps:
+  - name: 获取验证码 api/account/GET_TrailVeriCode.yml
+    api: api/account/GET_TrialVeriCode.yml
+    variables:
+        trialPhoneNum: ${ENV(trialPhoneNum)}
+
+  - name: 登录审核账号获取token api/auth/POST_TrialLogin.yml
+    api: api/auth/POST_TrialLogin.yml
+    teardown_hooks:
+      - ${save_trial_token($response)}

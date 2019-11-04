@@ -2,6 +2,16 @@ config:
     name: 从添加用户到提车、交易完成链路  testcases/transaction/create_car.yml
 
 teststeps:
+  - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
+    testcase: testcases/order/nonaudit_order_count.yml
+    validate:
+      - eq: [status_code, 200]
+
+  - name: 审核订单  testcases/order/audit_order_without_sleep.yml
+    testcase: testcases/order/audit_order_without_sleep.yml
+    validate:
+      - eq: [status_code, 200]
+
   - name: 获取账户信息  api/account/GET_Account.yml
     api: api/account/GET_Account.yml
     validate:
@@ -97,10 +107,15 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
+  - name: 信审账号登录  testcases/login/trial_account_login.yml
+    testcase: testcases/login/trial_account_login.yml
+    validate:
+      - eq: [status_code,200]
+    setup_hooks:
+      - ${sleep(120)}
+
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
-    variables:
-        phoneNum: 15000000001
     validate:
       - eq: [status_code,200]
 

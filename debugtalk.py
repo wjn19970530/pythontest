@@ -388,6 +388,7 @@ def get_value_from_tmp(keyword):
     # value = ""
     message = BCommon.read_tmp_file(file)
     value = message[keyword]
+    # print(keyword, value)
     return value
 
 
@@ -486,16 +487,45 @@ def save_selling_inventory_from_headers(response):
     save_message_to_tmp("selling_inventory", num+1)
 
 
-def save_selling_inventory(response):
+def save_trial_token(response):
     """
-    保存代售车辆数量
+    保存审核账号token至data/tmp.json文件
+    :param response:    接口响应
+    :return:
+    """
+    response = response.json
+    token = response["access_token"]
+    save_message_to_tmp("token", token)
+
+
+def save_response_length(response):
+    """
+    保存response数据长度
     :param response: 接口响应
     :return:
     """
     response = response.json
     length = len(response)
-    print(length)
-    save_message_to_tmp("selling_inventory", length+1)
+    save_message_to_tmp("length", length)
+    if length == 0:
+        save_message_to_tmp("skip", True)
+    else:
+        save_message_to_tmp("skip", False)
+
+
+def get_release_time():
+    """
+    获取车源释放时间，时间为一分钟后
+    :return: release_time
+    """
+    timestamp = BCommon.get_time()['timestamp']
+    timestamp = timestamp - 28740
+    now_time = time.strftime('%Y-%m-%d%H:%M:%S', time.localtime(timestamp))
+    str_date = now_time[:10]
+    str_time = now_time[10:]
+    release_time = str_date + "T" + str_time + ".464Z"
+    return release_time
+
 
 
 if __name__ == '__main__':
@@ -512,9 +542,8 @@ if __name__ == '__main__':
     # print(get_token('refresh_token'))
     # sql_init_order('15012340001')
     # sql_init_contract_info('15060138093')
-    # sell = get_value_from_tmp("selling_inventory")
     # print(type(sell), sell)
     # transcation_no = "a7767b33ecef4abb8157a522fc935401"
     # print(sql_get_verify_code(transcation_no))
-
+    sql_init_order('15012340002')
 

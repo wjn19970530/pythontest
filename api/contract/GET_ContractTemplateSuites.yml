@@ -2,6 +2,7 @@ name: 获取合同套件  api/contract/GET_ContractTemplateSuites.yml
 variables:
     access_token: ${get_token(access_token)}
     contract_name: "研发组测试套件"
+#    contract_name: "担保系-二手车（测试）"
 base_url: ${ENV(base_url)}
 request:
     url: /contract/api/v0.1/contract-template-suites?page=0&size=20

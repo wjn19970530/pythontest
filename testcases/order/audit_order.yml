@@ -1,27 +1,15 @@
 config:
   name: 审核订单  testcases/order/audit_order.yml
   base_url: ${ENV(base_url)}
-  setup_hooks:
-    - ${sleep(120)}
+#  setup_hooks:
+#    - ${sleep(120)}
 
 teststeps:
-
--   name: 获取验证码
-    api: api/account/GET_VeriCode.yml
-    variables:
-      phoneNum: 15000000001
-
--   name: 登录审核账号获取token api/auth/POST_Login.yml
-    api: api/auth/POST_Login.yml
-    variables:
-      phoneNum: 15000000001
-    extract:
-      - access_token: content.access_token
 
 -   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
     api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
     variables:
-      access_token: ${access_token}
+      token: ${get_value_from_tmp(token)}
     extract:
       -  id: content.0.entrySheet.id
       -  task_id: content.0.unFinishTaskId
@@ -33,14 +21,14 @@ teststeps:
     variables:
       id: $id
       task_id: $task_id
-      access_token: ${access_token}
+      token: ${get_value_from_tmp(token)}
     validate:
       -  eq: [status_code,200]
 
 -   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
     api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
     variables:
-      access_token: ${access_token}
+      token: ${get_value_from_tmp(token)}
     extract:
       - id: content.0.entrySheet.id
       - task_id: content.0.unFinishTaskId
@@ -52,6 +40,6 @@ teststeps:
     variables:
       id: $id
       task_id: $task_id
-      access_token: ${access_token}
+      token: ${get_value_from_tmp(token)}
     validate:
       -  eq: [status_code,200]

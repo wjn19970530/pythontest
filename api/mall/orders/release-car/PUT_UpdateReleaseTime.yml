@@ -1,0 +1,19 @@
+name: 释放车源-定时释放 api/mall/orders/release-car/PUT_UpdateReleaseTime.yml
+variables:
+    access_token: ${get_token(access_token)}
+    orderId: '642'
+    remarks: 接口自动化测试-释放车源-定时释放
+    releaseLockTime: ${get_release_time()}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    url: /mall/api/v0.1/orders/update-release-time
+    method: PUT
+    json:
+        orderId: '${orderId}'
+        releaseLockTime: '${releaseLockTime}'
+        attachments: '[{"url":"http://taoqi-saas-public.oss-cn-shenzhen.aliyuncs.com/saas-dev/default/jpg/20191102/1572663397082-1485924659.jpg"}]'
+        remarks: ${remarks}
+validate:
+    - eq: [status_code,200]

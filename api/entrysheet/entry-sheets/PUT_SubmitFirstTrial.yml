@@ -1,12 +1,12 @@
 name: 提交初审信息   /entrysheet/api/entry-sheets/submit/FirstTrial
 variables:
-    access_token: ${get_token(access_token)}
+    token: ${get_token(access_token)}
     task_id: 3d375376-e8a3-11e9-b7e4-00163e0a1bd2
     id: 126
 base_url: ${ENV(base_url)}
 request:
     headers:
-        Authorization: Bearer $access_token
+        Authorization: Bearer $token
         Content-Type: application/json;charset=UTF-8
     json:
         currentVersion : 0
