@@ -150,13 +150,21 @@
 		a:visited {color: #000000;text-decoration: none;} /* 已访问过的状态 */
 		a:hover {color: #000000;text-decoration: none;} /* 鼠标移动到链接上时的状态 */
 		a:active {color: #000000;text-decoration: none;} /* 鼠标按下去时的状态 */
-}
+		
+} 
+.w { position:fixed; 
+	right:10px;
+	bottom:50%;
+	overflow:hidden; 
+    cursor:default; 
+    -moz-user-select:none; 
+ }
 
   </style>
 </head>
 
 <body>
-  <h1>Test Report: {{html_report_name}}</h1>
+  <h1 id="title">Test Report: {{html_report_name}}</h1>
 
   <h2>Summary</h2>
   <table id="summary">
@@ -186,33 +194,37 @@
     </tr>
   </table>
   
- <table id="suite" class="details">	
+ <table id="suite" class="details" style="margin-top:-18px; word-wrap: break-word;text-align: center;vertical-align:middle;table-layout: fixed">	
 
     	<tr>
-			  <th>TestCase</th>
-				  <th  colspan="5">Result</th>
-				  <th id="errorlog">Error Log</th>
+			  <th style="width:30%">TestCase</th>
+				  <th style="width:10%">TOTAL</th>
+				  <th style="width:12%">SUCCESS</th>
+				  <th style="width:10%">FAILED</th>
+				  <th style="width:10%">ERROR</th>
+				  <th style="width:12%">SKIPPED</th>
+				  <th style="width:15%" id="errorlog">Error Log</th>
 			 </tr>
 			 
   {% for test_suite_summary in details %}
   {% set suite_index = loop.index %}
-        <tr>
-		  <td><a class="astyle" title="点击跳转相关测试用例" style="display:block;width:380px;height:70px" href="#suite_{{suite_index}}">{{test_suite_summary.name}}</a></td>
-		  <td width="60px"><font size="1px">TOTAL: {{test_suite_summary.stat.total}}</font></td>
-		  <td width="74px"><font size="1px"> SUCCESS: {{test_suite_summary.stat.successes}}</font></td>
+        <tr id="popup_log_{{suite_index}}">
+		  <td class="tddis" style="text-align:left;vertical-align:middle;text-overflow:ellipsis; /* for IE */ -moz-text-overflow: ellipsis; /* for Firefox,mozilla */ overflow:hidden;white-space: nowrap;height: 40px;"><a class="astyle" title="点击跳转相关测试用例" href="#suite_{{suite_index}}">{{test_suite_summary.name}}</a></td>
+		  <td width="50px" style="size:16px;height: 40px;"><font>{{test_suite_summary.stat.total}}</font></td>
+		  <td style="size:16px" width="50px;height: 40px;"><font>{{test_suite_summary.stat.successes}}</font></td>
 		  {% if test_suite_summary.stat.failures>0  %}
-		  <td width="55px"><font color="red" size="1px">FAILED: {{test_suite_summary.stat.failures}}</font></td>
+		  <td style="size:16px" width="50px;height: 40px;"><font color="red">{{test_suite_summary.stat.failures}}</font></td>
 		  {% else %}
-		   <td width="55px"><font size="1px">FAILED: {{test_suite_summary.stat.failures}}</font></td>
+		   <td style="size:16px" width="50px;height: 40px;"><font>{{test_suite_summary.stat.failures}}</font></td>
 		  {% endif %}	
 		  {% if test_suite_summary.stat.errors>0 %}
-		  		  <td width="56px"><font size="1px" color="red">ERROR: {{test_suite_summary.stat.errors}}</font></td>
+		  		  <td style="size:16px" width="50px;height: 40px;"><font color="red">{{test_suite_summary.stat.errors}}</font></td>
 		  {% else %}
-		           <td width="56px"><font size="1px" >ERROR: {{test_suite_summary.stat.errors}}</font></td>
+		           <td style="size:16px" width="50px;height: 40px;"><font>{{test_suite_summary.stat.errors}}</font></td>
 		  {% endif %}
 		
-		  <td width="64px"><font size="1px">SKIPPED: {{test_suite_summary.stat.skipped}}</font></td>		  
-        	 <td width="79px" id="record_{{suite_index}}">
+		  <td style="size:16px" width="50px;height: 40px;"><font>{{test_suite_summary.stat.skipped}}</font></td>		  
+        	 <td style="size:16px" width="50px;height: 40px;">
 			{% for record in test_suite_summary.records %}
 				{% set record_index = "{}_{}".format(suite_index, loop.index) %}
 				{% set record_meta_datas = record.meta_datas_expanded %}		
@@ -221,11 +233,11 @@
 									
 								 {% if record.attachment %}
 								
-								  <a class="button" href="#popup_attachment_{{record_index}}">traceback</a>
-								  <div id="popup_attachment_{{record_index}}" class="overlay">
+								  <a class="button" style="width: 5em;" href="#popup_log_{{record_index}}">traceback</a>
+								  <div id="popup_log_{{record_index}}" class="overlay">
 									<div class="popup">
 									  <h2>Traceback Message</h2>
-									  <a class="close" href="#record_{{suite_index}}">&times;</a>
+									  <a class="close" href="#popup_log_123">&times;</a>
 									  <div class="content"><pre>{{ record.attachment | e }}</pre></div>
 									</div>
 								  </div>							 
@@ -408,29 +420,16 @@
   {% endfor %}
   </table>
   {% endfor %}
+  
+	<div class="w">
+	 <a href="#title">跳转顶部</a>
+	</div>
 </body>
 
 <script type="text/javascript">
     function init() { 
         // 初始化内容
 		  var pd =1;
-		   var tableObj = document.getElementById("suite");
-			for (var i = 1; i < tableObj.rows.length; i++) {    //遍历Table的所有Row
-				  
-                   if(tableObj.rows[i].cells.length==7)
-					{
-					  pd=2;
-					}
-				   
-            }
-			
-			if(pd==2)
-			{
-				 tableObj.rows[0].cells[2].style.display="block"
-			}else{
-				 tableObj.rows[0].cells[2].style.display="none"
-			
-			}
 			
 		    var tableObj = document.getElementById("suite");
 			for (var i = 0; i < tableObj.rows.length; i++) {    //遍历Table的所有Row
