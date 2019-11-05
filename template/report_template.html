@@ -197,19 +197,19 @@
  <table id="suite" class="details" style="margin-top:-18px; word-wrap: break-word;text-align: center;vertical-align:middle;table-layout: fixed">	
 
     	<tr>
-			  <th style="width:30%">TestCase</th>
-				  <th style="width:10%">TOTAL</th>
-				  <th style="width:12%">SUCCESS</th>
-				  <th style="width:10%">FAILED</th>
-				  <th style="width:10%">ERROR</th>
-				  <th style="width:12%">SKIPPED</th>
-				  <th style="width:15%" id="errorlog">Error Log</th>
+			  <th style="width:56%;font-size: 13px;">TestCase</th>
+				  <th style="width:10%;font-size: 13px;">TOTAL</th>
+				  <th style="width:12%;font-size: 13px;">SUCCESS</th>
+				  <th style="width:10%;font-size: 13px;">FAILED</th>
+				  <th style="width:10%;font-size: 13px;">ERROR</th>
+				  <th style="width:12%;font-size: 13px;">SKIPPED</th>
+				  <th style="width:15%;font-size: 13px;" id="errorlog">Error Log</th>
 			 </tr>
 			 
   {% for test_suite_summary in details %}
   {% set suite_index = loop.index %}
         <tr id="popup_log_{{suite_index}}">
-		  <td class="tddis" style="text-align:left;vertical-align:middle;text-overflow:ellipsis; /* for IE */ -moz-text-overflow: ellipsis; /* for Firefox,mozilla */ overflow:hidden;white-space: nowrap;height: 40px;"><a class="astyle" title="点击跳转相关测试用例" href="#suite_{{suite_index}}">{{test_suite_summary.name}}</a></td>
+		  <td class="tddis" style="text-align:left;vertical-align:middle;text-overflow:ellipsis; /* for IE */ -moz-text-overflow: ellipsis; /* for Firefox,mozilla */ overflow:hidden;white-space: nowrap;height: 40px;"><a class="astyle" title="{{test_suite_summary.name}}" href="#title_{{suite_index}}">{{test_suite_summary.name}}</a></td>
 		  <td width="50px" style="size:16px;height: 40px;"><font>{{test_suite_summary.stat.total}}</font></td>
 		  <td style="size:16px" width="50px;height: 40px;"><font>{{test_suite_summary.stat.successes}}</font></td>
 		  {% if test_suite_summary.stat.failures>0  %}
@@ -258,7 +258,7 @@
 
   {% for test_suite_summary in details %}
   {% set suite_index = loop.index %}
-  <h3>{{test_suite_summary.name}}</h3>
+  <h3 id="title_{{suite_index}}">{{test_suite_summary.name}}</h3>
   <table id="suite_{{suite_index}}" class="details">
     <tr>
       <td>TOTAL: {{test_suite_summary.stat.total}}</td>
