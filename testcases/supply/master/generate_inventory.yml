@@ -36,7 +36,7 @@ teststeps:
   - name: 获取合同套件  api/contract/GET_ContractTemplateSuites.yml
     api: api/contract/GET_ContractTemplateSuites.yml
     variables:
-        contract_name: "担保系-二手车（测试）"
+        contract_name: "担保系-淘气平台"
     validate:
       - eq: [status_code,200]
 
@@ -130,6 +130,6 @@ teststeps:
         selling_inventory: ${add($num,1)}
     validate:
       - eq: [status_code,200]
-      - eq: [content.15.sellingInventory,$selling_inventory]
+      - eq: [content.3.sellingInventory,$selling_inventory]
     teardown_hooks:
       - ${save_message_to_tmp(selling_inventory,$selling_inventory)}

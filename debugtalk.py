@@ -408,6 +408,20 @@ def save_organizations_info(response, keyword):
     BCommon.write_tmp_file(file, message)
 
 
+def save_car_id_from_response(response, keyword):
+    """
+    从response中提取carId保存至data/tmp.json
+    :param response: 响应
+    :param keyword: 车辆全名
+    :return:
+    """
+    response = response.json
+    for item in response:
+        if item['name'] == keyword:
+            carId = item['id']
+            save_message_to_tmp("carId", carId)
+
+
 def save_skip_create_car(response):
     """
     根据待售车辆数量确认是否跳过用例

@@ -14,12 +14,13 @@ if __name__ == '__main__':
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
 
-    runner.run("testcases/order/nonaudit_order_count.yml")
+    summary = runner.run("testcases/order/nonaudit_order_count.yml")
     times = get_value_from_tmp("length")
     if times != 0:
         for i in range(times):
             runner.run("testcases/order/audit_order_without_sleep.yml")
-    runner.run("testcases/login/web_login.yml")
+
+    summary = runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
     # summary = runner.run("testcases/order/release_car/")
     # runner.run("testsuites/order.yml")
@@ -38,10 +39,10 @@ if __name__ == '__main__':
     # runner.run("testcases/usercenter/add_customer.yml")
     # runner.run("testcases/usercenter/purchase_certification.yml")
     # runner.run("testcases/usercenter/perfect_userInfo.yml")
-    # runner.run("testcases/supply/create_car.yml")
-    # runner.run("testcases/order/APP_create_order.yml")
+    # summary = runner.run("testcases/supply/create_car.yml")
+    # summary = runner.run("testcases/order/APP_create_order.yml")
     # for i in range(3):
-    # runner.run("testcases/order/audit_order.yml")
+    # summary = runner.run("testcases/order/audit_order.yml")
     # runner.run("testcases/order/perfect_repayment_info.yml")
     # runner.run("testcases/contracts/sign_contract.yml")
     # runner.run("testcases/order/mention_car.yml")
