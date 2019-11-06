@@ -113,7 +113,7 @@ teststeps:
   - name: 验证订单状态：等待审核、释放车源 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     setup_hooks:
-      - ${sleep(60)}
+      - ${sleep(70)}
     variables:
       tradeNo: ${tradeNo}
     validate:
