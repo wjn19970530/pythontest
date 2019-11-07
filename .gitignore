@@ -2,5 +2,5 @@
 /log/
 /summary.json
 /.idea/
-/data/tmp.json
+/data/
 .env

@@ -9,6 +9,6 @@ carFullName = "AutoTestCarBrandA1S"
 
 # 新建车辆配置系列名称，品牌使用交易链路的配置
 # 类型根据用例名称自定义写在用例中（接口中的类型名称参数化）
-carSeriesName = "C"
+carSeriesName = "A"
 
 

@@ -59,3 +59,4 @@ class BaseCommon(object):
                                          'successes': step_successes, 'expectedFailures': step_expectedFailures,
                                          'skipped': step_skipped, 'unexpectedSuccesses': step_unexpectedSuccesses}}}
         return result
+
