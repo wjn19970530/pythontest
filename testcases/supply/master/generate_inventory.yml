@@ -36,7 +36,7 @@ teststeps:
   - name: 获取合同套件  api/contract/GET_ContractTemplateSuites.yml
     api: api/contract/GET_ContractTemplateSuites.yml
     variables:
-        contract_name: "担保系-二手车（测试）"
+        contract_name: "担保系-二手车"
     validate:
       - eq: [status_code,200]
 
@@ -78,22 +78,6 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
-    api: api/mall/back-end/car-item-skus/GET_Generate.yml
-    variables:
-        itemId: $carId
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${sleep(2)}
-
-  - name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
-    api: api/mall/task-processes/GET_TaskStatus.yml
-    variables:
-        sku_task_id: ${get_value_from_tmp(sku_process)}
-    validate:
-      - eq: [status_code,200]
-
   - name: 获取未锁定车辆列表 api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
@@ -123,6 +107,22 @@ teststeps:
     teardown_hooks:
       - ${sleep(5)}
 
+  - name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
+    api: api/mall/back-end/car-item-skus/GET_Generate.yml
+    variables:
+      itemId: $carId
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(2)}
+
+  - name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
+    api: api/mall/task-processes/GET_TaskStatus.yml
+    variables:
+      sku_task_id: ${get_value_from_tmp(sku_process)}
+    validate:
+      - eq: [status_code,200]
+
   - name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
     api: api/mall/back-end/car-item-skus/POST_WithPage.yml
     variables:
@@ -130,6 +130,6 @@ teststeps:
         selling_inventory: ${add($num,1)}
     validate:
       - eq: [status_code,200]
-      - eq: [content.15.sellingInventory,$selling_inventory]
+      - eq: [content.3.sellingInventory,$selling_inventory]
     teardown_hooks:
       - ${save_message_to_tmp(selling_inventory,$selling_inventory)}

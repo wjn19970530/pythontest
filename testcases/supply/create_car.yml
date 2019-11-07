@@ -36,8 +36,8 @@ teststeps:
     variables:
       engineNumber: $engineNumber
       brandId: ${tmp_file_get_brand_id()}
-      seriesId: ${get_series_id()}
-      typeId: ${get_type_id()}
+      seriesId: ${get_value_from_tmp(seriesId)}
+      typeId: ${get_value_from_tmp(typeId)}
       propertyId: ${propertyId}
     extract:
       carId: content.carId

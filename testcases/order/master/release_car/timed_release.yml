@@ -69,6 +69,14 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
+  - name: 获取订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - tradeNo: content.0.tradeNo
+      - orderId: content.0.orderId
+
   - name: 验证库存：已锁车、待售  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
@@ -78,14 +86,7 @@ teststeps:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, false]
-
-  - name: 获取订单号 api/mall/salesman/POST_Order.yml
-    api: api/mall/salesman/POST_Order.yml
-    validate:
-      - eq: [status_code,200]
-    extract:
-      - tradeNo: content.0.tradeNo
-      - orderId: content.0.orderId
+      - eq: [content.0.tradeNo, $tradeNo]
 
   - name: 验证订单状态：等待审核 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
@@ -110,15 +111,37 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
+  - name: 验证库存：已锁车、待售  api/supplychain/GET_Cars.yml
+    api: api/supplychain/GET_Cars.yml
+    variables:
+      vin: ${vin}
+      carTypeName: ${get_config(carFullName)}
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.locked, true]
+      - eq: [content.0.sold, false]
+      - eq: [content.0.tradeNo, $tradeNo]
+
   - name: 验证订单状态：等待审核、释放车源 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     setup_hooks:
-      - ${sleep(60)}
+      - ${sleep(75)}
     variables:
       tradeNo: ${tradeNo}
     validate:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 11]
+
+  - name: 验证库存：未锁车、待售  api/supplychain/GET_Cars.yml
+    api: api/supplychain/GET_Cars.yml
+    variables:
+      vin: ${vin}
+      carTypeName: ${get_config(carFullName)}
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.locked, false]
+      - eq: [content.0.sold, false]
+      - eq: [content.0.tradeNo,null]
 
   - name: 发起退款   api/mall/orders/PUT_PrepareReturn.yml
     api: api/mall/orders/PUT_PrepareReturn.yml
