@@ -1,5 +1,5 @@
 config:
-    name: 发起锁车,使用系统锁车  testcases/order/system_lock_car.yml
+    name: 发起锁车,使用系统锁车  testcases/order/lock_car/system_lock_car.yml
 
 teststeps:
   - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml

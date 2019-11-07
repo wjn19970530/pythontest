@@ -312,26 +312,6 @@ def save_car_info(response, brand_name, series_name, type_name):
     BCommon.write_tmp_file(file, message)
 
 
-def get_series_id():
-    """
-    从tmp文件读取保存的series_id
-    :return: series_id
-    """
-    message = BCommon.read_tmp_file(file)
-    series_id = message["seriesId"]
-    return series_id
-
-
-def get_type_id():
-    """
-    从tmp文件读取保存的type_id
-    :return: type_id
-    """
-    message = BCommon.read_tmp_file(file)
-    type_id = message["typeId"]
-    return type_id
-
-
 def get_config(key):
     """
     根据key返回config.py中配置的内容
@@ -385,10 +365,8 @@ def get_value_from_tmp(keyword):
     :param keyword: 关键字
     :return: value
     """
-    # value = ""
     message = BCommon.read_tmp_file(file)
     value = message[keyword]
-    # print(keyword, value)
     return value
 
 

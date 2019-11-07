@@ -21,8 +21,8 @@ if __name__ == '__main__':
             runner.run("testcases/order/audit_order_without_sleep.yml")
 
     summary = runner.run("testcases/login/web_login.yml")
-    summary = runner.run("testsuites/develop/supply")
-    # summary = runner.run("testcases/order/release_car/")
+    summary = runner.run("testsuites/develop/")
+    # summary = runner.run("testcases/order/release_car/timed_release.yml")
     # runner.run("testsuites/order.yml")
     # runner.run("testcases/login/master_login.yml")
     # runner.run("testcases/login/web_login.yml")
@@ -50,8 +50,6 @@ if __name__ == '__main__':
 
     # runner.run("api/mall/orders/release-car/PUT_Manual.yml")
     # summary = runner.run("api/mall/orders/PUT_ReUpdateLockApply.yml")
-    # runner.run("testcases/order/system_lock_car.yml")
-    # runner.run("testcases/order/vin_lock_car.yml")
     # summary = runner.run("testcases/order/release_car/immediately_release.yml")
     # summary = runner.run("testcases/order/release_car/timed_release.yml")
 
