@@ -36,7 +36,7 @@ teststeps:
   - name: 获取合同套件  api/contract/GET_ContractTemplateSuites.yml
     api: api/contract/GET_ContractTemplateSuites.yml
     variables:
-        contract_name: "担保系-淘气平台"
+        contract_name: "担保系-二手车"
     validate:
       - eq: [status_code,200]
 
