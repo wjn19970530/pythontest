@@ -14,14 +14,15 @@ if __name__ == '__main__':
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
 
-    runner.run("testcases/order/nonaudit_order_count.yml")
+    summary = runner.run("testcases/order/nonaudit_order_count.yml")
     times = get_value_from_tmp("length")
     if times != 0:
         for i in range(times):
             runner.run("testcases/order/audit_order_without_sleep.yml")
-    runner.run("testcases/login/web_login.yml")
+
+    summary = runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
-    # summary = runner.run("testcases/order/release_car/")
+    # summary = runner.run("testcases/order/release_car/timed_release.yml")
     # runner.run("testsuites/order.yml")
     # runner.run("testcases/login/master_login.yml")
     # runner.run("testcases/login/web_login.yml")
@@ -38,10 +39,10 @@ if __name__ == '__main__':
     # runner.run("testcases/usercenter/add_customer.yml")
     # runner.run("testcases/usercenter/purchase_certification.yml")
     # runner.run("testcases/usercenter/perfect_userInfo.yml")
-    # runner.run("testcases/supply/create_car.yml")
-    # runner.run("testcases/order/APP_create_order.yml")
+    # summary = runner.run("testcases/supply/create_car.yml")
+    # summary = runner.run("testcases/order/APP_create_order.yml")
     # for i in range(3):
-    # runner.run("testcases/order/audit_order.yml")
+    # summary = runner.run("testcases/order/audit_order.yml")
     # runner.run("testcases/order/perfect_repayment_info.yml")
     # runner.run("testcases/contracts/sign_contract.yml")
     # runner.run("testcases/order/mention_car.yml")
@@ -49,8 +50,6 @@ if __name__ == '__main__':
 
     # runner.run("api/mall/orders/release-car/PUT_Manual.yml")
     # summary = runner.run("api/mall/orders/PUT_ReUpdateLockApply.yml")
-    # runner.run("testcases/order/system_lock_car.yml")
-    # runner.run("testcases/order/vin_lock_car.yml")
     # summary = runner.run("testcases/order/release_car/immediately_release.yml")
     # summary = runner.run("testcases/order/release_car/timed_release.yml")
 
