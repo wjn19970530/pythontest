@@ -513,6 +513,7 @@ def get_release_time():
     timestamp = BCommon.get_time()['timestamp']
     timestamp = timestamp - 28740
     now_time = time.strftime('%Y-%m-%d%H:%M:%S', time.localtime(timestamp))
+    print(now_time)
     str_date = now_time[:10]
     str_time = now_time[10:]
     release_time = str_date + "T" + str_time + ".464Z"
