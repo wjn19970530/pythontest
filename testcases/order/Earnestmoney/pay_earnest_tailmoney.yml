@@ -1,0 +1,64 @@
+config:
+      name: 购车支付定金后支付尾款 testcases/order/Earnestmoney/pay_earnest_tailmoney.yml
+      base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 获取selleId  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
+-   name: 获取outerKey  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    validate:
+      - eq: [status_code,200]
+
+-   name: 创建车辆 testcases/supply/skipIf_create_car.yml
+    testcase: testcases/supply/skipIf_create_car.yml
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 获取待售未锁车辆列表 api/supplychain/Get_Cars_ condition.yml
+    api: api/supplychain/Get_Cars_ condition.yml
+    variables:
+      carTypeName: ${get_config(carFullName)}
+    validate:
+      - eq: [status_code, 200]
+    extract:
+      - vin: content.0.vin
+
+-   name: 创建待售车辆订单并提交  testcases/order/APP_create_order.yml
+    testcase: testcases/order/APP_create_order.yml
+    variables:
+      orderPayType: 2
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 获取订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.orderId
+
+
+-   name: 信审账号登录  testcases/login/trial_account_login.yml
+    testcase: testcases/login/trial_account_login.yml
+    validate:
+      - eq: [status_code,200]
+    setup_hooks:
+      - ${sleep(120)}
+
+-   name: 审核订单  testcases/order/audit_order.yml
+    testcase: testcases/order/audit_order.yml
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 支付尾款 testcases/order/Earnestmoney/payment_of_tail.yml
+    testcase: testcases/order/Earnestmoney/payment_of_tail.yml
+    variables:
+       orderId: $orderId
+    validate:
+      - eq: [status_code, 200]

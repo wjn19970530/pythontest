@@ -20,3 +20,12 @@ testcases:
     testcase: testcases/order/master/release_car/timed_release.yml
     setup_hooks:
         - ${sleep(90)}
+
+-   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/master/refund/audit_reject_refund.yml
+    testcase: testcases/order/master/refund/audit_reject_refund.yml
+
+-   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/master/refund/confirmed_after_Refund.yml
+    testcase: testcases/order/master/refund/confirmed_after_Refund.yml
+
+-   name: 【交易系统】【订单管理】等待审核时退款 testcases/order/master/refund/wait_audit_refund.yml
+    testcase: testcases/order/master/refund/wait_audit_refund.yml

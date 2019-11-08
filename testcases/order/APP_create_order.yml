@@ -6,6 +6,7 @@ config:
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
       keyword: ${get_config(carFullName)}
+      orderPayType: 1
     base_url: ${ENV(base_url)}
     setup_hooks:
       - ${sql_init_order($phoneNum)}
@@ -70,6 +71,7 @@ teststeps:
     api: api/mall/car-items/POST_ScanCodePayment.yml
     variables:
       orderId: $orderId
+      orderPayType: $orderPayType
     validate:
       - eq: [status_code, 200]
 
@@ -85,5 +87,6 @@ teststeps:
     variables:
       orderId: $orderId
       billImages: $ossUrl
+      orderPayType: $orderPayType
     validate:
       - eq: [status_code, 200]
