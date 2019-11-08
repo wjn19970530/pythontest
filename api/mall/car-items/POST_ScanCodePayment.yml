@@ -4,6 +4,7 @@ variables:
   refresh_token: ${get_token(refresh_token)}
   phoneNum: ${ENV(phoneNum)}
   orderId: 16
+  orderPayType: "1"
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -27,7 +28,7 @@ request:
         uuid: 3c49f7ae1e552213
     json:
         orderId: $orderId
-        orderPayType: 1
+        orderPayType: $orderPayType
     method: POST
     url: /mall/api/v0.1/car-items/scan-code/payment
 validate:
