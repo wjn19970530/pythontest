@@ -1,0 +1,20 @@
+name: 获取车辆列表 api/supplychain/Get_Cars_ condition.yml
+variables:
+    access_token: ${get_token(access_token)}
+    carTypeName: "AutoTestCarBrandA1S"
+    vin: ""
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    params:
+        page: '0'
+        size: '20'
+        timestr: '1566814134884'
+        carTypeName: ${carTypeName}
+        isLocked: '0'
+        carStatus: '4'
+    url: /supplychain/api/cars
+validate:
+-   eq: [status_code, 200]
