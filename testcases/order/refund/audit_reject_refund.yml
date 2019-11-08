@@ -1,5 +1,5 @@
 config:
-      name: 待确认提车后退款 testcases/order/refund/audit_reject_refund.yml
+      name: 审核拒绝后退款 testcases/order/refund/audit_reject_refund.yml
       base_url: ${ENV(base_url)}
 
 teststeps:
