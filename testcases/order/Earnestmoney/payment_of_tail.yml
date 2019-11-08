@@ -1,0 +1,41 @@
+config:
+    name: 支付尾款 testcases/order/Earnestmoney/payment_of_tail.yml
+    base_url: ${ENV(base_url)}
+    variables:
+       orderId: ""
+       orderPayType: "1"
+       sellerId: ${get_value_from_tmp(sellerId)}
+
+teststeps:
+
+-   name: 获取尾款订单信息  api/mall/orders/detail/GET_seller.yml
+    api: api/mall/orders/detail/GET_seller.yml
+    variables:
+      orderId: $orderId
+      sellerId: $sellerId
+
+
+-   name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
+    api: api/mall/car-items/POST_ScanCodePayment.yml
+    variables:
+      orderId: $orderId
+      orderPayType: $orderPayType
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 上传支付图片  api/usercenter/aliyun/POST_OssImg.yml
+    api: api/usercenter/aliyun/POST_OssImg.yml
+    validate:
+      - eq: [status_code, 200]
+    extract:
+      - ossUrl: content.ossUrl
+
+-   name: 提交订单  api/mall/offline-payments/POST_Submit.yml
+    api: api/mall/offline-payments/POST_Submit.yml
+    variables:
+      orderId: $orderId
+      billImages: $ossUrl
+      orderPayType: $orderPayType
+    validate:
+      - eq: [status_code, 200]
+
