@@ -5,6 +5,7 @@ variables:
   phoneNum: ${ENV(phoneNum)}
   orderId: 16
   billImages: http://images.mall.taoqicar.com/dev-1567586107086-a.jpg
+  orderPayType: "1"
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -13,7 +14,7 @@ request:
     json:
         billImages: '[{"url":"${billImages}"}]'
         orderId: $orderId
-        orderPayType: 1
+        orderPayType: $orderPayType
         payMode: 0
         remark: 自动化订单
     method: POST
