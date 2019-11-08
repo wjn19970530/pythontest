@@ -23,9 +23,9 @@ if __name__ == '__main__':
     # summary=runner.run("api/supplychain/Get_Cars_ condition.yml")
     # runner.run("testcases/supply/skipIf_create_car.yml")
     # summary=runner.run("api/account/GET_Account.yml")
-    summary=runner.run("testcases/order/Earnestmoney/pay_earnest_tailmoney.yml")
+    #summary=runner.run("testcases/order/Earnestmoney/pay_earnest_tailmoney.yml")
 
-    # summary = runner.run("testsuites/develop/")
+    summary = runner.run("testsuites/develop/")
     # summary = runner.run("testcases/order/release_car/")
     # runner.run("testsuites/order.yml")
     # runner.run("testcases/login/master_login.yml")
