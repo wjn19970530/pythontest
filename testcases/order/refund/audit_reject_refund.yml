@@ -1,0 +1,123 @@
+config:
+      name: 待确认提车后退款 testcases/order/refund/audit_reject_refund.yml
+      base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 获取selleId  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
+-   name: 获取outerKey  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    validate:
+      - eq: [status_code,200]
+
+-   name: 创建车辆 testcases/supply/skipIf_create_car.yml
+    testcase: testcases/supply/skipIf_create_car.yml
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 获取待售未锁车辆列表 api/supplychain/Get_Cars_ condition.yml
+    api: api/supplychain/Get_Cars_ condition.yml
+    variables:
+      carTypeName: ${get_config(carFullName)}
+    validate:
+      - eq: [status_code, 200]
+    extract:
+      - vin: content.0.vin
+
+-   name: 创建待售车辆订单并提交  testcases/order/APP_create_order.yml
+    testcase: testcases/order/APP_create_order.yml
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 获取订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.orderId
+      - tradeNo: content.0.tradeNo
+
+
+-   name: 验证库存：已锁车、待售  api/supplychain/GET_Cars.yml
+    api: api/supplychain/GET_Cars.yml
+    variables:
+       vin: ${vin}
+       carTypeName: ${get_config(carFullName)}
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.locked, true]
+      - eq: [content.0.sold, false]
+      - eq: [content.0.tradeNo,$tradeNo]
+
+-   name: 验证订单状态：等待审核 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+      tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"等待审核"]
+      - eq: [content.0.orderDetail.carItemStatus, 9]
+
+-   name: 信审账号登录  testcases/login/trial_account_login.yml
+    testcase: testcases/login/trial_account_login.yml
+    validate:
+      - eq: [status_code,200]
+    setup_hooks:
+      - ${sleep(120)}
+
+-   name: 审核拒绝  testcases/order/audit_refund.yml
+    testcase: testcases/order/audit_refund.yml
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 验证订单状态：审核拒绝、待售 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+      tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.order.status,11]
+
+
+- name: 发起退款   api/mall/orders/PUT_PrepareReturn.yml
+  api: api/mall/orders/PUT_PrepareReturn.yml
+  variables:
+    orderId: $orderId
+  validate:
+    - eq: [status_code,200]
+
+- name: 验证订单状态：待退款 api/mall/back-end/orders/POST_Params.yml
+  api: api/mall/back-end/orders/POST_Params.yml
+  variables:
+    tradeNo: ${tradeNo}
+  validate:
+    - eq: [content.0.orderStatusDesc,"待退款"]
+
+- name: 验证车辆状态:未锁车、待售  api/supplychain/GET_Cars.yml
+  api: api/supplychain/GET_Cars.yml
+  variables:
+    vin: ${vin}
+    carTypeName: ${get_config(carFullName)}
+  validate:
+    - eq: [status_code,200]
+    - eq: [content.0.locked, false]
+    - eq: [content.0.sold, false]
+    - eq: [content.0.tradeNo,null]
+
+-   name: WEB端确认退款
+    api: api/mall/orders/PUT_ConfirmReturn.yml
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 验证订单状态：交易取消 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+    tradeNo: ${tradeNo}
+    validate:
+    - eq: [content.0.orderStatusDesc,"交易取消"]
+

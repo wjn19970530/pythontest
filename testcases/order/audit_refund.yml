@@ -1,0 +1,26 @@
+config:
+  name: 审核拒绝  testcases/order/audit_refund.yml
+  base_url: ${ENV(base_url)}
+#  setup_hooks:
+#    - ${sleep(120)}
+
+teststeps:
+
+-   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    variables:
+      token: ${get_value_from_tmp(token)}
+    extract:
+      -  id: content.0.entrySheet.id
+      -  task_id: content.0.unFinishTaskId
+    validate:
+      -  eq: [status_code,200]
+
+-   name: 初审拒绝信息提交 api/entrysheet/entry-sheets/PUT_SubmitFirstTrial_refund.yml
+    api: api/entrysheet/entry-sheets/PUT_SubmitFirstTrial_refund.yml
+    variables:
+      id: $id
+      task_id: $task_id
+      token: ${get_value_from_tmp(token)}
+    validate:
+      -  eq: [status_code,200]

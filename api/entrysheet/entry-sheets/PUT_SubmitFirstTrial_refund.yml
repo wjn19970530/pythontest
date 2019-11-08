@@ -1,0 +1,19 @@
+name: 提交初审信息   /entrysheet/api/entry-sheets/submit/PUT_SubmitFirstTrial_refund.yml
+variables:
+    token: ${get_token(access_token)}
+    task_id: 3d375376-e8a3-11e9-b7e4-00163e0a1bd2
+    id: 126
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer $token
+        Content-Type: application/json;charset=UTF-8
+    json:
+        currentVersion : 0
+        id: ${id}
+        audit: {"auditResult":"0","isKeyInfoComplete":"1","isMaterialClear":"1","needInvest":"0","needConcern":"0","needBail":"0","isAnomaly":"0","auditOpinion":"拒绝","hasTelephoneCheck":"0","taskId":"${task_id}"}
+    method: PUT
+    url: /entrysheet/api/entry-sheets/submit
+validate:
+-   eq: [status_code,200]
+-   eq: [headers.Content-Type,application/json;charset=UTF-8]
