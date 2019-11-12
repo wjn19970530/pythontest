@@ -1,8 +1,8 @@
-name: /mall/api/v0.1/car-items/scan-code/payment
+name: api/mall/car-items/POST_ScanCodePayment_sellerPhoneNum.yml
 variables:
   access_token: ${get_token(access_token)}
   refresh_token: ${get_token(refresh_token)}
-  phoneNum: ${ENV(phoneNum)}
+  phoneNum: ${ENV(sellerPhoneNum)}
   orderId: 16
   orderPayType: "1"
   user_id: '3479189832092106759'
@@ -12,22 +12,10 @@ request:
     headers:
         Content-Type: application/json;charset=UTF-8
         User-Agent: okhttp/3.8.1
-        android_id: 3c49f7ae1e552213
         authorization: Bearer $access_token
-        client_b_v: '100'
-        client_v: 1.0.0
-        imei: '359789052172280'
-        islogin: '1'
-        mac: ''
-        os: Android
-        os_name: GT-I9308I
-        os_v: '18'
-        phone: $phoneNum
-        platform: '5'
-        refresh_token: $refresh_token
+        phone: ${phoneNum}
         user_id: $user_id
         user_type: '0'
-        uuid: 3c49f7ae1e552213
     json:
         orderId: $orderId
         orderPayType: $orderPayType
