@@ -13,13 +13,13 @@ if __name__ == '__main__':
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
-    #
+        
     summary = runner.run("testcases/order/nonaudit_order_count.yml")
     times = get_value_from_tmp("length")
     if times != 0:
         for i in range(times):
             runner.run("testcases/order/audit_order_without_sleep.yml")
-    # #
+
     summary = runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
     # summary = runner.run("testcases/order/repayment_info/WXTL.yml")
