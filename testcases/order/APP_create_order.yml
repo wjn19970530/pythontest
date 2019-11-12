@@ -5,13 +5,10 @@ config:
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
-<<<<<<< HEAD
       orderPayType: 1
       keyword: ''
-=======
       keyword: ${get_config(carFullName)}
       orderPayType: 1
->>>>>>> fyx
     base_url: ${ENV(base_url)}
     setup_hooks:
       - ${sql_init_order($phoneNum)}
