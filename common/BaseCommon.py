@@ -1,4 +1,7 @@
 import time
+
+from httprunner.api import HttpRunner
+
 from common.log import MyLog
 import json
 import os
@@ -60,3 +63,12 @@ class BaseCommon(object):
                                          'skipped': step_skipped, 'unexpectedSuccesses': step_unexpectedSuccesses}}}
         return result
 
+    @staticmethod
+    def run_test(second, case):
+        """
+        :param second: 休眠时间
+        :param case: 用例
+        :return:
+        """
+        runner = HttpRunner(log_level="ERROR", failfast=True)
+        runner.run(case)

@@ -19,19 +19,28 @@ teststeps:
     teardown_hooks:
       - ${save_seller_id_form_response($response)}
 
--   name: 获取商品列表  api/mall/back-end/car-items/POST_List.yml
-    api: api/mall/back-end/car-items/POST_List.yml
+#-   name: 获取商品列表  api/mall/back-end/car-items/POST_List.yml
+#    api: api/mall/back-end/car-items/POST_List.yml
+#    variables:
+#      keyword: ${keyword}
+#    validate:
+#      - eq: [status_code,200]
+#    extract:
+#      - carId: content.0.id
+
+-   name: 获取车辆ID api/mall/car-items/POST_LeaseParams.yml
+    api: api/mall/car-items/POST_LeaseParams.yml
     variables:
-      keyword: ${keyword}
+        keyword: $keyword
     validate:
-      - eq: [status_code,200]
-    extract:
-      - carId: content.0.id
+      - eq: [status_code, 200]
+    teardown_hooks:
+        - ${save_car_id_from_response($response,$keyword)}
 
 -   name: 获取车辆详细信息  api/mall/car-items/GET_CarItemDetails.yml
     api: api/mall/car-items/GET_CarItemDetails.yml
     variables:
-      carId: ${carId}
+      carId: get_value_from_tmp(carId)
     validate:
       - eq: [status_code,200]
     extract:
@@ -43,7 +52,7 @@ teststeps:
     variables:
         leasePlanId: ${leasePlanId}
         skuId: ${skuId}
-        itemId: ${carId}
+        itemId: get_value_from_tmp(carId)
     extract:
       orderId: content.orderId
     validate:

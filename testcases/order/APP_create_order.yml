@@ -5,8 +5,8 @@ config:
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
-      keyword: ${get_config(carFullName)}
       orderPayType: 1
+      keyword: ''
     base_url: ${ENV(base_url)}
     setup_hooks:
       - ${sql_init_order($phoneNum)}
@@ -22,14 +22,14 @@ teststeps:
     teardown_hooks:
       - ${save_seller_id_form_response($response)}
 
--   name: 获取商品列表  api/mall/back-end/car-items/POST_List.yml
-    api: api/mall/back-end/car-items/POST_List.yml
+-   name: 获取车辆ID api/mall/car-items/POST_LeaseParams.yml
+    api: api/mall/car-items/POST_LeaseParams.yml
     variables:
       keyword: ${keyword}
     validate:
       - eq: [status_code,200]
     teardown_hooks:
-      - ${save_car_id_from_response($response,$keyword)}
+        - ${save_car_id_from_response($response,$keyword)}
 
 -   name: 获取车辆详细信息  api/mall/car-items/GET_CarItemDetails.yml
     api: api/mall/car-items/GET_CarItemDetails.yml

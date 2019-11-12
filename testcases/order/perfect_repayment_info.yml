@@ -5,7 +5,7 @@ config:
     export:
       - orderId
     setup_hooks:
-#      - ${sql_init_repayment($phoneNum)}
+      - ${sql_init_repayment($phoneNum)}
       - ${sleep(5)}
 
 teststeps:
