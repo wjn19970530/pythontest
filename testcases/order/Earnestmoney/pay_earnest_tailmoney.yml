@@ -42,6 +42,7 @@ teststeps:
       - eq: [status_code,200]
     extract:
       - orderId: content.0.orderId
+      - tradeNo: content.0.tradeNo
 
 
 -   name: 信审账号登录  testcases/login/trial_account_login.yml
@@ -56,9 +57,21 @@ teststeps:
     validate:
       - eq: [status_code, 200]
 
+-   name: 验证订单状态：订单处理中、待售 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+        tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"订单处理中"]
+      - eq: [content.0.orderDetail.carItemStatus, 9]
+    setup_hooks:
+      - ${sleep(10)}
+
 -   name: 支付尾款 testcases/order/Earnestmoney/payment_of_tail.yml
     testcase: testcases/order/Earnestmoney/payment_of_tail.yml
     variables:
        orderId: $orderId
+       orderPayType: 0
+       tradeNo: $tradeNo
     validate:
       - eq: [status_code, 200]
