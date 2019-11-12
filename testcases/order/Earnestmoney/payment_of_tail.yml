@@ -8,18 +8,33 @@ config:
 
 teststeps:
 
+<<<<<<< HEAD
 -   name: 获取尾款订单信息  api/mall/orders/detail/GET_seller.yml
     api: api/mall/orders/detail/GET_seller.yml
+=======
+-   name: 获取尾款订单信息 api/mall/orders/detail/GET_seller_params_all.yml
+    api: api/mall/orders/detail/GET_seller_params_all.yml
+>>>>>>> fyx
     variables:
       orderId: $orderId
       sellerId: $sellerId
 
 
+<<<<<<< HEAD
 -   name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
     api: api/mall/car-items/POST_ScanCodePayment.yml
     variables:
       orderId: $orderId
       orderPayType: $orderPayType
+=======
+-   name: 订单选择支付方式  api/mall//car-items/POST_ScanCodePayment_sellerPhoneNum.yml
+    api: api/mall//car-items/POST_ScanCodePayment_sellerPhoneNum.yml
+    variables:
+      orderId: $orderId
+      orderPayType: $orderPayType
+      user_id: $sellerId
+      tradeNo: ""
+>>>>>>> fyx
     validate:
       - eq: [status_code, 200]
 
