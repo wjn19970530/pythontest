@@ -5,11 +5,9 @@ variables:
   phoneNum: ${ENV(phoneNum)}
   orderId: 16
   orderPayType: "1"
-<<<<<<< HEAD
-=======
   user_id: '3479189832092106759'
 
->>>>>>> fyx
+
 base_url: ${ENV(base_url)}
 request:
     headers:
