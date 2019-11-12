@@ -24,8 +24,8 @@ testcases:
 -   name: 【交易系统】【订单管理】审核拒绝后退款 testcases/order/refund/audit_reject_refund.yml
     testcase: testcases/order/refund/audit_reject_refund.yml
 
--   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/refund/confirmed_after_Refund.yml
-    testcase: testcases/order/refund/confirmed_after_Refund.yml
+#-   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/refund/confirmed_after_Refund.yml
+ #   testcase: testcases/order/refund/confirmed_after_Refund.yml
 
 -   name: 【交易系统】【订单管理】等待审核时退款 testcases/order/refund/wait_audit_refund.yml
     testcase: testcases/order/refund/wait_audit_refund.yml
