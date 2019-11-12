@@ -42,10 +42,7 @@ teststeps:
       - eq: [status_code,200]
     extract:
       - orderId: content.0.orderId
-<<<<<<< HEAD
-=======
-      - tradeNo: content.0.tradeNo
->>>>>>> fyx
+
 
 
 -   name: 信审账号登录  testcases/login/trial_account_login.yml
@@ -60,8 +57,7 @@ teststeps:
     validate:
       - eq: [status_code, 200]
 
-<<<<<<< HEAD
-=======
+
 -   name: 验证订单状态：订单处理中、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
@@ -72,15 +68,12 @@ teststeps:
     setup_hooks:
       - ${sleep(10)}
 
->>>>>>> fyx
+
 -   name: 支付尾款 testcases/order/Earnestmoney/payment_of_tail.yml
     testcase: testcases/order/Earnestmoney/payment_of_tail.yml
     variables:
        orderId: $orderId
-<<<<<<< HEAD
-=======
        orderPayType: 0
-       tradeNo: $tradeNo
->>>>>>> fyx
+
     validate:
       - eq: [status_code, 200]
