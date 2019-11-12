@@ -1,11 +1,15 @@
 import time
+
+from httprunner.api import HttpRunner
 from common.BaseCommon import BaseCommon as BCommon
 from common.CsvOperate import CsvOperate
 from common.DBOperate import DBOperate
 from config import *
 
+
 log = BCommon.log()
 file = 'data/tmp.json'
+runner = HttpRunner(log_level="ERROR", failfast=True)
 
 
 def sleep(n_secs):
@@ -186,6 +190,18 @@ def sql_init_repayment(phone_num):
     sql = "SELECT user_id from tq_user where phone_num='"+phone_num+"'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
     DBOperate(mall).execute_sql("update sign_agreement_info set user_id='"+user_id+"01' where user_id='"+user_id+"'")
+
+
+def sql_init_tqtl_repayment(phone_num):
+    """
+    淘汽通联还款方式完善还款信息前，设置为未开卡过
+    操作：将sign_agreement_info表中userId修改为无效id
+    :param: phone_num 手机号
+    :return:
+    """
+    sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
+    user_id = str(DBOperate(usercenter).query_sql(sql)[0])
+    DBOperate(mall).execute_sql("update tq_tonglian_info set user_id='" + user_id + "01' where user_id='" + user_id + "'")
 
 
 def sql_init_contract_info(phone_num):
@@ -518,6 +534,29 @@ def get_release_time():
     release_time = str_date + "T" + str_time + ".464Z"
     return release_time
 
+
+def run_audit_order(second=1):
+    """
+    跑审核订单用例
+    :param:second 跑用例前休眠时间
+    :return:
+    """
+    test = 'testcases/order/audit_order.yml'
+    sleep(second)
+    runner.run(test)
+
+
+def get_value_from_response(response, key):
+    """
+    从接口响应中提取key对应的value保存至data/tmp.json
+    :param key:
+    :return:
+    """
+    print(key)
+    response = response.json
+    value = response[key]
+    print(key, value)
+    save_message_to_tmp(key, value)
 
 
 if __name__ == '__main__':
