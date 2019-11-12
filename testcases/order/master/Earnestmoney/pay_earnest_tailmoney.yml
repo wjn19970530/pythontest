@@ -1,5 +1,5 @@
 config:
-      name: 购车支付定金后支付尾款 testcases/order/Earnestmoney/pay_earnest_tailmoney.yml
+      name: 购车支付定金后支付尾款 testcases/order/master/Earnestmoney/pay_earnest_tailmoney.yml
       base_url: ${ENV(base_url)}
 
 teststeps:
@@ -14,6 +14,28 @@ teststeps:
     api: api/usercenter/users/POST_Customer.yml
     validate:
       - eq: [status_code,200]
+
+-   name: 进件审核判断  testcases/order/master/nonaudit_order_count.yml
+    testcase: testcases/order/master/nonaudit_order_count.yml
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 审核遗留进件 testcases/order/audit_order_without_sleep.yml
+    testcase: testcases/order/audit_order_without_sleep.yml
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 释放车源状态的有效订单发起退款 testcases/order/master/refund_release_car.yml
+    testcase: testcases/order/master/refund_release_car.yml
+    validate:
+      - eq: [status_code,200]
+
+-   name: 代售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
+    testcase: testcases/order/master/refund_for_sale.yml
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
 
 -   name: 创建车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
@@ -42,11 +64,10 @@ teststeps:
       - eq: [status_code,200]
     extract:
       - orderId: content.0.orderId
-      - tradeNo: content.0.tradeNo
 
 
--   name: 信审账号登录  testcases/login/trial_account_login.yml
-    testcase: testcases/login/trial_account_login.yml
+-   name: master分支信审账号登录  testcases/login/master_trial_account_login.yml
+    testcase: testcases/login/master_trial_account_login.yml
     validate:
       - eq: [status_code,200]
     setup_hooks:
@@ -72,6 +93,5 @@ teststeps:
     variables:
        orderId: $orderId
        orderPayType: 0
-       tradeNo: $tradeNo
     validate:
       - eq: [status_code, 200]

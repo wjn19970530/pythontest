@@ -15,6 +15,16 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
+-   name: 进件审核判断  testcases/order/nonaudit_order_count.yml
+    testcase: testcases/order/nonaudit_order_count.yml
+    validate:
+      - eq: [status_code, 200]
+
+-   name: 审核遗留进件 testcases/order/audit_order_without_sleep.yml
+    testcase: testcases/order/audit_order_without_sleep.yml
+    validate:
+      - eq: [status_code, 200]
+
 -   name: 创建车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
     validate:
@@ -83,7 +93,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${sleep(30)}
 
 -   name: 完善还款信息  api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
     api: api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
