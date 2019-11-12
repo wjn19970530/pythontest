@@ -98,8 +98,6 @@ if __name__ == '__main__':
 
 
 
->>>>>>> fyx
-
 
     # 获取用例执行情况
     result = BaseCommon.get_result(summary)
