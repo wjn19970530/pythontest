@@ -15,8 +15,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-<<<<<<< HEAD
-=======
+
 -   name: 进件审核判断  testcases/order/master/nonaudit_order_count.yml
     testcase: testcases/order/master/nonaudit_order_count.yml
     validate:
@@ -27,7 +26,6 @@ teststeps:
     validate:
       - eq: [status_code, 200]
 
->>>>>>> fyx
 -   name: 释放车源状态的有效订单发起退款 testcases/order/master/refund_release_car.yml
     testcase: testcases/order/master/refund_release_car.yml
     validate:
@@ -99,11 +97,7 @@ teststeps:
     testcase: testcases/order/audit_order.yml
     validate:
       - eq: [status_code, 200]
-<<<<<<< HEAD
-    teardown_hooks:
-      - ${sleep(10)}
-=======
->>>>>>> fyx
+
 
 -   name: 验证订单状态：订单处理中、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
@@ -113,11 +107,8 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-<<<<<<< HEAD
-      - ${sleep(10)}
-=======
-      - ${sleep(30)}
->>>>>>> fyx
+      - ${sleep(120)}
+
 
 
 -   name: 完善还款信息  testcases/order/master/perfect_repayment_info.yml
