@@ -96,8 +96,6 @@ teststeps:
     testcase: testcases/order/audit_order.yml
     validate:
       - eq: [status_code, 200]
-    teardown_hooks:
-      - ${sleep(10)}
 
 -   name: 验证订单状态：订单处理中、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
@@ -107,7 +105,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(30)}
+      - ${sleep(120)}
 
 
 -   name: 完善还款信息  testcases/order/master/perfect_repayment_info.yml
