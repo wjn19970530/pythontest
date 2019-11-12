@@ -1,11 +1,11 @@
 config:
     name: 创建车辆  testcases/supply/create_car.yml
     variables:
-      phoneNum: ${ENV(phoneNum)}
+#      phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
-      refresh_token: ${get_token(refresh_token)}
       engineNumber: ${generate_number()}
+
     base_url: ${ENV(base_url)}
 
 teststeps:
@@ -24,7 +24,10 @@ teststeps:
 -   name: 获取车辆详细信息  api/mall/back-end/GET_CarTypesParams.yml
     api: api/mall/back-end/GET_CarTypesParams.yml
     variables:
-        carFullName: ${get_config(carFullName)}
+        brandName: ${get_config(carBrandName)}
+        seriesName: ${get_config(carSeriesName)}
+        typeName: ''
+        carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
     validate:
       - eq: [status_code,200]
     teardown_hooks:
@@ -32,10 +35,10 @@ teststeps:
 
 -   name: 保存新的车辆基本信息  api/supplychain/POST_Cars.yml
     api: api/supplychain/POST_Cars.yml
-#    skipIf: ${get_value_from_tmp(skip)}
+    skipIf: ${get_value_from_tmp(skip)}
     variables:
       engineNumber: $engineNumber
-      brandId: ${tmp_file_get_brand_id()}
+      brandId: ${get_value_from_tmp(brand_id)}
       seriesId: ${get_value_from_tmp(seriesId)}
       typeId: ${get_value_from_tmp(typeId)}
       propertyId: ${propertyId}

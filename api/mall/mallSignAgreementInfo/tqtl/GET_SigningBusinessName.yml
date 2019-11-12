@@ -1,0 +1,18 @@
+name: 获取商户名称  api/mall/mallSignAgreementInfo/tqtl/GET_SigningBusinessName.yml
+variables:
+  access_token: ${get_token(access_token)}
+  outerKey: ${get_value_from_tmp(outerKey)}
+  orderId: "1385"
+  payment: ''
+base_url: ${ENV(base_url)}
+request:
+  headers:
+      Authorization: Bearer ${access_token}
+  method: GET
+  params:
+    outerKey: $outerKey
+  url: /mall/api/tonglian/enum/SigningBusinessName/$payment
+validate:
+  - eq: [status_code, 200]
+teardown_hooks:
+  - ${get_value_from_response($response,businessName)}

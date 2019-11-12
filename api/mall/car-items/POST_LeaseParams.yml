@@ -1,7 +1,6 @@
-name:  api/mall/car-items/POST_LeaseParams.yml
+name:  获取车辆ID api/mall/car-items/POST_LeaseParams.yml
 variables:
   access_token: ${get_token(access_token)}
-  refresh_token: ${get_token(refresh_token)}
   phoneNum: ${ENV(phoneNum)}
   sellerId: ${get_value_from_tmp(sellerId)}
   keyword: ""

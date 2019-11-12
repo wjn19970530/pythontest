@@ -2,5 +2,6 @@
 /log/
 /summary.json
 /.idea/
-/data/
+/data/tmp.json
+/data/token.csv
 .env
