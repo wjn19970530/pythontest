@@ -24,9 +24,6 @@ testcases:
     teardown_hooks:
       - ${run_audit_order(90)}
 
-    setup_hooks:
-        - ${sleep(90)}
-
 -   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/refund/confirmed_after_Refund.yml
     testcase: testcases/order/refund/confirmed_after_Refund.yml
 
