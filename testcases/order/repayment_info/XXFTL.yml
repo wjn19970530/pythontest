@@ -151,7 +151,7 @@ teststeps:
     setup_hooks:
       - ${sleep(10)}
     teardown_hooks:
-      - ${sql_init_repayment($phoneNum)}
+      - ${sql_init_tonglian_pay($phoneNum)}
       - ${sql_init_tqtl_repayment($phoneNum)}
 #
 #  - name: 完善还款信息  api/mall/find/GET_TongLianInfo.yml

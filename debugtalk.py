@@ -207,6 +207,30 @@ def sql_init_tqtl_repayment(phone_num):
     DBOperate(mall).execute_sql("update tq_tonglian_info set user_id='" + user_id + "01' where user_id='" + user_id + "'")
 
 
+def sql_init_tonglian_pay(phone_num):
+    """
+    删除通联开户信息
+    :param phone_num:客户手机号
+    :return:
+    """
+    sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
+    user_id = str(DBOperate(usercenter).query_sql(sql)[0])
+    sql_delete_open = "delete from open_account_flow_major_record where customer_id='"+user_id+"'"
+    sql_delete_sub = "delete from sub_account where target_id='"+user_id+"'"
+    sql_delete_bank = "delete from bank_account where target_id='"+user_id+"'"
+    DBOperate(pay).execute_sql(sql_delete_open)
+    DBOperate(pay).execute_sql(sql_delete_sub)
+    DBOperate(pay).execute_sql(sql_delete_bank)
+    # sql_open_id = "SELECT id from open_account_flow_major_record where customer_name='" + customer_name + "'"
+    # open_id = str(DBOperate(pay).query_sql(sql_open_id)[0])
+    # print(open_id)
+    # sql_sub_id = "SELECT id from sub_account where serial_number='" + open_id + "'"
+    # sub_id = str(DBOperate(pay).query_sql(sql_sub_id)[0])
+    # print(sub_id)
+    # sql_bank_id = "SELECT id from bank_account where serial_number='" + sub_id + "'"
+    # bank_id = str(DBOperate(pay).query_sql(sql_bank_id)[0])
+    # print(bank_id)
+
 def sql_init_contract_info(phone_num):
     """
         完善个人信息前将数据库中已有的联系人信息删除
@@ -601,5 +625,5 @@ if __name__ == '__main__':
     # print(type(sell), sell)
     # transcation_no = "a7767b33ecef4abb8157a522fc935401"
     # print(sql_get_verify_code(transcation_no))
-    sql_init_order('15012340002')
+    sql_init_tonglian_pay('16621368448')
 
