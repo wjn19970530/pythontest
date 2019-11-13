@@ -40,7 +40,7 @@ teststeps:
 -   name: 获取车辆详细信息  api/mall/car-items/GET_CarItemDetails.yml
     api: api/mall/car-items/GET_CarItemDetails.yml
     variables:
-      carId: get_value_from_tmp(carId)
+      carId: ${get_value_from_tmp(carId)}
     validate:
       - eq: [status_code,200]
     extract:
@@ -52,7 +52,7 @@ teststeps:
     variables:
         leasePlanId: ${leasePlanId}
         skuId: ${skuId}
-        itemId: get_value_from_tmp(carId)
+        itemId: ${get_value_from_tmp(carId)}
     extract:
       orderId: content.orderId
     validate:
