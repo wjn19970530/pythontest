@@ -1,5 +1,5 @@
 config:
-    name: 从添加代售车辆到待签署合同   testcases/transaction/create_car.yml
+    name: 从添加代售车辆到待签署合同   testcases/transaction/master/create_car.yml
 
 teststeps:
   - name: 保存未审核订单数量 testcases/order/master/nonaudit_order_count.yml

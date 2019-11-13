@@ -9,58 +9,29 @@ from debugtalk import get_value_from_tmp
 
 if __name__ == '__main__':
     log_file = BaseCommon.get_logfile()
-    runner = HttpRunner(log_level="DEBUG", log_file=log_file, failfast=True)
+    runner = HttpRunner(log_level="INFO", log_file=log_file, failfast=True)
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
-
-    runner.run("testcases/order/nonaudit_order_count.yml")
+    #
+    summary = runner.run("testcases/order/nonaudit_order_count.yml")
     times = get_value_from_tmp("length")
     if times != 0:
         for i in range(times):
             runner.run("testcases/order/audit_order_without_sleep.yml")
-    runner.run("testcases/login/web_login.yml")
-    # summary=runner.run("api/supplychain/Get_Cars_ condition.yml")
-    # runner.run("testcases/supply/skipIf_create_car.yml")
-    # summary=runner.run("api/account/GET_Account.yml")
-    # summary=runner.run("testcases/order/Earnestmoney/pay_earnest_tailmoney.yml")
-
+    # #
+    summary = runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
-    # summary = runner.run("testcases/order/release_car/")
-    # runner.run("testsuites/order.yml")
+    # summary = runner.run("testcases/order/repayment_info/XXFTL.yml")
+    # summary = runner.run("api/mall/salesman/POST_Order.yml")
+    # summary = runner.run("api/mall/mallSignAgreementInfo/tqtl/POST_SaveCommonTonglianInfo.yml")
+    # summary = runner.run("testcases/transaction/create_car.yml")
+    # summary = runner.run("testcases/order/repayment_info/ZYR.yml")
+    # summary = runner.run("testcases/order/release_car/timed_release.yml")
+    # summary = runner.run("testcases/transaction/create_car.yml")
     # runner.run("testcases/login/master_login.yml")
     # runner.run("testcases/login/web_login.yml")
-    # runner.run("api/account/GET_TransactionNo.yml")
-
-    # runner.run("testcases/supply/add_car.yml")
-    # runner.run("testcases/supply/generate_inventory.yml")
-    # runner.run("testcases/supply/confirm_inventory.yml")
-    # runner.run("api/mall/back-end/car-item-skus/GET_Generate.yml")
-    # runner.run("api/mall/back-end/car-items/POST_CreateEmpty.yml")
-
-
-    # runner.run("testcases/usercenter/clean_customerInfo.yml")
-    #summary=runner.run("testcases/usercenter/add_customer.yml")
-    # runner.run("testcases/usercenter/purchase_certification.yml")
-    # runner.run("testcases/usercenter/perfect_userInfo.yml")
-    # runner.run("testcases/supply/create_car.yml")
-    # runner.run("testcases/order/APP_create_order.yml")
-    # for i in range(3):
-    # runner.run("testcases/order/audit_order.yml")
-    # runner.run("testcases/order/perfect_repayment_info.yml")
-    # runner.run("testcases/contracts/sign_contract.yml")
-    # runner.run("testcases/order/mention_car.yml")
-
-
-    # runner.run("api/mall/orders/release-car/PUT_Manual.yml")
-    # summary = runner.run("api/mall/orders/PUT_ReUpdateLockApply.yml")
-    # runner.run("testcases/order/system_lock_car.yml")
-    # runner.run("testcases/order/vin_lock_car.yml")
-    # summary = runner.run("testcases/order/release_car/immediately_release.yml")
-    # summary = runner.run("testcases/order/release_car/timed_release.yml")
-
-    # summary = runner.run("testcases/transaction/create_car.yml")
-
+    # summary = runner.run("api/mall/mallSignAgreementInfo/tqtl/POST_SaveCommonTonglianInfo.yml")
 
 
     # runner.run("testcases/supply/add_car.yml")

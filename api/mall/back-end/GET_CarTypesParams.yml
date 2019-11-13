@@ -1,7 +1,7 @@
 name: 查询车辆详细信息 api/mall/back-end/GET_CarTypesParams
 variables:
     access_token: ${get_token(access_token)}
-    brandId: ${tmp_file_get_brand_id()}
+    brandId: ${get_value_from_tmp(brand_id)}
 base_url: ${ENV(base_url)}
 request:
     headers:

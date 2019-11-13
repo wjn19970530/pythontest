@@ -1,10 +1,11 @@
-name: 完善还款信息 api/mall/find/GET_TongLianInfo
+name: 立根通联还款方式完善还款信息 api/mall/find/GET_TongLianInfo.yml
 variables:
   access_token: ${get_token(access_token)}
-  refresh_token: ${get_token(refresh_token)}
-  outerKey: ${ENV(outerKey)}
-  orderId: "213"
-  userId: ${ENV(customerId)}
+  outerKey: ${get_value_from_tmp(outerKey)}
+  orderId: "1277"
+  userId: ${get_value_from_tmp(userId)}
+  IDNum: ${ENV(IDNum)}
+  cardNo: ${ENV(cardNo)}
 base_url: ${ENV(base_url)}
 request:
   headers:
@@ -18,3 +19,5 @@ request:
   url: /mall/api/find/TongLianInfo/${outerKey}
 validate:
 -   eq: [status_code, 200]
+-   eq: [content.cardNo,$IDNum]
+-   eq: [content.bankNum,$cardNo]

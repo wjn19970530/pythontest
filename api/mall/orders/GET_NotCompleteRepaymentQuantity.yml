@@ -1,0 +1,15 @@
+name: 确认开通  api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
+variables:
+    access_token: ${get_token(access_token)}
+    outerKey: ${get_value_from_tmp(outerKey)}
+    orderId: "213"
+    userId: ${get_value_from_tmp(sellerId)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    url: /mall/api/orders/1267/not-complete-repayment-quantity?outerKey=${outerKey}
+validate:
+  - eq: [status_code,200]
+  - eq: [content.notCompleteRepaymentMethodQuantity,0]

@@ -1,0 +1,28 @@
+name: 万向通联还款方式完善还款信息 api/mall/mallSignAgreementInfo/wxtl/POST_Sign.yml
+variables:
+  access_token: ${get_token(access_token)}
+  outerKey: ${get_value_from_tmp(outerKey)}
+  orderId: "1285"
+  userId: ${get_value_from_tmp(userId)}
+  IDNum: ${ENV(IDNum)}
+  cardNo: ${ENV(cardNo)}
+  customerName: ${ENV(name)}
+  verifyCode: '111111'
+  userPhoneNum: ${ENV(phoneNum)}
+base_url: ${ENV(base_url)}
+request:
+  headers:
+      Authorization: Bearer ${access_token}
+  method: POST
+  params:
+      orderId: ${orderId}
+#      repaymentMethod: "2"
+      outerKey: ${outerKey}
+      userName: $customerName
+      identityCard: $IDNum
+      cardNo: $cardNo
+      verifyCode: $verifyCode
+      userPhoneNum: $userPhoneNum
+  url: /mall/api/mallSignAgreementInfo/wxtl/sign
+validate:
+-   eq: [status_code, 200]

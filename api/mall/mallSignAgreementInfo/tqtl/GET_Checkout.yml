@@ -1,0 +1,17 @@
+name: 获取用户还款方式5还款信息记录  api/mall/mallSignAgreementInfo/tqtl/GET_Checkout.yml
+variables:
+  access_token: ${get_token(access_token)}
+  outerKey: ${get_value_from_tmp(outerKey)}
+  orderId: "1385"
+  payment: ''
+base_url: ${ENV(base_url)}
+request:
+  headers:
+      Authorization: Bearer ${access_token}
+  method: GET
+  params:
+    outerKey: $outerKey
+  url: /mall/api/orders/$orderId/$payment/checkout
+validate:
+  - eq: [status_code, 200]
+  - eq: [content.success,false]

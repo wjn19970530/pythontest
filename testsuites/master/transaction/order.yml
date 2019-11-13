@@ -5,29 +5,29 @@ testcases:
 -   name: 【交易链路】从添加代售车辆到待签署合同    testcases/transaction/master/create_car.yml
     testcase: testcases/transaction/master/create_car.yml
 
-# -   name: 【APP】【订单管理】发起锁车-使用系统锁车  testcases/order/master/system_lock_car.yml
-#     testcase: testcases/order/master/system_lock_car.yml
-
-# -   name: 【APP】【订单管理】发起锁车-使用车架号锁车  testcases/order/master/vin_lock_car.yml
-#     testcase: testcases/order/master/vin_lock_car.yml
+#-   name: 【APP】【订单管理】发起锁车-使用系统锁车  testcases/order/master/system_lock_car.yml
+#    testcase: testcases/order/master/system_lock_car.yml
+#
+#-   name: 【APP】【订单管理】发起锁车-使用车架号锁车  testcases/order/master/vin_lock_car.yml
+#    testcase: testcases/order/master/vin_lock_car.yml
+#    teardown_hooks:
+#        - ${run_audit_order(90)}
 
 -   name: 【交易系统】【订单管理】立即释放车源    testcases/order/master/release_car/immediately_release.yml
     testcase: testcases/order/master/release_car/immediately_release.yml
-    setup_hooks:
-        - ${sleep(90)}
-
--   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/master/refund/confirmed_after_Refund.yml
-    testcase: testcases/order/master/refund/confirmed_after_Refund.yml
+    teardown_hooks:
+        - ${run_audit_order(90)}
 
 -   name: 【交易系统】【订单管理】定时释放车源    testcases/order/master/release_car/timed_release.yml
     testcase: testcases/order/master/release_car/timed_release.yml
-    setup_hooks:
-        - ${sleep(90)}
+    teardown_hooks:
+        - ${run_audit_order(90)}
 
 -   name: 【交易系统】【订单管理】审核拒绝后退款 testcases/order/master/refund/audit_reject_refund.yml
     testcase: testcases/order/master/refund/audit_reject_refund.yml
 
-
+#-   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/master/refund/confirmed_after_Refund.yml
+ #   testcase: testcases/order/master/refund/confirmed_after_Refund.yml
 
 -   name: 【交易系统】【订单管理】等待审核时退款 testcases/order/master/refund/wait_audit_refund.yml
     testcase: testcases/order/master/refund/wait_audit_refund.yml
