@@ -1,0 +1,18 @@
+name: 万向通联还款方式完善还款信息-获取验证码 api/mall/mallSignAgreementInfo/wxtl/POST_Note.yml
+variables:
+  access_token: ${get_token(access_token)}
+  outerKey: ${get_value_from_tmp(outerKey)}
+  orderId: "1285"
+  userPhoneNum: ${ENV(phoneNum)}
+base_url: ${ENV(base_url)}
+request:
+  headers:
+      Authorization: Bearer ${access_token}
+  method: POST
+  params:
+      orderId: ${orderId}
+      outerKey: ${outerKey}
+      userPhoneNum: $userPhoneNum
+  url: /mall/api/mallSignAgreementInfo/wxtl/note
+validate:
+-   eq: [status_code, 200]

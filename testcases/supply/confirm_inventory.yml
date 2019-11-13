@@ -14,7 +14,7 @@ teststeps:
     teardown_hooks:
       - ${save_seller_id_form_response($response)}
 
-  - name: APP端验证代售车辆数量  api/mall/car-items/POST_LeaseParams.yml
+  - name: APP端验证待售车辆数量  api/mall/car-items/POST_LeaseParams.yml
     api: api/mall/car-items/POST_LeaseParams.yml
     variables:
         brandName: ${get_config(carBrandName)}

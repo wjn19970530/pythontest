@@ -204,32 +204,33 @@ def sql_init_tqtl_repayment(phone_num):
     """
     sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
-    DBOperate(mall).execute_sql("update tq_tonglian_info set user_id='" + user_id + "01' where user_id='" + user_id + "'")
+    # DBOperate(mall).execute_sql("update tq_tonglian_info set user_id='" + user_id + "01' where user_id='" + user_id + "'")
+    DBOperate(mall).execute_sql("delete from tq_tonglian_info where user_id='" + user_id + "'")
 
 
-def sql_init_tonglian_pay(phone_num):
+def sql_init_tonglian_pay(phone_num, type):
     """
     删除通联开户信息
     :param phone_num:客户手机号
     :return:
     """
+    if type.upper() == 'XXF':
+        pay_flatform = pay + '1004'
+    if type.upper() == 'LG':
+        pay_flatform = pay + '1002'
+    if type.upper() == 'WX' or type.upper() == 'TQ':
+        pay_flatform = pay + '1001'
+    # if type.upper() == 'HX':
+    #     pay_flatform = pay + '1002'
     sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
     sql_delete_open = "delete from open_account_flow_major_record where customer_id='"+user_id+"'"
     sql_delete_sub = "delete from sub_account where target_id='"+user_id+"'"
     sql_delete_bank = "delete from bank_account where target_id='"+user_id+"'"
-    DBOperate(pay).execute_sql(sql_delete_open)
-    DBOperate(pay).execute_sql(sql_delete_sub)
-    DBOperate(pay).execute_sql(sql_delete_bank)
-    # sql_open_id = "SELECT id from open_account_flow_major_record where customer_name='" + customer_name + "'"
-    # open_id = str(DBOperate(pay).query_sql(sql_open_id)[0])
-    # print(open_id)
-    # sql_sub_id = "SELECT id from sub_account where serial_number='" + open_id + "'"
-    # sub_id = str(DBOperate(pay).query_sql(sql_sub_id)[0])
-    # print(sub_id)
-    # sql_bank_id = "SELECT id from bank_account where serial_number='" + sub_id + "'"
-    # bank_id = str(DBOperate(pay).query_sql(sql_bank_id)[0])
-    # print(bank_id)
+    DBOperate(pay_flatform).execute_sql(sql_delete_open)
+    DBOperate(pay_flatform).execute_sql(sql_delete_sub)
+    DBOperate(pay_flatform).execute_sql(sql_delete_bank)
+
 
 def sql_init_contract_info(phone_num):
     """
@@ -312,6 +313,7 @@ def save_car_details_info(response, keyword):
     :param response: 接口响应
     :return:
     """
+    # print('keyword', keyword)
     message = BCommon.read_tmp_file(file)
     response = response.json
     if type(response) is dict:
@@ -328,10 +330,10 @@ def save_car_details_info(response, keyword):
 def get_car_full_name(brand_name, series_name, type_name):
     """
     拼接车辆全名
-    :param brand_name:
-    :param series_name:
-    :param type_name:
-    :return:
+    :param brand_name:  品牌名
+    :param series_name: 系列名
+    :param type_name:   车型名
+    :return:    全名
     """
     return brand_name + series_name + type_name
 
@@ -388,6 +390,8 @@ def get_config(key):
         value = carFullName
     if key == "carSeriesName":
         value = carSeriesName
+    if key == "carTypeName":
+        value = carTypeName
     return value
 
 
@@ -458,10 +462,12 @@ def save_car_id_from_response(response, keyword):
     :param keyword: 车辆全名
     :return:
     """
+    # print('keyword', keyword)
     response = response.json
     for item in response:
         if item['name'] == keyword:
             carId = item['id']
+            # print(keyword, "carId:", carId)
             save_message_to_tmp("carId", carId)
 
 
@@ -484,16 +490,16 @@ def save_skip_create_car(response):
     BCommon.write_tmp_file(file, message)
 
 
-def get_car_full_name(brand, series, type):
-    """
-    返回车辆全名
-    :param brand: 品牌
-    :param series:  系列
-    :param type:  车型
-    :return: full_name  全名
-    """
-    full_name = brand + series + type
-    return full_name
+# def get_car_full_name(brand, series, type):
+#     """
+#     返回车辆全名
+#     :param brand: 品牌
+#     :param series:  系列
+#     :param type:  车型
+#     :return: full_name  全名
+#     """
+#     full_name = brand + series + type
+#     return full_name
 
 
 def save_message_to_tmp(key, value):
@@ -595,17 +601,60 @@ def run_audit_order(second=1):
     runner.run(test)
 
 
+def run_refund_for_sale(second=1):
+    """
+    车辆状态为“待售”的订单发起退款
+    :param second: 跑用例前休眠时间
+    :return:
+    """
+    test = 'testcases/order/master/refund_for_sale.yml'
+    sleep(second)
+    runner.run(test)
+
+
+def run_refund_for_release(second=1):
+    """
+    车辆状态为“释放车源”的订单发起退款
+    :param second: 跑用例前休眠时间
+    :return:
+    """
+    test = 'testcases/order/master/refund_release_car.yml'
+    sleep(second)
+    runner.run(test)
+
 def get_value_from_response(response, key):
     """
     从接口响应中提取key对应的value保存至data/tmp.json
     :param key:
     :return:
     """
-    print(key)
+    # print(key)
     response = response.json
     value = response[key]
-    print(key, value)
+    # print(key, value)
     save_message_to_tmp(key, value)
+
+
+def get_outer_key(response, method=1):
+    """
+    从完善还款信息二维码接口获取outerKey
+    :param response: 接口响应
+    :return:
+    """
+    # print(method,type(method))
+    response = response.json
+    value = response['url']
+    if method != 1:
+        start_index = value.index('outerKey=') + 8
+        # end_index = value.index("'")
+        outerKey = value[start_index + 1:]
+        save_message_to_tmp("outerKey", outerKey)
+        # print(outerKey)
+    else:
+        start_index = value.index('=')
+        end_index = value.index('&')
+        outerKey = value[start_index+1:end_index]
+        save_message_to_tmp("outerKey", outerKey)
 
 
 if __name__ == '__main__':

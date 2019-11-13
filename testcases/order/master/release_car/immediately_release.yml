@@ -1,5 +1,10 @@
 config:
     name: 立即释放车源  testcases/order/master/release_car/immediately_release.yml
+    variables:
+      brandName: ${get_config(carBrandName)}
+      seriesName: ${get_config(carSeriesName)}
+      typeName: ${get_config(carTypeName)}
+      carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
 
 teststeps:
   - name: 保存未审核订单数量 testcases/order/master/nonaudit_order_count.yml
@@ -44,7 +49,7 @@ teststeps:
   - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: $carFullName
       isLocked: 0
       carStstus: 4
     validate:
@@ -58,7 +63,7 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: $carFullName
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, false]
@@ -66,6 +71,8 @@ teststeps:
 
   - name: 下单 testcases/order/master/create_order.yml
     testcase: testcases/order/master/create_order.yml
+    variables:
+      keyword: $carFullName
     validate:
       - eq: [status_code,200]
 
@@ -115,7 +122,7 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: $carFullName
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, false]
