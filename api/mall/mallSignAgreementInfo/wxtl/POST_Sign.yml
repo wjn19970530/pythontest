@@ -16,7 +16,6 @@ request:
   method: POST
   params:
       orderId: ${orderId}
-#      repaymentMethod: "2"
       outerKey: ${outerKey}
       userName: $customerName
       identityCard: $IDNum

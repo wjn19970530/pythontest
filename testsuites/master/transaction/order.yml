@@ -2,7 +2,7 @@ config:
     name: 订单操作 testsuites/master/transaction/order.yml
 
 testcases:
--   name: 【交易链路】从添加代售车辆到待签署合同    testcases/transaction/master/create_car.yml
+-   name: 【交易链路】从添加待售车辆到待签署合同    testcases/transaction/master/create_car.yml
     testcase: testcases/transaction/master/create_car.yml
 
 -   name: 【APP】【订单管理】发起锁车-使用系统锁车  testcases/order/master/system_lock_car.yml

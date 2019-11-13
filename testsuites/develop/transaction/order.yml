@@ -2,15 +2,16 @@ config:
     name: 订单操作 testsuites/develop/transaction/order.yml
 
 testcases:
-
 -   name: 【交易链路】从添加用户一直到提车交易完成    testcases/transaction/create_car.yml
     testcase: testcases/transaction/create_car.yml
 
--   name: 【APP】【订单管理】发起锁车-使用系统锁车  testcases/order/lock_car/system_lock_car.yml
-    testcase: testcases/order/lock_car/system_lock_car.yml
-
--   name: 【APP】【订单管理】发起锁车-使用车架号锁车  testcases/order/lock_car/vin_lock_car.yml
-    testcase: testcases/order/lock_car/vin_lock_car.yml
+#-   name: 【APP】【订单管理】发起锁车-使用系统锁车  testcases/order/lock_car/system_lock_car.yml
+#    testcase: testcases/order/lock_car/system_lock_car.yml
+#
+#-   name: 【APP】【订单管理】发起锁车-使用车架号锁车  testcases/order/lock_car/vin_lock_car.yml
+#    testcase: testcases/order/lock_car/vin_lock_car.yml
+#    teardown_hooks:
+#        - ${run_audit_order(90)}
 
 -   name: 【交易系统】【订单管理】立即释放车源    testcases/order/release_car/immediately_release.yml
     testcase: testcases/order/release_car/immediately_release.yml
@@ -20,18 +21,15 @@ testcases:
 -   name: 【交易系统】【订单管理】定时释放车源    testcases/order/release_car/timed_release.yml
     testcase: testcases/order/release_car/timed_release.yml
     teardown_hooks:
-        - ${run_audit_order(90)}
-
--   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/refund/confirmed_after_Refund.yml
-    testcase: testcases/order/refund/confirmed_after_Refund.yml
+      - ${run_audit_order(90)}
 
 -   name: 【交易系统】【订单管理】审核拒绝后退款 testcases/order/refund/audit_reject_refund.yml
     testcase: testcases/order/refund/audit_reject_refund.yml
 
-
+-   name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/refund/confirmed_after_Refund.yml
+    testcase: testcases/order/refund/confirmed_after_Refund.yml
 
 -   name: 【交易系统】【订单管理】等待审核时退款 testcases/order/refund/wait_audit_refund.yml
     testcase: testcases/order/refund/wait_audit_refund.yml
 
--   name: 【交易系统】【订单管理】购车支付定金后支付尾款 testcases/order/Earnestmoney/pay_earnest_tailmoney.yml
-    testcase: testcases/order/Earnestmoney/pay_earnest_tailmoney.yml
+

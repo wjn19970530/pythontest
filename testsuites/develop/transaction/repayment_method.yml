@@ -1,0 +1,38 @@
+config:
+    name: 【APP】【订单管理】完善还款信息用例 testsuites/develop/transaction/repayment_method.yml
+
+teststeps:
+  - name: 还款方式:建行划扣 testcases/order/repayment_info/JHHK.yml
+    testcase: testcases/order/repayment_info/JHHK.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 还款方式:喜相逢通联 testcases/order/repayment_info/XXFTL.yml
+    testcase: testcases/order/repayment_info/XXFTL.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 还款方式:淘汽通联 testcases/order/repayment_info/TQTL.yml
+    testcase: testcases/order/repayment_info/TQTL.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 还款方式:万向通联 testcases/order/repayment_info/WXTL.yml
+    testcase: testcases/order/repayment_info/WXTL.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 还款方式:立根通联 testcases/order/repayment_info/LGTL.yml
+    testcase: testcases/order/repayment_info/LGTL.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 还款方式:建行划扣 testcases/order/repayment_info/JHHK.yml
+    testcase: testcases/order/repayment_info/JHHK.yml
+    validate:
+      - eq: [status_code,200]
+
+#  - name: 还款方式:致优融  testcases/order/repayment_info/ZYR.yml
+#    testcase: testcases/order/repayment_info/ZYR.yml
+#    validate:
+#      - eq: [status_code,200]
