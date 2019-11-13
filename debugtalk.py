@@ -462,12 +462,12 @@ def save_car_id_from_response(response, keyword):
     :param keyword: 车辆全名
     :return:
     """
-    # print('keyword', keyword)
+    print('keyword', keyword)
     response = response.json
     for item in response:
         if item['name'] == keyword:
             carId = item['id']
-            # print(keyword, "carId:", carId)
+            print(keyword, "carId:", carId)
             save_message_to_tmp("carId", carId)
 
 

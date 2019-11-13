@@ -22,6 +22,8 @@ teststeps:
 
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
+    validate:
+      - eq: [status_code,200]
 
   - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
@@ -48,6 +50,8 @@ teststeps:
 
   - name: 下单 testcases/order/APP_create_order.yml
     testcase: testcases/order/APP_create_order.yml
+    variables:
+      keyword: ${get_config(carFullName)}
     validate:
       - eq: [status_code,200]
 
@@ -119,6 +123,8 @@ teststeps:
 
   - name: 验证订单状态：等待审核、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
+    setup_hooks:
+      - ${sleep(10)}
     variables:
       tradeNo: ${tradeNo}
     validate:

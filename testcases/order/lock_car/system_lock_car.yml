@@ -48,6 +48,8 @@ teststeps:
 
   - name: 下单 testcases/order/APP_create_order.yml
     testcase: testcases/order/APP_create_order.yml
+    variables:
+      keyword: ${get_config(carFullName)}
     validate:
       - eq: [status_code,200]
 
