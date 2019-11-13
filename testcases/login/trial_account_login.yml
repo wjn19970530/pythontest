@@ -6,8 +6,12 @@ teststeps:
     api: api/account/GET_TrialVeriCode.yml
     variables:
         trialPhoneNum: ${ENV(trialPhoneNum)}
+    validate:
+      - eq: [status_code,200]
 
   - name: 登录审核账号获取token api/auth/POST_TrialLogin.yml
     api: api/auth/POST_TrialLogin.yml
+    validate:
+      - eq: [status_code,200]
     teardown_hooks:
       - ${save_trial_token($response)}
