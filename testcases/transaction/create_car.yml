@@ -26,15 +26,15 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-#   - name: 清除客户信息  testcases/usercenter/clean_customerInfo.yml
-#     testcase: testcases/usercenter/clean_customerInfo.yml
-#     validate:
-#       - eq: [status_code,200]
+  - name: 清除客户信息  testcases/usercenter/clean_customerInfo.yml
+    testcase: testcases/usercenter/clean_customerInfo.yml
+    validate:
+      - eq: [status_code,200]
 
-#   - name: 添加客户  testcases/usercenter/add_customer.yml
-#     testcase: testcases/usercenter/add_customer.yml
-#     validate:
-#       - eq: [status_code,200]
+  - name: 添加客户  testcases/usercenter/add_customer.yml
+    testcase: testcases/usercenter/add_customer.yml
+    validate:
+      - eq: [status_code,200]
 
   - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
     api: api/usercenter/users/POST_Customer.yml
