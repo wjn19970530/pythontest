@@ -24,7 +24,7 @@ if __name__ == '__main__':
     summary = runner.run("testsuites/develop/")
     # summary = runner.run("testsuites/develop/transaction/repayment_method.yml")
     # summary = runner.run("testcases/order/repayment_info/JHHK.yml")
-    # summary = runner.run("testsuites/develop/supply/car.yml")
+    # summary = runner.run("testsuites/develop/supply/inventory.yml")
     # summary = runner.run("testcases/supply/generate_inventory.yml")
     # summary = runner.run("testcases/order/release_car/timed_release.yml")
     # summary = runner.run("testcases/order/repayment_info/XXFTL.yml")

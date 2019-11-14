@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     runner.run("testcases/login/master_login.yml")
     summary = runner.run("testsuites/master/")
+    # summary = runner.run("testsuites/master/transaction/release_car.yml")
     # summary = runner.run("testcases/order/master/release_car/")
     # summary = runner.run("testcases/transaction/master/create_car.yml")
 

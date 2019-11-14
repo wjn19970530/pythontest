@@ -1,5 +1,5 @@
 config:
-    name: 车辆相关操作  testsuites/master/supply/car.yml
+    name: 验证车辆库存用例  testsuites/master/supply/inventory.yml
 
 testcases:
 

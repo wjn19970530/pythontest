@@ -5,14 +5,6 @@ config:
       seriesName: ${get_config(carSeriesName)}
       typeName: ${get_config(carTypeName)}
       carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
-    setup_hooks:
-      - ${run_get_user_message()}
-      - ${run_master_audit_order()}
-      - ${run_refund_order()}
-      - ${sleep(5)}
-    teardown_hooks:
-      - ${run_master_audit_order()}
-      - ${run_refund_order()}
 
 teststeps:
 #  - name: 保存未审核订单数量 testcases/order/master/nonaudit_order_count.yml
@@ -42,7 +34,7 @@ teststeps:
 #    validate:
 #      - eq: [status_code,200]
 #
-#  - name: 代售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
+#  - name: 待售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
 #    testcase: testcases/order/master/refund_for_sale.yml
 #    validate:
 #      - eq: [status_code,200]
@@ -51,6 +43,11 @@ teststeps:
 
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
+    setup_hooks:
+      - ${run_get_user_message()}
+      - ${run_master_audit_order()}
+      - ${run_refund_order()}
+      - ${sleep(5)}
     validate:
       - eq: [status_code,200]
 
@@ -185,3 +182,6 @@ teststeps:
       tradeNo: ${tradeNo}
     validate:
       - eq: [content.0.orderStatusDesc,"交易取消"]
+    teardown_hooks:
+      - ${run_master_audit_order()}
+      - ${run_refund_order()}

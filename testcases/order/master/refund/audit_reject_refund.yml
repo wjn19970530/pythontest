@@ -30,7 +30,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
--   name: 代售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
+-   name: 待售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
     testcase: testcases/order/master/refund_for_sale.yml
     validate:
       - eq: [status_code,200]

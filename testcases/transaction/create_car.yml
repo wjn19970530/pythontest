@@ -1,5 +1,13 @@
 config:
     name: 从添加用户到提车、交易完成链路  testcases/transaction/create_car.yml
+    setup_hooks:
+      - ${run_get_user_message()}
+      - ${run_master_audit_order()}
+      - ${run_refund_order()}
+      - ${sleep(5)}
+    teardown_hooks:
+      - ${run_master_audit_order()}
+      - ${run_refund_order()}
 
 teststeps:
   - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
