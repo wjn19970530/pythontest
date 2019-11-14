@@ -6,34 +6,39 @@ config:
         typeName: 'WXTL'
         carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
         phoneNum: ${ENV(phoneNum)}
+        orderId: '1478'
+        tradeNo: 20191113195819100153733438
 
 teststeps:
-  - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
-    testcase: testcases/order/nonaudit_order_count.yml
-    validate:
-      - eq: [status_code, 200]
+#  - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
+#    testcase: testcases/order/nonaudit_order_count.yml
+#    validate:
+#      - eq: [status_code, 200]
+#
+#  - name: 审核订单  testcases/order/audit_order_without_sleep.yml
+#    testcase: testcases/order/audit_order_without_sleep.yml
+#    validate:
+#      - eq: [status_code, 200]
 
-  - name: 审核订单  testcases/order/audit_order_without_sleep.yml
-    testcase: testcases/order/audit_order_without_sleep.yml
-    validate:
-      - eq: [status_code, 200]
-
-  - name: 获取账户信息  api/account/GET_Account.yml
-    api: api/account/GET_Account.yml
-    validate:
-      - eq: [status_code, 200]
-    teardown_hooks:
-      - ${save_seller_id_form_response($response)}
-
-  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
-    api: api/usercenter/users/POST_Customer.yml
-    variables:
-      queryName: ${ENV(phoneNum)}
-    validate:
-      - eq: [status_code,200]
+#  - name: 获取账户信息  api/account/GET_Account.yml
+#    api: api/account/GET_Account.yml
+#    validate:
+#      - eq: [status_code, 200]
+#    teardown_hooks:
+#      - ${save_seller_id_form_response($response)}
+#
+#  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+#    api: api/usercenter/users/POST_Customer.yml
+#    variables:
+#      queryName: ${ENV(phoneNum)}
+#    validate:
+#      - eq: [status_code,200]
 
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
+    setup_hooks:
+      - ${run_audit_order()}
+      - ${run_get_user_message()}
     variables:
       carTypeName: $carFullName
     validate:
@@ -151,12 +156,52 @@ teststeps:
     setup_hooks:
       - ${sleep(10)}
 
-  - name: 完善还款信息  api/mall/mallSignAgreementInfo/wxtl/POST_Sign.yml
+  - name: 获取完善还款信息二维码 api/mall/orders/GET_UserBankInfoUrl.yml
+    api: api/mall/orders/GET_UserBankInfoUrl.yml
+    setup_hooks:
+      - ${sql_init_tqtl_repayment($phoneNum)}
+      - ${sql_init_tonglian_pay($phoneNum,TQ)}
+      - ${sql_init_repayment($phoneNum)}
+      - ${sleep(5)}
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+
+  - name: 获取用户还款方式还款信息记录  api/mall/mallSignAgreementInfo/tqtl/GET_Checkout.yml
+    api: api/mall/mallSignAgreementInfo/tqtl/GET_Checkout.yml
+    variables:
+      orderId: $orderId
+      payment: 2
+    validate:
+      - eq: [status_code,200]
+
+  - name: 获取用户完善还款信息情况  api/mall/mallSignAgreementInfo/tqtl/GET_BankInfo.yml
+    api: api/mall/mallSignAgreementInfo/tqtl/GET_BankInfo.yml
+    variables:
+      orderId: $orderId
+      payment: 2
+    validate:
+      - eq: [status_code,200]
+
+  - name: 万向通联还款方式-获取验证码  api/mall/mallSignAgreementInfo/wxtl/POST_Note.yml
+    api: api/mall/mallSignAgreementInfo/wxtl/POST_Note.yml
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+
+  - name: 万向通联还款方式-提交  api/mall/mallSignAgreementInfo/wxtl/POST_Sign.yml
     api: api/mall/mallSignAgreementInfo/wxtl/POST_Sign.yml
     setup_hooks:
       - ${sql_init_repayment($phoneNum)}
     variables:
         orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+
+  - name: 确认开通成功 api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
+    api: api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
     validate:
       - eq: [status_code,200]
 
@@ -203,3 +248,10 @@ teststeps:
         - eq: [content.0.locked, true]
         - eq: [content.0.sold, true]
         - eq: [content.0.tradeNo,$tradeNo]
+
+  - name: 更新客户outerKey  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    variables:
+      queryName: ${ENV(phoneNum)}
+    validate:
+      - eq: [status_code,200]

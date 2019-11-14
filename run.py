@@ -13,90 +13,28 @@ if __name__ == '__main__':
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
-
-
-    runner.run("testcases/order/nonaudit_order_count.yml")
-
+        
+    summary = runner.run("testcases/order/nonaudit_order_count.yml")
     times = get_value_from_tmp("length")
     if times != 0:
         for i in range(times):
             runner.run("testcases/order/audit_order_without_sleep.yml")
-            
+
     summary = runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
-    # summary = runner.run("testcases/order/repayment_info/WXTL.yml")
-    # summary = runner.run("api/mall/mallSignAgreementInfo/tqtl/POST_SaveCommonTonglianInfo.yml")
-    # summary = runner.run("testcases/transaction/create_car.yml")
+    # summary = runner.run("testsuites/develop/transaction/lock_car.yml")
+    # summary = runner.run("testsuites/develop/transaction/repayment_method.yml")
+    # summary = runner.run("testcases/order/repayment_info/JHHK.yml")
+    # summary = runner.run("testsuites/develop/supply/inventory.yml")
+    # summary = runner.run("testcases/supply/generate_inventory.yml")
+    # summary = runner.run("testcases/order/release_car/timed_release.yml")
+    # summary = runner.run("testcases/order/repayment_info/XXFTL.yml")
+    # summary = runner.run("testcases/order/lock_car/vin_lock_car.yml")
     # summary = runner.run("testcases/order/repayment_info/ZYR.yml")
     # summary = runner.run("testcases/order/release_car/timed_release.yml")
     # summary = runner.run("testcases/transaction/create_car.yml")
     # runner.run("testcases/login/master_login.yml")
-    # runner.run("testcases/login/web_login.yml")
-    # summary = runner.run("api/mall/mallSignAgreementInfo/tqtl/POST_SaveCommonTonglianInfo.yml")
-
-    # runner.run("testcases/login/web_login.yml")
-    # summary=runner.run("api/supplychain/Get_Cars_ condition.yml")
-    # runner.run("testcases/supply/skipIf_create_car.yml")
-    # summary=runner.run("api/account/GET_Account.yml")
-    # summary=runner.run("testcases/order/Earnestmoney/pay_earnest_tailmoney.yml")
-
-    # summary = runner.run("testsuites/develop/")
-    # summary = runner.run("testcases/order/release_car/")
-    # runner.run("testsuites/order.yml")
-    # runner.run("testcases/login/master_login.yml")
-    # runner.run("testcases/login/web_login.yml")
-    # runner.run("api/account/GET_TransactionNo.yml")
-
-    # runner.run("testcases/supply/add_car.yml")
-    # runner.run("testcases/supply/generate_inventory.yml")
-    # runner.run("testcases/supply/confirm_inventory.yml")
-    # runner.run("api/mall/back-end/car-item-skus/GET_Generate.yml")
-    # runner.run("api/mall/back-end/car-items/POST_CreateEmpty.yml")
-
-
-    # runner.run("testcases/usercenter/clean_customerInfo.yml")
-    #summary=runner.run("testcases/usercenter/add_customer.yml")
-    # runner.run("testcases/usercenter/purchase_certification.yml")
-    # runner.run("testcases/usercenter/perfect_userInfo.yml")
-    # runner.run("testcases/supply/create_car.yml")
-    # runner.run("testcases/order/APP_create_order.yml")
-    # for i in range(3):
-    # runner.run("testcases/order/audit_order.yml")
-    # runner.run("testcases/order/perfect_repayment_info.yml")
-    # runner.run("testcases/contracts/sign_contract.yml")
-    # runner.run("testcases/order/mention_car.yml")
-
-
-    # runner.run("api/mall/orders/release-car/PUT_Manual.yml")
-    # summary = runner.run("api/mall/orders/PUT_ReUpdateLockApply.yml")
-    # runner.run("testcases/order/system_lock_car.yml")
-    # runner.run("testcases/order/vin_lock_car.yml")
-    # summary = runner.run("testcases/order/release_car/immediately_release.yml")
-    # summary = runner.run("testcases/order/release_car/timed_release.yml")
-
     # summary = runner.run("testcases/transaction/create_car.yml")
-
-
-
-    # runner.run("testcases/supply/add_car.yml")
-    # runner.run("api/contract/GET_ContractTemplateSuites.yml")
-    # runner.run("api/mall/back-end/car-lease-plans/POST_Item.yml")
-    # runner.run("testcases/supply/generate_inventory.yml")
-    # runner.run("api/usercenter/organizations/GET_Root.yml")
-    # runner.run("api/usercenter/organization-cars/POST_Bind.yml")
-
-    # runner.run("api/mall/back-end/car-items/POST_CreateEmpty.yml")
-    # runner.run("api/mall/back-end/car-items/PUT_UpdateStatus.yml")
-    # runner.run("api/mall/back-end/car-lease-plans/POST_Item.yml")
-    # runner.run("api/mall/back-end/GET_CarTypesParams.yml")
-    # runner.run("api/mall/back-end/POST_CarItemsBaseInfo.yml")
-
-    # runner.run("testcases/order/refund/confirm_return.yml")
-
-    # runner.run("testcases/supply/save_inventory.yml")
-    # runner.run("api/supplychain/GET_Cars.yml")
-
-
 
 
     # 获取用例执行情况

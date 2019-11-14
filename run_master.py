@@ -14,27 +14,19 @@ if __name__ == '__main__':
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
 
-    runner.run("testcases/order/master/nonaudit_order_count.yml")
+    summary = runner.run("testcases/order/master/nonaudit_order_count.yml")
     times = get_value_from_tmp("length")
     if times != 0:
         for i in range(times):
             runner.run("testcases/order/master/audit_order_without_sleep.yml")
 
     runner.run("testcases/login/master_login.yml")
-    # summary=runner.run("testcases/order/master/refund/wait_audit_refund.yml")
-
-    # summary = runner.run("testcases/transaction/master/create_car.yml")
-
-    # summary = runner.run("testcases/transaction/master/create_car.yml")
     summary = runner.run("testsuites/master/")
-<<<<<<< HEAD
-    # summary = runner.run("testcases/order/master/release_car/timed_release.yml")
-    # summary = runner.run("testcases/order/master/create_order.yml")
-=======
+    # summary = runner.run("testsuites/master/transaction/release_car.yml")
+    # summary = runner.run("testcases/order/master/release_car/")
+    # summary = runner.run("testcases/transaction/master/create_car.yml")
 
->>>>>>> fyx
-
-    # summary = runner.run("testcases/supply/master/generate_inventory.yml")
+    # summary = runner.run("testcases/order/master/vin_lock_car.yml")
     # summary = runner.run("testcases/supply/master/confirm_inventory.yml")
 
 

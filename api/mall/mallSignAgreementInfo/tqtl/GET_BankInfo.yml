@@ -13,4 +13,4 @@ request:
   url: /mall/api/orders/$orderId/bankInfo
 validate:
   - eq: [status_code, 200]
-  - eq: [content.success,false]
+#  - eq: [content.success,false]
