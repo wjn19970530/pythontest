@@ -9,3 +9,5 @@ request:
     url: /uaaaccount/api/account
 validate:
 -   eq: [status_code, 200]
+teardown_hooks:
+    - ${save_seller_id_form_response($response)}

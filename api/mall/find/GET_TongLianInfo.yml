@@ -6,6 +6,7 @@ variables:
   userId: ${get_value_from_tmp(userId)}
   IDNum: ${ENV(IDNum)}
   cardNo: ${ENV(cardNo)}
+  payment: ''
 base_url: ${ENV(base_url)}
 request:
   headers:
@@ -14,10 +15,10 @@ request:
   params:
       orderId: ${orderId}
       userId: ${userId}
-      repaymentMethod: "3"
+      repaymentMethod: $payment
       outerKey: ${outerKey}
   url: /mall/api/find/TongLianInfo/${outerKey}
 validate:
 -   eq: [status_code, 200]
--   eq: [content.cardNo,$IDNum]
--   eq: [content.bankNum,$cardNo]
+#-   eq: [content.cardNo,$IDNum]
+#-   eq: [content.bankNum,$cardNo]

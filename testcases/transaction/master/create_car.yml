@@ -1,40 +1,48 @@
 config:
-    name: 从添加代售车辆到待签署合同   testcases/transaction/master/create_car.yml
+    name: 从添加待售车辆到待签署合同   testcases/transaction/master/create_car.yml
+    setup_hooks:
+      - ${run_get_user_message()}
+      - ${run_master_audit_order()}
+      - ${run_refund_order()}
+      - ${sleep(5)}
+    teardown_hooks:
+      - ${run_master_audit_order()}
+      - ${run_refund_order()}
 
 teststeps:
-  - name: 保存未审核订单数量 testcases/order/master/nonaudit_order_count.yml
-    testcase: testcases/order/master/nonaudit_order_count.yml
-    validate:
-      - eq: [status_code, 200]
-
-  - name: 审核订单  testcases/order/master/audit_order_without_sleep.yml
-    testcase: testcases/order/master/audit_order_without_sleep.yml
-    validate:
-      - eq: [status_code, 200]
-
-  - name: 获取账户信息  api/account/GET_Account.yml
-    api: api/account/GET_Account.yml
-    validate:
-      - eq: [status_code, 200]
-    teardown_hooks:
-      - ${save_seller_id_form_response($response)}
-
-  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
-    api: api/usercenter/users/POST_Customer.yml
-    validate:
-      - eq: [status_code,200]
-
-  - name: 释放车源状态的有效订单发起退款 testcases/order/master/refund_release_car.yml
-    testcase: testcases/order/master/refund_release_car.yml
-    validate:
-      - eq: [status_code,200]
-
-  - name: 代售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
-    testcase: testcases/order/master/refund_for_sale.yml
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${sleep(5)}
+#  - name: 保存未审核订单数量 testcases/order/master/nonaudit_order_count.yml
+#    testcase: testcases/order/master/nonaudit_order_count.yml
+#    validate:
+#      - eq: [status_code, 200]
+#
+#  - name: 审核订单  testcases/order/master/audit_order_without_sleep.yml
+#    testcase: testcases/order/master/audit_order_without_sleep.yml
+#    validate:
+#      - eq: [status_code, 200]
+#
+#  - name: 获取账户信息  api/account/GET_Account.yml
+#    api: api/account/GET_Account.yml
+#    validate:
+#      - eq: [status_code, 200]
+#    teardown_hooks:
+#      - ${save_seller_id_form_response($response)}
+#
+#  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+#    api: api/usercenter/users/POST_Customer.yml
+#    validate:
+#      - eq: [status_code,200]
+#
+#  - name: 释放车源状态的有效订单发起退款 testcases/order/master/refund_release_car.yml
+#    testcase: testcases/order/master/refund_release_car.yml
+#    validate:
+#      - eq: [status_code,200]
+#
+#  - name: 待售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
+#    testcase: testcases/order/master/refund_for_sale.yml
+#    validate:
+#      - eq: [status_code,200]
+#    teardown_hooks:
+#      - ${sleep(5)}
 
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml

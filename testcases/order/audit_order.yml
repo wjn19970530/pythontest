@@ -1,8 +1,6 @@
 config:
   name: 审核订单  testcases/order/audit_order.yml
   base_url: ${ENV(base_url)}
-#  setup_hooks:
-#    - ${sleep(120)}
 
 teststeps:
 

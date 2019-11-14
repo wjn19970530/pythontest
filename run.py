@@ -13,19 +13,22 @@ if __name__ == '__main__':
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
-    #
+        
     summary = runner.run("testcases/order/nonaudit_order_count.yml")
     times = get_value_from_tmp("length")
     if times != 0:
         for i in range(times):
             runner.run("testcases/order/audit_order_without_sleep.yml")
-    # #
+
     summary = runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
+    # summary = runner.run("testsuites/develop/transaction/repayment_method.yml")
+    # summary = runner.run("testcases/order/repayment_info/JHHK.yml")
+    # summary = runner.run("testsuites/develop/supply/car.yml")
+    # summary = runner.run("testcases/supply/generate_inventory.yml")
+    # summary = runner.run("testcases/order/release_car/timed_release.yml")
     # summary = runner.run("testcases/order/repayment_info/XXFTL.yml")
-    # summary = runner.run("api/mall/salesman/POST_Order.yml")
-    # summary = runner.run("api/mall/mallSignAgreementInfo/tqtl/POST_SaveCommonTonglianInfo.yml")
-    # summary = runner.run("testcases/transaction/create_car.yml")
+    # summary = runner.run("testcases/order/lock_car/vin_lock_car.yml")
     # summary = runner.run("testcases/order/repayment_info/ZYR.yml")
     # summary = runner.run("testcases/order/release_car/timed_release.yml")
     # summary = runner.run("testcases/transaction/create_car.yml")

@@ -9,7 +9,7 @@ request:
     headers:
         Authorization: Bearer ${access_token}
     method: GET
-    url: /mall/api/orders/1267/not-complete-repayment-quantity?outerKey=${outerKey}
+    url: /mall/api/orders/$orderId/not-complete-repayment-quantity?outerKey=${outerKey}
 validate:
   - eq: [status_code,200]
   - eq: [content.notCompleteRepaymentMethodQuantity,0]
