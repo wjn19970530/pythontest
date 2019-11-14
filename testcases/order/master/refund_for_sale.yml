@@ -1,8 +1,8 @@
 config:
-    name: master分支用车辆状态为代售的有效订单发起退款 testcases/order/master/refund_for_sale.yml
+    name: master分支用车辆状态为待售的有效订单发起退款 testcases/order/master/refund_for_sale.yml
 
 teststeps:
-  - name: 获取未取消的车辆状态为代售的有效订单  api/mall/back-end/orders/POST_Params.yml
+  - name: 获取未取消的车辆状态为待售的有效订单  api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
         carItemStatus: 9
