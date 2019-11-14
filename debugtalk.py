@@ -6,7 +6,6 @@ from common.CsvOperate import CsvOperate
 from common.DBOperate import DBOperate
 from config import *
 
-
 log = BCommon.log()
 file = 'data/tmp.json'
 runner = HttpRunner(log_level="ERROR", failfast=True)
@@ -66,8 +65,8 @@ def response_get_car_brand_id(response, keyword):
     data = response.json["content"]
     brand_id = ''
     for item in data:
-       if item["name"] == keyword:
-           brand_id = item['id']
+        if item["name"] == keyword:
+            brand_id = item['id']
     message = BCommon.read_tmp_file(file)
     message["brand_id"] = brand_id
     BCommon.write_tmp_file(file, message)
@@ -128,7 +127,7 @@ def sql_get_user_id(phone_num):
     :param: phone_num 手机号
     :return:user_id
     """
-    sql = "SELECT user_id from tq_user where phone_num='"+phone_num+"'"
+    sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
     return user_id
 
@@ -140,7 +139,7 @@ def sql_get_seller_id(phone_num):
     :param: phone_num 手机号
     :return:user_id
     """
-    sql = "SELECT user_id from tq_user where phone_num='"+phone_num+"'"
+    sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(uaa_authority).query_sql(sql)[0])
     return user_id
 
@@ -152,9 +151,9 @@ def sql_init_order(phone_num):
     :param: phone_num 手机号
     :return:
     """
-    sql = "SELECT user_id from tq_user where phone_num='"+phone_num+"'"
+    sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
-    DBOperate(mall).execute_sql("update tq_order set status='12' where user_id='"+user_id+"'")
+    DBOperate(mall).execute_sql("update tq_order set status='12' where user_id='" + user_id + "'")
 
 
 def sql_delete_car_item(car_name):
@@ -164,7 +163,7 @@ def sql_delete_car_item(car_name):
     :param: car_name    车辆名称
     :return:
     """
-    sql = "delete from tq_car_item where name='"+car_name+"'"
+    sql = "delete from tq_car_item where name='" + car_name + "'"
     DBOperate(mall).execute_sql(sql)
 
 
@@ -176,11 +175,8 @@ def sql_init_contract(response):
         :return:
     """
     order_id = response_order_id(response)
-    sql = "update tq_order set sub_status='61' where id='"+order_id+"'"
+    sql = "update tq_order set sub_status='61' where id='" + order_id + "'"
     DBOperate(mall).execute_sql(sql)
-
-
-
 
 
 def sql_init_repayment(phone_num):
@@ -190,9 +186,10 @@ def sql_init_repayment(phone_num):
         :param: phone_num 手机号
         :return:
     """
-    sql = "SELECT user_id from tq_user where phone_num='"+phone_num+"'"
+    sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
-    DBOperate(mall).execute_sql("update sign_agreement_info set user_id='"+user_id+"01' where user_id='"+user_id+"'")
+    DBOperate(mall).execute_sql(
+        "update sign_agreement_info set user_id='" + user_id + "01' where user_id='" + user_id + "'")
 
 
 def sql_init_tqtl_repayment(phone_num):
@@ -224,9 +221,9 @@ def sql_init_tonglian_pay(phone_num, type):
     #     pay_flatform = pay + '1002'
     sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
-    sql_delete_open = "delete from open_account_flow_major_record where customer_id='"+user_id+"'"
-    sql_delete_sub = "delete from sub_account where target_id='"+user_id+"'"
-    sql_delete_bank = "delete from bank_account where target_id='"+user_id+"'"
+    sql_delete_open = "delete from open_account_flow_major_record where customer_id='" + user_id + "'"
+    sql_delete_sub = "delete from sub_account where target_id='" + user_id + "'"
+    sql_delete_bank = "delete from bank_account where target_id='" + user_id + "'"
     DBOperate(pay_flatform).execute_sql(sql_delete_open)
     DBOperate(pay_flatform).execute_sql(sql_delete_sub)
     DBOperate(pay_flatform).execute_sql(sql_delete_bank)
@@ -241,7 +238,7 @@ def sql_init_contract_info(phone_num):
     """
     sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
-    DBOperate(usercenter).execute_sql("delete from tq_user_contact_info where user_id='"+user_id+"'")
+    DBOperate(usercenter).execute_sql("delete from tq_user_contact_info where user_id='" + user_id + "'")
 
 
 def sql_get_verify_code(transaction_no):
@@ -435,7 +432,6 @@ def get_value_from_tmp(keyword):
     # value = ""
     message = BCommon.read_tmp_file(file)
     value = message[keyword]
-    # print(keyword, value)
     return value
 
 
@@ -547,7 +543,7 @@ def save_selling_inventory_from_headers(response):
     headers = response.headers
     num = headers["X-Total-Count"]
     num = int(num)
-    save_message_to_tmp("selling_inventory", num+1)
+    save_message_to_tmp("selling_inventory", num + 1)
 
 
 def save_trial_token(response):
@@ -572,8 +568,10 @@ def save_response_length(response):
     save_message_to_tmp("length", length)
     if length == 0:
         save_message_to_tmp("skip", True)
+        # print("skip:true")
     else:
         save_message_to_tmp("skip", False)
+        # print("skip:False")
 
 
 def get_release_time():
@@ -590,15 +588,30 @@ def get_release_time():
     return release_time
 
 
-def run_audit_order(second=1):
+def run_master_audit_order(second=1):
     """
     跑审核订单用例
     :param:second 跑用例前休眠时间
     :return:
     """
-    test = 'testcases/order/audit_order.yml'
+    test_login = 'testcases/order/master/nonaudit_order_count.yml'
+    test_audit = 'testcases/order/master/audit_order_without_sleep.yml'
     sleep(second)
-    runner.run(test)
+    runner.run(test_login)
+    if get_value_from_tmp('skip') is False:
+        runner.run(test_audit)
+
+
+def run_refund_order():
+    """
+    订单发起退款
+    :return:
+    """
+    test_refund_release_car = 'testcases/order/master/refund_release_car.yml'
+    test_refund_for_sale = 'testcases/order/master/refund_for_sale.yml'
+    sleep(1)
+    runner.run(test_refund_release_car)
+    runner.run(test_refund_for_sale)
 
 
 def run_refund_for_sale(second=1):
@@ -621,6 +634,18 @@ def run_refund_for_release(second=1):
     test = 'testcases/order/master/refund_release_car.yml'
     sleep(second)
     runner.run(test)
+
+
+def run_get_user_message():
+    """
+    获取userId、outerKey等信息并保存至data/tmp.json
+    :return:
+    """
+    test_sellerId = 'api/account/GET_Account.yml'
+    test_outerKey = 'api/usercenter/users/POST_Customer.yml'
+    runner.run(test_sellerId)
+    runner.run(test_outerKey)
+
 
 def get_value_from_response(response, key):
     """
@@ -653,7 +678,7 @@ def get_outer_key(response, method=1):
     else:
         start_index = value.index('=')
         end_index = value.index('&')
-        outerKey = value[start_index+1:end_index]
+        outerKey = value[start_index + 1:end_index]
         save_message_to_tmp("outerKey", outerKey)
 
 
@@ -675,4 +700,3 @@ if __name__ == '__main__':
     # transcation_no = "a7767b33ecef4abb8157a522fc935401"
     # print(sql_get_verify_code(transcation_no))
     sql_init_tonglian_pay('16621368448')
-

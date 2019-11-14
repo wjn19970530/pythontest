@@ -36,36 +36,36 @@ testcases:
 -   name: 【交易系统】【订单管理】等待审核时退款 testcases/order/refund/wait_audit_refund.yml
     testcase: testcases/order/refund/wait_audit_refund.yml
 
--   name: 【APP】【订单管理】完善还款信息:建行划扣 testcases/order/repayment_info/JHHK.yml
-    testcase: testcases/order/repayment_info/JHHK.yml
-    validate:
-      - eq: [status_code,200]
-
--   name: 【APP】【订单管理】完善还款信息:喜相逢通联 testcases/order/repayment_info/XXFTL.yml
-    testcase: testcases/order/repayment_info/XXFTL.yml
-    validate:
-      - eq: [status_code,200]
-
--   name: 【APP】【订单管理】完善还款信息:淘汽通联 testcases/order/repayment_info/TQTL.yml
-    testcase: testcases/order/repayment_info/TQTL.yml
-    validate:
-      - eq: [status_code,200]
-
--   name: 【APP】【订单管理】完善还款信息:万向通联 testcases/order/repayment_info/WXTL.yml
-    testcase: testcases/order/repayment_info/WXTL.yml
-    validate:
-      - eq: [status_code,200]
-
--   name: 【APP】【订单管理】完善还款信息:立根通联 testcases/order/repayment_info/LGTL.yml
-    testcase: testcases/order/repayment_info/LGTL.yml
-    validate:
-      - eq: [status_code,200]
-
--   name: 【APP】【订单管理】完善还款信息:建行划扣 testcases/order/repayment_info/JHHK.yml
-    testcase: testcases/order/repayment_info/JHHK.yml
-    validate:
-      - eq: [status_code,200]
-
+#-   name: 【APP】【订单管理】完善还款信息:建行划扣 testcases/order/repayment_info/JHHK.yml
+#    testcase: testcases/order/repayment_info/JHHK.yml
+#    validate:
+#      - eq: [status_code,200]
+#
+#-   name: 【APP】【订单管理】完善还款信息:喜相逢通联 testcases/order/repayment_info/XXFTL.yml
+#    testcase: testcases/order/repayment_info/XXFTL.yml
+#    validate:
+#      - eq: [status_code,200]
+#
+#-   name: 【APP】【订单管理】完善还款信息:淘汽通联 testcases/order/repayment_info/TQTL.yml
+#    testcase: testcases/order/repayment_info/TQTL.yml
+#    validate:
+#      - eq: [status_code,200]
+#
+#-   name: 【APP】【订单管理】完善还款信息:万向通联 testcases/order/repayment_info/WXTL.yml
+#    testcase: testcases/order/repayment_info/WXTL.yml
+#    validate:
+#      - eq: [status_code,200]
+#
+#-   name: 【APP】【订单管理】完善还款信息:立根通联 testcases/order/repayment_info/LGTL.yml
+#    testcase: testcases/order/repayment_info/LGTL.yml
+#    validate:
+#      - eq: [status_code,200]
+#
+#-   name: 【APP】【订单管理】完善还款信息:建行划扣 testcases/order/repayment_info/JHHK.yml
+#    testcase: testcases/order/repayment_info/JHHK.yml
+#    validate:
+#      - eq: [status_code,200]
+#
 #  - name: 【APP】【订单管理】完善还款信息:致优融  testcases/order/repayment_info/ZYR.yml
 #    testcase: testcases/order/repayment_info/ZYR.yml
 #    validate:
