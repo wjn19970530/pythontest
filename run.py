@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     summary = runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
+    # summary = runner.run("testsuites/develop/transaction/lock_car.yml")
     # summary = runner.run("testsuites/develop/transaction/repayment_method.yml")
     # summary = runner.run("testcases/order/repayment_info/JHHK.yml")
     # summary = runner.run("testsuites/develop/supply/inventory.yml")
@@ -33,8 +34,7 @@ if __name__ == '__main__':
     # summary = runner.run("testcases/order/release_car/timed_release.yml")
     # summary = runner.run("testcases/transaction/create_car.yml")
     # runner.run("testcases/login/master_login.yml")
-    # runner.run("testcases/login/web_login.yml")
-    # summary = runner.run("api/mall/mallSignAgreementInfo/tqtl/POST_SaveCommonTonglianInfo.yml")
+    # summary = runner.run("testcases/transaction/create_car.yml")
 
 
     # 获取用例执行情况

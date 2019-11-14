@@ -72,14 +72,14 @@ def response_get_car_brand_id(response, keyword):
     BCommon.write_tmp_file(file, message)
 
 
-def tmp_file_get_brand_id():
-    """
-    从data/tmp.json读取brandId
-    :return: brand_id
-    """
-    message = BCommon.read_tmp_file("data/tmp.json")
-    brand_id = message["brand_id"]
-    return brand_id
+# def tmp_file_get_brand_id():
+#     """
+#     从data/tmp.json读取brandId
+#     :return: brand_id
+#     """
+#     message = BCommon.read_tmp_file("data/tmp.json")
+#     brand_id = message["brand_id"]
+#     return brand_id
 
 
 def response_refresh_token(response, endpoint):
@@ -188,8 +188,7 @@ def sql_init_repayment(phone_num):
     """
     sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
     user_id = str(DBOperate(usercenter).query_sql(sql)[0])
-    DBOperate(mall).execute_sql(
-        "update sign_agreement_info set user_id='" + user_id + "01' where user_id='" + user_id + "'")
+    DBOperate(mall).execute_sql("update sign_agreement_info set user_id='" + user_id + "01' where user_id='" + user_id + "'")
 
 
 def sql_init_tqtl_repayment(phone_num):
@@ -354,26 +353,6 @@ def save_car_info(response, brand_name, series_name, type_name):
     BCommon.write_tmp_file(file, message)
 
 
-def get_series_id():
-    """
-    从tmp文件读取保存的series_id
-    :return: series_id
-    """
-    message = BCommon.read_tmp_file(file)
-    series_id = message["seriesId"]
-    return series_id
-
-
-def get_type_id():
-    """
-    从tmp文件读取保存的type_id
-    :return: type_id
-    """
-    message = BCommon.read_tmp_file(file)
-    type_id = message["typeId"]
-    return type_id
-
-
 def get_config(key):
     """
     根据key返回config.py中配置的内容
@@ -486,18 +465,6 @@ def save_skip_create_car(response):
     BCommon.write_tmp_file(file, message)
 
 
-# def get_car_full_name(brand, series, type):
-#     """
-#     返回车辆全名
-#     :param brand: 品牌
-#     :param series:  系列
-#     :param type:  车型
-#     :return: full_name  全名
-#     """
-#     full_name = brand + series + type
-#     return full_name
-
-
 def save_message_to_tmp(key, value):
     """
     将键值对保存至data/tmp.json
@@ -590,12 +557,26 @@ def get_release_time():
 
 def run_master_audit_order(second=1):
     """
-    跑审核订单用例
+    master分支跑审核订单用例
     :param:second 跑用例前休眠时间
     :return:
     """
     test_login = 'testcases/order/master/nonaudit_order_count.yml'
     test_audit = 'testcases/order/master/audit_order_without_sleep.yml'
+    sleep(second)
+    runner.run(test_login)
+    if get_value_from_tmp('skip') is False:
+        runner.run(test_audit)
+
+
+def run_audit_order(second=1):
+    """
+    develop/test分支跑审核订单用例
+    :param:second 跑用例前休眠时间
+    :return:
+    """
+    test_login = 'testcases/order/nonaudit_order_count.yml'
+    test_audit = 'testcases/order/audit_order_without_sleep.yml'
     sleep(second)
     runner.run(test_login)
     if get_value_from_tmp('skip') is False:
@@ -682,6 +663,42 @@ def get_outer_key(response, method=1):
         save_message_to_tmp("outerKey", outerKey)
 
 
+def sql_delete_customer_info(phone_num, IDNum):
+    """
+    数据库中删除客户相关信息
+    :return:
+    """
+    sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
+    user_id = str(DBOperate(usercenter).query_sql(sql)[0])
+    delete_tq_dc_call_log = "delete from tq_dc_call_log where query_params_info like '%" + phone_num + "%'"
+    DBOperate(usercenter).execute_sql(delete_tq_dc_call_log)
+    delete_tq_marketing_info = "delete from tq_marketing_info where user_phone='" + phone_num + "'"
+    DBOperate(usercenter).execute_sql(delete_tq_marketing_info)
+    delete_tq_user = "delete from tq_user where phone_num='" + phone_num + "'"
+    DBOperate(usercenter).execute_sql(delete_tq_user)
+    delete_tq_user_seller = "delete from tq_user_seller where user_id='" + user_id + "'"
+    DBOperate(usercenter).execute_sql(delete_tq_user_seller)
+    select_count = "select count from tq_id_generator"
+    count = str((DBOperate(usercenter).query_sql(select_count)[0]) - 1)
+    print(count)
+    update_count = "update tq_id_generator set count='" + count + "' where id='1'"
+    DBOperate(usercenter).execute_sql(update_count)
+    delete_skip_face_auth_info = "delete from skip_face_auth_info where user_id='" + user_id + "'"
+    DBOperate(usercenter).execute_sql(delete_skip_face_auth_info)
+    delete_tq_user_cert_detail_info = "delete from tq_user_cert_detail_info where user_id='" + user_id + "'"
+    DBOperate(usercenter).execute_sql(delete_tq_user_cert_detail_info)
+    delete_tq_user_contact_info = "delete from tq_user_contact_info where user_id='" + user_id + "'"
+    DBOperate(usercenter).execute_sql(delete_tq_user_contact_info)
+    delete_tq_user_detail_info = "delete from tq_user_detail_info where user_id='" + user_id + "'"
+    DBOperate(usercenter).execute_sql(delete_tq_user_detail_info)
+    delete_auth_info = "delete from auth_info where phone='" + phone_num + "'"
+    DBOperate(entry_sheet).execute_sql(delete_auth_info)
+    delete_tq_auth_info = "delete from tq_auth_info where customer_id_card='" + IDNum + "'"
+    DBOperate(entry_sheet).execute_sql(delete_tq_auth_info)
+    delete_tq_dc_call_log = "delete from tq_dc_call_log where query_params_info like '%" + phone_num + "%'"
+    DBOperate(mall).execute_sql(delete_tq_dc_call_log)
+
+
 if __name__ == '__main__':
     c = CsvOperate()
     # access_token = '111222333'
@@ -699,4 +716,4 @@ if __name__ == '__main__':
     # print(type(sell), sell)
     # transcation_no = "a7767b33ecef4abb8157a522fc935401"
     # print(sql_get_verify_code(transcation_no))
-    sql_init_tonglian_pay('16621368448')
+    sql_delete_customer_info('15012340007', '350505196910212333')

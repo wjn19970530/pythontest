@@ -2,26 +2,29 @@ config:
     name: 发起锁车,使用车架号锁车  testcases/order/lock_car/vin_lock_car.yml
 
 teststeps:
-  - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
-    testcase: testcases/order/nonaudit_order_count.yml
-
-  - name: 审核订单  testcases/order/audit_order_without_sleep.yml
-    testcase: testcases/order/audit_order_without_sleep.yml
-
-  - name: 获取账户信息  api/account/GET_Account.yml
-    api: api/account/GET_Account.yml
-    validate:
-      - eq: [status_code, 200]
-    teardown_hooks:
-      - ${save_seller_id_form_response($response)}
-
-  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
-    api: api/usercenter/users/POST_Customer.yml
-    validate:
-      - eq: [status_code,200]
+#  - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
+#    testcase: testcases/order/nonaudit_order_count.yml
+#
+#  - name: 审核订单  testcases/order/audit_order_without_sleep.yml
+#    testcase: testcases/order/audit_order_without_sleep.yml
+#
+#  - name: 获取账户信息  api/account/GET_Account.yml
+#    api: api/account/GET_Account.yml
+#    validate:
+#      - eq: [status_code, 200]
+#    teardown_hooks:
+#      - ${save_seller_id_form_response($response)}
+#
+#  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+#    api: api/usercenter/users/POST_Customer.yml
+#    validate:
+#      - eq: [status_code,200]
 
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
+    setup_hooks:
+      - ${run_audit_order()}
+      - ${run_get_user_message()}
     validate:
       - eq: [status_code,200]
 
@@ -140,3 +143,5 @@ teststeps:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, false]
+    teardown_hooks:
+      - ${run_audit_order()}
