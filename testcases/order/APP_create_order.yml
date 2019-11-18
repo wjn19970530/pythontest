@@ -6,6 +6,7 @@ config:
       access_token: ${get_token(access_token)}
       keyword: ''
       orderPayType: 1
+      order_status: 待支付
     base_url: ${ENV(base_url)}
     setup_hooks:
       - ${sql_init_order($phoneNum)}
@@ -46,12 +47,13 @@ teststeps:
         leasePlanId: ${leasePlanId}
         skuId: ${skuId}
         itemId: ${get_value_from_tmp(carId)}
-    extract:
-      orderId: content.orderId
-    validate:
-      - eq: [status_code, 200]
+#    extract:
+#      orderId: content.orderId
+#    validate:
+#      - eq: [status_code, 200]
     teardown_hooks:
       - ${sleep(5)}
+      - ${sleep(10)}
 
 -   name: 获取订单号 api/mall/salesman/POST_Order.yml
     api: api/mall/salesman/POST_Order.yml
@@ -59,13 +61,14 @@ teststeps:
       - eq: [status_code,200]
     extract:
       - tradeNo: content.0.tradeNo
+      - orderId: content.0.orderId
 
--   name: 搜索订单，验证订单状态(待支付)  api/mall/back-end/orders/POST_Params.yml
+-   name: 搜索订单，验证订单状态($order_status)  api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
         tradeNo: ${tradeNo}
     validate:
-      - eq: [content.0.orderStatusDesc,"待支付"]
+      - eq: [content.0.orderStatusDesc,$order_status]
       - eq: [content.0.orderDetail.carItemStatus, 7]
 
 -   name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml

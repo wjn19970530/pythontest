@@ -60,6 +60,7 @@ teststeps:
     validate:
       - eq: [status_code, 200]
 
+
 -   name: 获取订单号 api/mall/salesman/POST_Order.yml
     api: api/mall/salesman/POST_Order.yml
     validate:
