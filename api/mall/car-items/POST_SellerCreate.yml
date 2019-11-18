@@ -18,5 +18,5 @@ request:
         skuId: ${skuId}
     method: POST
     url: /mall/api/v0.1/car-items/orders/seller-create
-#validate:
-#-   eq: [status_code, 200]
+validate:
+-   eq: [status_code, 200]
