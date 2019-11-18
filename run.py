@@ -2,6 +2,8 @@ from httprunner.api import HttpRunner
 from httprunner.report import gen_html_report
 from common.BaseCommon import BaseCommon
 import json
+import json
+import os
 
 from debugtalk import get_value_from_tmp
 
