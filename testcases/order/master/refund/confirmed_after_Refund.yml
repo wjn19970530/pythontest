@@ -105,7 +105,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(30)}
 
 
 -   name: 完善还款信息  testcases/order/master/perfect_repayment_info.yml

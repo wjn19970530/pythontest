@@ -15,6 +15,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
+
 -   name: 进件审核判断  testcases/order/nonaudit_order_count.yml
     testcase: testcases/order/nonaudit_order_count.yml
     validate:
@@ -24,6 +25,7 @@ teststeps:
     testcase: testcases/order/audit_order_without_sleep.yml
     validate:
       - eq: [status_code, 200]
+
 
 -   name: 创建车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml

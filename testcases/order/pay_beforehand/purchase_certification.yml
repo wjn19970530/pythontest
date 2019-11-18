@@ -1,61 +1,53 @@
 config:
-    name: 还款信息:致优融 testcases/order/repayment_info/ZYR.yml
+    name: 购车认证－"待完成购车认证" 订单进行购车认证 testcases/order/pay_beforehand/purchase_certification.yml
     variables:
-        brandName: ${get_config(carBrandName)}
-        seriesName: ${get_config(carSeriesName)}
-        typeName: 'ZYR'
-        carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
-        phoneNum: ${ENV(phoneNum)}
+#        phoneNum: 16621368448
+#        IDNum: 350182199203253384
+#        cardNo: 6212261402000859782
+        name: '汤露露'
+        order_status: '待购车认证'
+        phoneNum: '15012340003'
+        IDNum: '350581198012281017'
+        cardNo: '6217000490000315744'
 
 teststeps:
+#  - name: 添加客户  testcases/usercenter/add_customer.yml
+#    testcase: testcases/usercenter/add_customer.yml
+#    validate:
+#      - eq: [status_code,200]
+
+#  - name: 获取验证码 api/account/GET_VeriCode.yml
+#    api: api/account/GET_VeriCode.yml
+#    variables:
+#      phoneNum: $phoneNum
+#    validate:
+#      - eq: [status_code,200]
+#
+#  - name: 添加客户  api/usercenter/credit/custom-check/POST_Universal.yml
+#    api: api/usercenter/credit/custom-check/POST_Universal.yml
+#    variables:
+#      phoneNum: $phoneNum
+#      IDNum: $IDNum
+#      name: $name
+#    validate:
+#      - eq: [status_code,200]
+
+  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    variables:
+        queryName: ${phoneNum}
+    validate:
+      - eq: [status_code,200]
 
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
-    setup_hooks:
-      - ${run_audit_order()}
-      - ${run_get_user_message()}
-    variables:
-      carTypeName: $carFullName
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${sleep(5)}
-
-  - name: 获取车辆id api/mall/back-end/car-items/POST_List.yml
-    api: api/mall/back-end/car-items/POST_List.yml
-    variables:
-      type: $typeName
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${save_car_id_from_response($response,$carFullName)}
-      - ${sleep(2)}
-
-  - name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
-    api: api/mall/back-end/car-item-skus/GET_Generate.yml
-    variables:
-      itemId: ${get_value_from_tmp(carId)}
-    validate:
-      - eq: [status_code,200]
-
-  - name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
-    api: api/mall/task-processes/GET_TaskStatus.yml
-    variables:
-      sku_task_id: ${get_value_from_tmp(sku_process)}
-    validate:
-      - eq: [status_code,200]
-
-  - name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
-    api: api/mall/back-end/car-item-skus/POST_WithPage.yml
-    variables:
-      itemId: ${get_value_from_tmp(carId)}
     validate:
       - eq: [status_code,200]
 
   - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
-      carTypeName: $carFullName
+      carTypeName: ${get_config(carFullName)}
       isLocked: 0
       carStstus: 4
     validate:
@@ -69,7 +61,7 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: $carFullName
+      carTypeName: ${get_config(carFullName)}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, false]
@@ -78,12 +70,16 @@ teststeps:
   - name: 下单 testcases/order/APP_create_order.yml
     testcase: testcases/order/APP_create_order.yml
     variables:
-        keyword: $carFullName
+        keyword: ${get_config(carFullName)}
+        phoneNum: $phoneNum
+        order_status: $order_status
     validate:
       - eq: [status_code,200]
 
   - name: 获取订单号 api/mall/salesman/POST_Order.yml
     api: api/mall/salesman/POST_Order.yml
+    variables:
+      queryTradeNo: $phoneNum
     validate:
       - eq: [status_code,200]
     extract:
@@ -94,23 +90,44 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: $carFullName
+      carTypeName: ${get_config(carFullName)}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, false]
       - eq: [content.0.tradeNo,$tradeNo]
 
-  - name: 验证订单状态：等待审核、待售 api/mall/back-end/orders/POST_Params.yml
+  - name: 验证订单状态：待购车认证 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
       tradeNo: ${tradeNo}
+      phoneNum: $phoneNum
     validate:
-      - eq: [content.0.orderStatusDesc,"等待审核"]
+      - eq: [content.0.orderStatusDesc,"待购车认证"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
+
+  - name: 购车认证-跳过人脸认证 testcases/usercenter/purchase_certification.yml
+    testcase: testcases/usercenter/purchase_certification.yml
+    variables:
+        phoneNum: ${phoneNum}
+        customerId: ${get_value_from_tmp(userId)}
+        cardNo: ${cardNo}
+        name: ${name}
+        IDNum: ${IDNum}
+    validate:
+      - eq: [status_code, 200]
+
+  - name: 完善个人信息 testcases/usercenter/perfect_userInfo.yml
+    testcase: testcases/usercenter/perfect_userInfo.yml
+    variables:
+      phoneNum: ${phoneNum}
+    validate:
+      - eq: [status_code, 200]
 
   - name: 信审账号登录  testcases/login/trial_account_login.yml
     testcase: testcases/login/trial_account_login.yml
+    variables:
+      name: $name
     validate:
       - eq: [status_code,200]
     setup_hooks:
@@ -118,59 +135,73 @@ teststeps:
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
+    variables:
+      name: $name
     validate:
       - eq: [status_code,200]
 
   - name: 验证订单状态：订单处理中 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
-        tradeNo: ${tradeNo}
+      tradeNo: ${tradeNo}
+      phoneNum: $phoneNum
     validate:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
       - ${sleep(10)}
 
-  - name: 完善还款信息  api/mall/mallSignAgreementInfo/zry/GET_QueryZyrCardNo.yml
-    api: api/mall/mallSignAgreementInfo/zry/GET_QueryZyrCardNo.yml
-    setup_hooks:
-      - ${sql_init_repayment($phoneNum)}
+  - name: 完善还款信息 testcases/order/perfect_repayment_info.yml
+    testcase: testcases/order/perfect_repayment_info.yml
     variables:
-        orderId: $orderId
-        cardNo: ${ENV(cardNo)}
+        queryTradeNo: $phoneNum
+        name: $name
+        phoneNum: $phoneNum
+        queryName: $name
+        cardNo: $cardNo
     validate:
-      - eq: [status_code,200]
-      - eq: [content.bankNum,$cardNo]
+      - eq: [status_code, 200]
 
   - name: 搜索订单，验证订单状态：待签署合同 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
-        tradeNo: ${tradeNo}
+      tradeNo: ${tradeNo}
+      phoneNum: $phoneNum
     validate:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
   - name: 签署合同  testcases/contracts/sign_contract.yml
     testcase: testcases/contracts/sign_contract.yml
+    variables:
+      phoneNum: $phoneNum
+      cardNo: $cardNo
+      orderId: $orderId
     validate:
       - eq: [status_code,200]
 
   - name: 验证订单状态：待确认提车 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
-        tradeNo: ${tradeNo}
+      tradeNo: ${tradeNo}
+      phoneNum: $phoneNum
     validate:
       - eq: [content.0.orderStatusDesc,"待确认提车"]
 
   - name: 提车 testcases/order/mention_car.yml
     testcase: testcases/order/mention_car.yml
+    variables:
+        queryTradeNo: $phoneNum
+        queryName: $name
+        orderId: $orderId
     validate:
       - eq: [status_code,200]
 
   - name: 验证订单状态：交易完成 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
-        tradeNo: ${tradeNo}
+      tradeNo: ${tradeNo}
+      phoneNum: $phoneNum
     validate:
       - eq: [content.0.orderStatusDesc,"交易完成"]
       - eq: [content.0.orderDetail.carItemStatus, 99]
@@ -178,12 +209,12 @@ teststeps:
   - name: 验证库存：已锁车、售出  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
-        vin: ${vin}
-        carTypeName: ${get_config(carFullName)}
+      vin: ${vin}
+      carTypeName: ${get_config(carFullName)}
     validate:
-        - eq: [status_code,200]
-        - eq: [content.0.locked, true]
-        - eq: [content.0.sold, true]
-        - eq: [content.0.tradeNo,$tradeNo]
+      - eq: [status_code,200]
+      - eq: [content.0.locked, true]
+      - eq: [content.0.sold, true]
+      - eq: [content.0.tradeNo,$tradeNo]
     teardown_hooks:
       - ${run_audit_order()}
