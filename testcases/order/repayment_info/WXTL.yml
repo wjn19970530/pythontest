@@ -227,9 +227,9 @@ teststeps:
         - eq: [content.0.sold, true]
         - eq: [content.0.tradeNo,$tradeNo]
 
-  - name: 更新客户outerKey  api/usercenter/users/POST_Customer.yml
-    api: api/usercenter/users/POST_Customer.yml
-    variables:
-      queryName: ${ENV(phoneNum)}
-    validate:
-      - eq: [status_code,200]
+#  - name: 更新客户outerKey  api/usercenter/users/POST_Customer.yml
+#    api: api/usercenter/users/POST_Customer.yml
+#    variables:
+#      queryName: ${ENV(phoneNum)}
+#    validate:
+#      - eq: [status_code,200]

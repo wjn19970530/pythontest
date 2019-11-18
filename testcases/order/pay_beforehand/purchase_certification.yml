@@ -4,6 +4,7 @@ config:
 #        phoneNum: 16621368448
 #        IDNum: 350182199203253384
 #        cardNo: 6212261402000859782
+        carFullName: 'AutoTestCarBrandAaddCar'
         name: '汤露露'
         order_status: '待购车认证'
         phoneNum: '15012340003'
@@ -47,7 +48,7 @@ teststeps:
   - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
       isLocked: 0
       carStstus: 4
     validate:
@@ -61,7 +62,7 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, false]
@@ -70,7 +71,7 @@ teststeps:
   - name: 下单 testcases/order/create_order.yml
     testcase: testcases/order/create_order.yml
     variables:
-        keyword: ${get_config(carFullName)}
+        keyword: ${carFullName}
         phoneNum: $phoneNum
         order_status: $order_status
     validate:
@@ -80,7 +81,7 @@ teststeps:
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
       orderStatus: '0'
-      carName: $keyword
+      carName: ${carFullName}
     validate:
       - eq: [status_code, 200]
     extract:
@@ -91,7 +92,7 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
@@ -211,7 +212,7 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]

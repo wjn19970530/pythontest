@@ -47,13 +47,12 @@ teststeps:
         leasePlanId: ${leasePlanId}
         skuId: ${skuId}
         itemId: ${get_value_from_tmp(carId)}
-#    extract:
-#      orderId: content.orderId
-#    validate:
-#      - eq: [status_code, 200]
+    extract:
+      orderId: content.orderId
+    validate:
+      - eq: [status_code, 200]
     teardown_hooks:
       - ${sleep(5)}
-      - ${sleep(10)}
 
 -   name: 获取订单号 api/mall/salesman/POST_Order.yml
     api: api/mall/salesman/POST_Order.yml
