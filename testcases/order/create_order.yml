@@ -6,7 +6,6 @@ config:
       access_token: ${get_token(access_token)}
       carId: ${get_value_from_tmp(carId)}
       sellerId: ${get_value_from_tmp(sellerId)}
-      order_status: '待购车认证'
       keyword: 'AutoTestCarBrandAaddCar'
     base_url: ${ENV(base_url)}
     setup_hooks:
@@ -54,7 +53,7 @@ teststeps:
       carName: $keyword
     validate:
       - eq: [status_code, 200]
-      - eq: [content.0.orderStatusDesc,$order_status]
+      - eq: [content.0.orderStatusDesc,'待购车认证']
     extract:
       - orderId: content.0.order.id
 
