@@ -9,13 +9,14 @@ config:
         phoneNum: '15012340003'
         IDNum: '350581198012281017'
         cardNo: '6217000490000315744'
+        carFullName: 'AutoTestCarBrandAaddCar'
 
 teststeps:
 #  - name: 添加客户  testcases/usercenter/add_customer.yml
 #    testcase: testcases/usercenter/add_customer.yml
 #    validate:
 #      - eq: [status_code,200]
-
+#
 #  - name: 获取验证码 api/account/GET_VeriCode.yml
 #    api: api/account/GET_VeriCode.yml
 #    variables:
@@ -47,7 +48,7 @@ teststeps:
   - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
       isLocked: 0
       carStstus: 4
     validate:
@@ -61,16 +62,16 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, false]
       - eq: [content.0.sold, false]
 
-  - name: 下单 testcases/order/APP_create_order.yml
-    testcase: testcases/order/APP_create_order.yml
+  - name: 创建订单 testcases/order/create_order.yml
+    testcase: testcases/order/create_order.yml
     variables:
-        keyword: ${get_config(carFullName)}
+        keyword: ${carFullName}
         phoneNum: $phoneNum
         order_status: $order_status
     validate:
@@ -90,7 +91,7 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
@@ -210,7 +211,7 @@ teststeps:
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
