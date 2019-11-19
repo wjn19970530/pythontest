@@ -65,7 +65,6 @@ teststeps:
       - eq: [content.0.sold, false]
       - eq: [content.0.tradeNo,$tradeNo]
 
-
   - name: 验证订单状态：等待审核、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:

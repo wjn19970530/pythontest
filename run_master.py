@@ -25,9 +25,9 @@ if __name__ == '__main__':
     # summary = runner.run("testcases/transaction/master/create_car.yml")
     # summary = runner.run("testcases/order/master/release_car/")
     # summary = runner.run("testcases/order/master/release_car/immediately_release.yml")
-
+    # summary = runner.run("testcases/order/master/release_car/timed_release.yml")
     # summary = runner.run("testcases/order/master/vin_lock_car.yml")
-    # summary = runner.run("testcases/supply/master/confirm_inventory.yml")
+    # summary = runner.run("testsuites/master/transaction/release_car.yml")
 
 
     # 获取用例执行情况

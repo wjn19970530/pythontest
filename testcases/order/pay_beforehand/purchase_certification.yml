@@ -11,6 +11,9 @@ config:
 teststeps:
   - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
     api: api/usercenter/users/POST_Customer.yml
+    setup_hooks:
+      - ${run_audit_order()}
+      - ${run_get_user_message()}
     variables:
       queryName: ${phoneNum}
     validate:
