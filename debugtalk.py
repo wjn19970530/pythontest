@@ -699,6 +699,7 @@ def sql_delete_customer_info(phone_num, IDNum):
     DBOperate(mall).execute_sql(delete_tq_dc_call_log)
 
 
+
 if __name__ == '__main__':
     c = CsvOperate()
     # access_token = '111222333'

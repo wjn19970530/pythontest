@@ -1,4 +1,4 @@
-name: 完善个人信息  api/usercenter/users/perfect-user-info
+name: 完善个人信息  api/usercenter/users/POST_PerfectUserInfo.yml
 variables:
   outerKey: 123
 base_url: ${ENV(base_url)}

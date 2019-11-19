@@ -1,37 +1,48 @@
 config:
     name: 购车认证－"待完成购车认证" 订单进行购车认证 testcases/order/pay_beforehand/purchase_certification.yml
     variables:
-#        phoneNum: 16621368448
-#        IDNum: 350182199203253384
-#        cardNo: 6212261402000859782
+        phoneNum: ${ENV(certification_phoneNum)}
+        name: ${ENV(certification_name)}
+        IDNum: ${ENV(certification_IDNum)}
+        cardNo: ${ENV(certification_cardNo)}
         carFullName: 'AutoTestCarBrandAaddCar'
-        name: '汤露露'
         order_status: '待购车认证'
-        phoneNum: '15012340003'
-        IDNum: '350581198012281017'
-        cardNo: '6217000490000315744'
 
 teststeps:
-#  - name: 添加客户  testcases/usercenter/add_customer.yml
-#    testcase: testcases/usercenter/add_customer.yml
-#    validate:
-#      - eq: [status_code,200]
+  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    setup_hooks:
+      - ${run_audit_order()}
+      - ${run_get_user_message()}
+    variables:
+      queryName: ${phoneNum}
+    validate:
+      - eq: [status_code,200]
 
-#  - name: 获取验证码 api/account/GET_VeriCode.yml
-#    api: api/account/GET_VeriCode.yml
-#    variables:
-#      phoneNum: $phoneNum
-#    validate:
-#      - eq: [status_code,200]
-#
-#  - name: 添加客户  api/usercenter/credit/custom-check/POST_Universal.yml
-#    api: api/usercenter/credit/custom-check/POST_Universal.yml
-#    variables:
-#      phoneNum: $phoneNum
-#      IDNum: $IDNum
-#      name: $name
-#    validate:
-#      - eq: [status_code,200]
+  - name: 清除客户信息  testcases/usercenter/clean_customerInfo.yml
+    testcase: testcases/usercenter/clean_customerInfo.yml
+    variables:
+        phoneNum: $phoneNum
+    validate:
+      - eq: [status_code,200]
+
+  - name: 获取验证码 api/usercenter/credit/custom-check/GET_VerifyCode.yml
+    api: api/usercenter/credit/custom-check/GET_VerifyCode.yml
+    variables:
+      phoneNum: $phoneNum
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(2)}
+
+  - name: 添加客户  api/usercenter/credit/custom-check/POST_Universal.yml
+    api: api/usercenter/credit/custom-check/POST_Universal.yml
+    variables:
+      phoneNum: $phoneNum
+      IDNum: $IDNum
+      name: $name
+    validate:
+      - eq: [status_code,200]
 
   - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
     api: api/usercenter/users/POST_Customer.yml
@@ -80,8 +91,9 @@ teststeps:
   - name: 获取订单号 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
-      orderStatus: '0'
+#      orderStatus: '0'
       carName: ${carFullName}
+      phoneNum: $phoneNum
     validate:
       - eq: [status_code, 200]
     extract:
@@ -218,5 +230,3 @@ teststeps:
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, true]
       - eq: [content.0.tradeNo,$tradeNo]
-    teardown_hooks:
-      - ${run_audit_order()}
