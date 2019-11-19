@@ -4,11 +4,7 @@ config:
 testcases:
   - name: 【交易系统】【订单管理】立即释放车源    testcases/order/release_car/immediately_release.yml
     testcase: testcases/order/release_car/immediately_release.yml
-    setup_hooks:
-      - ${run_audit_order(90)}
 
   #测试环境存在BUG先注释
-  #-   name: 【交易系统】【订单管理】定时释放车源    testcases/order/release_car/timed_release.yml
-  #    testcase: testcases/order/release_car/timed_release.yml
-  #    setup_hooks:
-  #      - ${run_audit_order(90)}
+  -   name: 【交易系统】【订单管理】定时释放车源    testcases/order/release_car/timed_release.yml
+      testcase: testcases/order/release_car/timed_release.yml

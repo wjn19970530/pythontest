@@ -36,10 +36,10 @@ teststeps:
 #    validate:
 #      - eq: [status_code,200]
 
-#  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
-#    api: api/usercenter/users/POST_Customer.yml
-#    validate:
-#      - eq: [status_code,200]
+  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    validate:
+      - eq: [status_code,200]
 #
 #  - name: 客户购车认证  testcases/usercenter/purchase_certification.yml
 #    testcase: testcases/usercenter/purchase_certification.yml

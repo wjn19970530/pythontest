@@ -98,7 +98,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
-  - name: 释放车源-定时释放 api/mall/orders/release-car/PUT_Manual.yml
+  - name: 释放车源-立即释放 api/mall/orders/release-car/PUT_Manual.yml
     api: api/mall/orders/release-car/PUT_Manual.yml
     variables:
       orderId: ${orderId}
@@ -145,11 +145,11 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 验证订单状态：交易取消 api/mall/back-end/orders/POST_Params.yml
+  - name: 验证订单状态:交易取消 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
         tradeNo: ${tradeNo}
     validate:
       - eq: [content.0.orderStatusDesc,"交易取消"]
     teardown_hooks:
-      - ${run_audit_order()}
+      - ${run_audit_order(90)}
