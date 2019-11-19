@@ -4,7 +4,6 @@ config:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
-      carId: ${get_value_from_tmp(carId)}
       sellerId: ${get_value_from_tmp(sellerId)}
       keyword: 'AutoTestCarBrandAaddCar'
     base_url: ${ENV(base_url)}
@@ -38,7 +37,7 @@ teststeps:
 -   name: 创建订单  api/mall/car-items/POST_SellerCreate.yml
     api: api/mall/car-items/POST_SellerCreate.yml
     variables:
-        itemId: ${carId}
+        itemId: ${get_value_from_tmp(carId)}
         leasePlanId: ${leasePlanId}
         phone: $phoneNum
         sellerId: ${sellerId}

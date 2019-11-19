@@ -75,7 +75,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
-  - name: 释放车源-定时释放 api/mall/orders/release-car/PUT_Manual.yml
+  - name: 释放车源-立即释放 api/mall/orders/release-car/PUT_Manual.yml
     api: api/mall/orders/release-car/PUT_Manual.yml
     variables:
       orderId: ${orderId}
