@@ -10,6 +10,9 @@ teststeps:
     api: api/account/GET_Account.yml
     validate:
       - eq: [status_code, 200]
+    setup_hooks:
+      - ${run_audit_order()}
+      - ${run_get_user_message()}
     teardown_hooks:
       - ${save_seller_id_form_response($response)}
 
