@@ -21,3 +21,8 @@ testcases:
     testcase: testcases/order/master/Earnestmoney/pay_earnest_tailmoney.yml
     teardown_hooks:
         - ${run_audit_order(90)}
+
+  - name: 【交易系统】【订单管理】购车支付定金后支付尾款 testcases/order/master/Earnestmoney/pay_earnest_tailmoney.yml
+    testcase: testcases/order/master/Earnestmoney/pay_earnest_tailmoney.yml
+    teardown_hooks:
+        - ${run_audit_order(90)}
