@@ -4,3 +4,8 @@ config:
 testcases:
 -   name: 【交易链路】从添加用户一直到提车交易完成    testcases/transaction/create_car.yml
     testcase: testcases/transaction/create_car.yml
+
+-   name: 【交易链路】待确认提车后查看排队 testcases/order/tobeconfirmed/lineup.yml
+    testcase: testcases/order/tobeconfirmed/lineup.yml
+    teardown_hooks:
+        - ${run_audit_order(90)}
