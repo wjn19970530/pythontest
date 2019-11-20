@@ -1,0 +1,16 @@
+name: 查看排队  api/mall/orders/GET_CarQueuingInfo.yml
+base_url: ${ENV(base_url)}
+variables:
+      access_token: ${get_token(access_token)}
+      orderId: '1970'
+request:
+        headers:
+            accept: application/json
+            Accept-Encoding: gzip
+            authorization: Bearer ${access_token}
+        method: GET
+        params:
+            orderId: $orderId
+        url: mall/api/v0.1/orders/car-queuing-info
+validate:
+    -   eq: [status_code,200]
