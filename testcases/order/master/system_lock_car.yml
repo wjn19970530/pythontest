@@ -149,7 +149,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
-  - name: 验证车辆状态:未锁车、待售  api/supplychain/GET_Cars.yml
+  - name: 验证车辆状态:已锁车、待售  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
@@ -158,6 +158,15 @@ teststeps:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, false]
+      
+      
+  - name: 释放车源  api/mall/orders/release-car/PUT_Manual.yml
+    api: api/mall/orders/release-car/PUT_Manual.yml
+    variables:
+        orderId: ${orderId}
+        remarks: 退款前释放车源
+    validate:
+      - eq: [status_code,200]
     teardown_hooks:
       - ${run_master_audit_order()}
       - ${run_refund_order()}
