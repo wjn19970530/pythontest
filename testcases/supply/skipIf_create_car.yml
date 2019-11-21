@@ -6,6 +6,7 @@ config:
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
       engineNumber: ${generate_number()}
+      carStatus: 4
     base_url: ${ENV(base_url)}
     teardown_hooks:
       - ${sleep(5)}
@@ -51,6 +52,7 @@ teststeps:
       seriesId: ${get_value_from_tmp(seriesId)}
       typeId: ${get_value_from_tmp(typeId)}
       propertyId: ${propertyId}
+      carStatus: $carStatus
     extract:
       carId: content.carId
       vin: content.vin

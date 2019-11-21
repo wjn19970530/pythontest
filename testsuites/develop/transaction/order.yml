@@ -9,3 +9,8 @@ testcases:
     testcase: testcases/order/tobeconfirmed/lineup.yml
     teardown_hooks:
         - ${run_audit_order(90)}
+
+-   name: 【交易链路】待确认提车后更换牌照 testcases/order/tobeconfirmed/change_ License_plate.yml
+    testcase: testcases/order/tobeconfirmed/change_ License_plate.yml
+    teardown_hooks:
+        - ${run_audit_order()}

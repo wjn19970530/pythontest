@@ -49,8 +49,8 @@ teststeps:
     extract:
       - vin: content.0.vin
 
--   name: 创建待售车辆订单并提交  testcases/order/APP_create_order.yml
-    testcase: testcases/order/APP_create_order.yml
+-   name: 创建待售车辆订单并提交  testcases/order/master/create_order.yml
+    testcase: testcases/order/master/create_order.yml
     variables:
       keyword: $carTypeName
     validate:
