@@ -59,7 +59,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${sleep(30)}
 
 -   name: 支付尾款 testcases/order/Earnestmoney/payment_of_tail.yml
     testcase: testcases/order/Earnestmoney/payment_of_tail.yml
