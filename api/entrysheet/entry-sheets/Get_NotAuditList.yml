@@ -1,4 +1,4 @@
-name: 获取未审核列表   api/entrysheet/entry-sheets/GET_NotAuditList.yml
+name: 获取未审核列表   api/entrysheet/entry-sheets/Get_NotAuditList.yml
 variables:
     token: ''
     name: ${ENV(name)}

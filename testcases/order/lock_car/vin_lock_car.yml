@@ -127,4 +127,4 @@ teststeps:
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, false]
     teardown_hooks:
-      - ${run_audit_order()}
+      - ${run_audit_order(90)}

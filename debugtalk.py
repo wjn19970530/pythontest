@@ -421,6 +421,7 @@ def get_value_from_tmp(keyword):
     # value = ""
     message = BCommon.read_tmp_file(file)
     value = message[keyword]
+    print(keyword, value)
     return value
 
 
@@ -722,6 +723,29 @@ def sql_delete_customer_info(phone_num, IDNum):
     DBOperate(mall).execute_sql(delete_tq_dc_call_log)
 
 
+def save_value_from_response(respons, num, key):
+    """
+    保存接口响应中第num个数据中的key关键字对应的value值至data/tmp.json
+    :param respons: 接口响应
+    :param num: 数据下标
+    :param key: 关键字
+    :return:
+    """
+    respons = respons.json
+    data = respons[num]
+    value = data[key]
+    save_message_to_tmp(key, value)
+
+
+def release_car(time=2):
+    """
+    取消订单后释放车源
+    :return:
+    """
+    sleep(time)
+    testcase = 'testcases/supply/release_car.yml'
+    runner.run(testcase)
+
 
 if __name__ == '__main__':
     c = CsvOperate()
@@ -740,4 +764,5 @@ if __name__ == '__main__':
     # print(type(sell), sell)
     # transcation_no = "a7767b33ecef4abb8157a522fc935401"
     # print(sql_get_verify_code(transcation_no))
-    sql_delete_customer_info('15012340007', '350505196910212333')
+    sql_init_order('16621368448')
+    release_car()

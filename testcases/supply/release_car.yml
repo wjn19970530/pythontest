@@ -1,0 +1,18 @@
+config:
+    name: 立即释放车源  testcases/supply/release_car.yml
+
+teststeps:
+  - name: 获取订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.orderId
+
+  - name: 立即释放车源  api/mall/orders/release-car/PUT_Manual.yml
+    api: api/mall/orders/release-car/PUT_Manual.yml
+    variables:
+        orderId: $orderId
+        remark: '取消订单后释放立即车源'
+    validate:
+      - eq: [status_code,200]
