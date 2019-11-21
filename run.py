@@ -8,7 +8,7 @@ from debugtalk import get_value_from_tmp
 
 if __name__ == '__main__':
     log_file = BaseCommon.get_logfile()
-    runner = HttpRunner(log_level="INFO", log_file=log_file, failfast=True)
+    runner = HttpRunner(log_level="DEBUG", log_file=log_file, failfast=True)
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
         os.remove(tmp_file)
