@@ -1,0 +1,21 @@
+name: 更换牌照 api/mall/orders/GET_ChangeLicensePlate.yml
+base_url: ${ENV(base_url)}
+variables:
+    lockCarId: '3700605497963995908'
+    orderId: '2027'
+    sellerId: '3694609620539547650'
+    targetOrderId: null
+    access_token: ${get_token(access_token)}
+request:
+    headers:
+        Content-Type: application/json;charset=UTF-8
+        authorization: Bearer $access_token
+    json:
+        lockCarId: $lockCarId
+        orderId: $orderId
+        sellerId: $sellerId
+        targetOrderId: $targetOrderId
+    method: PUT
+    url: /mall/api/v0.1/orders/change-license-plate
+validate:
+    - eq: [status_code,200]
