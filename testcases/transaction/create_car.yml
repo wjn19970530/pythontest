@@ -163,29 +163,29 @@ teststeps:
         tradeNo: ${tradeNo}
     validate:
       - eq: [content.0.orderStatusDesc,"待确认提车"]
-#
-#  - name: 提车 testcases/order/mention_car.yml
-#    testcase: testcases/order/mention_car.yml
-#    validate:
-#      - eq: [status_code,200]
-#
-#  - name: 验证订单状态：交易完成 api/mall/back-end/orders/POST_Params.yml
-#    api: api/mall/back-end/orders/POST_Params.yml
-#    variables:
-#        tradeNo: ${tradeNo}
-#    validate:
-#      - eq: [content.0.orderStatusDesc,"交易完成"]
-#      - eq: [content.0.orderDetail.carItemStatus, 99]
-#
-#  - name: 验证库存：已锁车、售出  api/supplychain/GET_Cars.yml
-#    api: api/supplychain/GET_Cars.yml
-#    variables:
-#        vin: ${vin}
-#        carTypeName: ${get_config(carFullName)}
-#    validate:
-#        - eq: [status_code,200]
-#        - eq: [content.0.locked, true]
-#        - eq: [content.0.sold, true]
-#        - eq: [content.0.tradeNo,$tradeNo]
-#    teardown_hooks:
-#      - ${run_audit_order()}
+
+  - name: 提车 testcases/order/mention_car.yml
+    testcase: testcases/order/mention_car.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 验证订单状态：交易完成 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+        tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"交易完成"]
+      - eq: [content.0.orderDetail.carItemStatus, 99]
+
+  - name: 验证库存：已锁车、售出  api/supplychain/GET_Cars.yml
+    api: api/supplychain/GET_Cars.yml
+    variables:
+        vin: ${vin}
+        carTypeName: ${get_config(carFullName)}
+    validate:
+        - eq: [status_code,200]
+        - eq: [content.0.locked, true]
+        - eq: [content.0.sold, true]
+        - eq: [content.0.tradeNo,$tradeNo]
+    teardown_hooks:
+      - ${run_audit_order()}
