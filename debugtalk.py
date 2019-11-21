@@ -280,6 +280,16 @@ def save_seller_id_form_response(response):
     message['sellerId'] = sellerId
     BCommon.write_tmp_file(file, message)
 
+def save_carLicenseNumber_form_response(carLicenseNumber):
+    """
+    从获取账户信息接口获取lockCarId
+    :param carLicenseNumberF: 车架号
+    :return:
+    """
+    message = BCommon.read_tmp_file(file)
+    value = carLicenseNumber
+    message['carLicenseNumber'] = value
+    BCommon.write_tmp_file(file, message)
 
 def response_get_outer_key(response, phone):
     """
@@ -490,6 +500,19 @@ def save_skip(response):
     if len(response) == 0:
         save_message_to_tmp("skip", False)
 
+def save_skip_CarNo(response,orderId):
+    """
+    根据接口响应内容判读订单所在车辆列表位置，在第一条为true,非首条记录为false
+    :param response: 接口响应
+    :param orderId:当前用例订单号
+    :return:
+    """
+    response = response.json
+    responseId=response[0]["orderId"]
+    if responseId == orderId:
+        save_message_to_tmp("skip", True)
+    else :
+        save_message_to_tmp("skip", False)
 
 def save_task_process(response):
     """

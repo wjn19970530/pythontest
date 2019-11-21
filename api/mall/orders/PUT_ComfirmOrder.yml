@@ -1,4 +1,4 @@
-name: APP端确认提车  api/mall/order/order/PUT_ComfirmOrder
+name: APP端确认提车  api/mall/orders/PUT_ComfirmOrder
 variables:
     access_token: ${get_token(access_token)}
     sellerPhoneNum: ${ENV(sellerPhoneNum)}

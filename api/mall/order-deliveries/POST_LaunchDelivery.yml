@@ -1,0 +1,23 @@
+name: 发起出库流程  api/mall/order-deliveries/POST_LaunchDelivery.yml
+base_url: ${ENV(base_url)}
+variables:
+    access_token: ${get_token(access_token)}
+    deliveryType: 1
+    obtainAddress: 北京市市辖区东城区 出库自动化测试
+    orderId: '2211'
+    sellerId: '3694609620539547650'
+    obtainTime: '2019-11-21T07:17:13.513Z'
+request:
+    headers:
+            Content-Type: application/json;charset=UTF-8
+            authorization: Bearer $access_token
+    json:
+            deliveryType: $deliveryType
+            obtainAddress: $obtainAddress
+            obtainTime: $obtainTime
+            orderId: $orderId
+            sellerId: $sellerId
+    method: POST
+    url: /mall/api/v0.1/order-deliveries/launch-delivery
+validate:
+  -  eq: [status_code,200]

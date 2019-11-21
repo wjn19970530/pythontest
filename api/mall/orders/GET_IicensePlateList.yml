@@ -1,0 +1,17 @@
+name: 可更换车辆列表 api/mall/orders/GET_IicensePlateList.yml
+base_url: ${ENV(base_url)}
+variables:
+    orderId: '2132'
+    access_token: ${get_token(access_token)}
+request:
+    headers:
+        authorization: Bearer $access_token
+        content-type: application/json;charset=UTF-8
+    method: GET
+    params:
+        orderId: $orderId
+    url: /mall/api/v0.1/orders/license-plate-list
+validate:
+    - eq: [status_code,200]
+
+

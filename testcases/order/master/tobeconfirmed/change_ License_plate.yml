@@ -1,9 +1,8 @@
 config:
-   name: 待确认提车后查看排队 testcases/order/master/tobeconfirmed/lineup.yml
-   base_url: ${ENV(base_url)}
+   name: 待确认提车后更换牌照 testcases/order/master/tobeconfirmed/change_ License_plate.yml
    variables:
       carTypeName: ${get_config(carFullName)}
-
+      phoneNum: ${ENV(phoneNum)}
 teststeps:
 -   name: 创建车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
@@ -64,7 +63,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(150)}
 
 -   name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
@@ -96,10 +95,53 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
+-    name: 可更换车辆列表 api/mall/orders/GET_IicensePlateList.yml
+     api: api/mall/orders/GET_IicensePlateList.yml
+     variables:
+       orderId: $orderId
+     extract:
+       lockCarIdT: content.0.erpCarId
+       targetOrderIdT: content.0.orderId
+       lockCarIdF: content.1.erpCarId
+       targetOrderIdF: content.1.orderId
+       carLicenseNumberT: content.0.carLicenseNumber
+       carLicenseNumberF: content.1.carLicenseNumber
+     validate:
+        - eq: [status_code,200]
+     teardown_hooks:
+        - ${save_skip_CarNo($response,$orderId)}
 
--   name: 查看排队 api/mall/orders/GET_CarQueuingInfo.yml
-    api: api/mall/orders/GET_CarQueuingInfo.yml
-    variables:
-      orderId: $orderId
-    validate:
-      -  eq: [status_code,200]
+-    name: 更换牌照(非首条记录) api/mall/orders/GET_ChangeLicensePlate.yml
+     api: api/mall/orders/GET_ChangeLicensePlate.yml
+     skipIf: ${get_value_from_tmp("skip")}
+     variables:
+       orderId: $orderId
+       sellerId: ${get_value_from_tmp(sellerId)}
+       lockCarId: $lockCarIdT
+       targetOrderId: $targetOrderIdT
+     validate:
+       - eq: [status_code,200]
+     teardown_hooks:
+         - ${save_carLicenseNumber_form_response($carLicenseNumberT)}
+
+-    name: 更换牌照(首条记录) api/mall/orders/GET_ChangeLicensePlate.yml
+     api: api/mall/orders/GET_ChangeLicensePlate.yml
+     skipUnless: ${get_value_from_tmp("skip")}
+     variables:
+       orderId: $orderId
+       sellerId: ${get_value_from_tmp(sellerId)}
+       lockCarId: $lockCarIdF
+       targetOrderId: $targetOrderIdF
+     validate:
+       - eq: [status_code,200]
+     teardown_hooks:
+       - ${save_carLicenseNumber_form_response($carLicenseNumberF)}
+
+-    name: 验证订单状态：待签署合同 api/mall/back-end/orders/POST_Params.yml
+     api: api/mall/back-end/orders/POST_Params.yml
+     variables:
+       tradeNo: ${tradeNo}
+       carLicenseNumber: ${get_value_from_tmp(carLicenseNumber)}
+     validate:
+       - eq: [content.0.orderStatusDesc,"待签署合同"]
+       - eq: [content.0.orderDetail.carLicenseNumber,$carLicenseNumber]
