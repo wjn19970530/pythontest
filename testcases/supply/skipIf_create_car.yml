@@ -48,7 +48,7 @@ teststeps:
     skipIf: ${get_value_from_tmp(skip)}
     variables:
       engineNumber: $engineNumber
-      brandId: ${tmp_file_get_brand_id()}
+      brandId: ${get_value_from_tmp(brand_id)}
       seriesId: ${get_value_from_tmp(seriesId)}
       typeId: ${get_value_from_tmp(typeId)}
       propertyId: ${propertyId}
