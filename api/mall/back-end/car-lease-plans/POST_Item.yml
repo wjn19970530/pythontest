@@ -2,6 +2,9 @@ name: 配置金融方案  api/mall/back-end/car-lease-plans/POST_Item
 variables:
     access_token: ${get_token(access_token)}
     itemId: 34
+    downPayment: 1000000
+    monthlyPayment: 250000
+    month: 36
 base_url: ${ENV(base_url)}
 request:
     url: /mall/api/v0.1/back-end/car-lease-plans/item/${itemId}
@@ -10,9 +13,9 @@ request:
         authorization: Bearer ${access_token}
     json:
       - titleLabel: 金融方案
-        downPayment: 1000000
-        monthlyPayment: 250000
-        month: 36
+        downPayment: $downPayment
+        monthlyPayment: $monthlyPayment
+        month: $month
         recommendLabel: null
         insurance: 1
         payType: null

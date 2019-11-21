@@ -1,0 +1,21 @@
+name: 更换车辆  api/mall/orders/change-car-type/PUT_ChangCarType.yml
+variables:
+    access_token: ${get_token(access_token)}
+    orderId: ''
+    leasePlanId: ''
+    skuId: ''
+    sellerId: ${get_value_from_tmp(sellerId)}
+base_url: ${ENV(base_url)}
+request:
+  headers:
+      Authorization: Bearer ${access_token}
+  method: PUT
+  json:
+      orderId: $orderId
+      sellerId: ${sellerId}
+      leasePlanId: $leasePlanId
+      skuId: $skuId
+  url: /mall/api/v0.1/orders/change-car-type
+validate:
+  - eq: [status_code, 200]
+  - eq: [content.result,1]
