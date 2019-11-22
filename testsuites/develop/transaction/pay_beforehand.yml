@@ -1,6 +1,0 @@
-config:
-    name: 允许支付提前的资方创建订单 testsuites/develop/transaction/pay_beforehand.yml
-
-testcases:
-  - name: 【APP】【创建订单】先创建订单并支付再购车认证  testcases/order/pay_beforehand/purchase_certification.yml
-    testcase: testcases/order/pay_beforehand/purchase_certification.yml

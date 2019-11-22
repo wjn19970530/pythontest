@@ -1,12 +1,11 @@
 config:
     name: 创建车辆  testcases/supply/create_car.yml
     variables:
-#      phoneNum: ${ENV(phoneNum)}
-      verifyCode: ${ENV(verifyCode)}
-      access_token: ${get_token(access_token)}
       engineNumber: ${generate_number()}
-
-    base_url: ${ENV(base_url)}
+      brandName: ${get_config(carBrandName)}
+      seriesName: ${get_config(carSeriesName)}
+      typeName: '1S'
+      carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
 
 teststeps:
 -   name: 获取brandId api/mall/back-end/GET_CarBrands.yml
@@ -24,10 +23,7 @@ teststeps:
 -   name: 获取车辆详细信息  api/mall/back-end/GET_CarTypesParams.yml
     api: api/mall/back-end/GET_CarTypesParams.yml
     variables:
-        brandName: ${get_config(carBrandName)}
-        seriesName: ${get_config(carSeriesName)}
-        typeName: ''
-        carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
+        carFullName: ${carFullName}
     validate:
       - eq: [status_code,200]
     teardown_hooks:
@@ -35,7 +31,7 @@ teststeps:
 
 -   name: 保存新的车辆基本信息  api/supplychain/POST_Cars.yml
     api: api/supplychain/POST_Cars.yml
-    skipIf: ${get_value_from_tmp(skip)}
+#    skipIf: ${get_value_from_tmp(skip)}
     variables:
       engineNumber: $engineNumber
       brandId: ${get_value_from_tmp(brand_id)}
@@ -47,3 +43,30 @@ teststeps:
       vin: content.vin
     validate:
       - eq: ["status_code", 201]
+
+-   name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
+    api: api/mall/back-end/car-item-skus/GET_Generate.yml
+    variables:
+      itemId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
+
+-   name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
+    api: api/mall/task-processes/GET_TaskStatus.yml
+    variables:
+      sku_task_id: ${get_value_from_tmp(sku_process)}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
+
+-   name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
+    api: api/mall/back-end/car-item-skus/POST_WithPage.yml
+    variables:
+      itemId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}

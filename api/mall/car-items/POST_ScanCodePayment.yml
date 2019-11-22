@@ -7,7 +7,6 @@ variables:
   orderPayType: "1"
   user_id: '3479189832092106759'
 
-
 base_url: ${ENV(base_url)}
 request:
     headers:

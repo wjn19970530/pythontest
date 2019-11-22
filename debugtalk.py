@@ -72,16 +72,6 @@ def response_get_car_brand_id(response, keyword):
     BCommon.write_tmp_file(file, message)
 
 
-# def tmp_file_get_brand_id():
-#     """
-#     从data/tmp.json读取brandId
-#     :return: brand_id
-#     """
-#     message = BCommon.read_tmp_file("data/tmp.json")
-#     brand_id = message["brand_id"]
-#     return brand_id
-
-
 def response_refresh_token(response, endpoint):
     """
     获取登录接口的token，并更新csv中的token信息
@@ -280,6 +270,7 @@ def save_seller_id_form_response(response):
     message['sellerId'] = sellerId
     BCommon.write_tmp_file(file, message)
 
+
 def save_carLicenseNumber_form_response(carLicenseNumber):
     """
     从获取账户信息接口获取lockCarId
@@ -290,6 +281,7 @@ def save_carLicenseNumber_form_response(carLicenseNumber):
     value = carLicenseNumber
     message['carLicenseNumber'] = value
     BCommon.write_tmp_file(file, message)
+
 
 def response_get_outer_key(response, phone):
     """
@@ -421,6 +413,7 @@ def get_value_from_tmp(keyword):
     # value = ""
     message = BCommon.read_tmp_file(file)
     value = message[keyword]
+    print(keyword, value)
     return value
 
 
@@ -500,7 +493,8 @@ def save_skip(response):
     if len(response) == 0:
         save_message_to_tmp("skip", False)
 
-def save_skip_CarNo(response,orderId):
+
+def save_skip_CarNo(response, orderId):
     """
     根据接口响应内容判读订单所在车辆列表位置，在第一条为true,非首条记录为false
     :param response: 接口响应
@@ -513,6 +507,7 @@ def save_skip_CarNo(response,orderId):
         save_message_to_tmp("skip", True)
     else :
         save_message_to_tmp("skip", False)
+
 
 def save_task_process(response):
     """
@@ -721,6 +716,29 @@ def sql_delete_customer_info(phone_num, IDNum):
     delete_tq_dc_call_log = "delete from tq_dc_call_log where query_params_info like '%" + phone_num + "%'"
     DBOperate(mall).execute_sql(delete_tq_dc_call_log)
 
+
+def save_value_from_response(response, num, key):
+    """
+    保存接口响应中第num个数据中的key关键字对应的value值至data/tmp.json
+    :param response: 接口响应
+    :param num: 数据下标
+    :param key: 关键字
+    :return:
+    """
+    response = response.json
+    data = response[num]
+    value = data[key]
+    save_message_to_tmp(key, value)
+
+
+def release_car(time=2):
+    """
+    取消订单后释放车源
+    :return:
+    """
+    sleep(time)
+    testcase = 'testcases/supply/release_car.yml'
+    runner.run(testcase)
 
 
 if __name__ == '__main__':

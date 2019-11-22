@@ -17,7 +17,7 @@ if __name__ == '__main__':
     times = get_value_from_tmp("length")
     if times != 0:
         for i in range(times):
-            runner.run("testcases/order/audit_order_without_sleep.yml")
+            summary = runner.run("testcases/order/audit_order_without_sleep.yml")
 
     summary = runner.run("testcases/login/web_login.yml")
     summary = runner.run("testsuites/develop/")
@@ -31,13 +31,15 @@ if __name__ == '__main__':
     # summary = runner.run("testcases/order/release_car/immediately_release.yml")
     # summary = runner.run("testcases/usercenter/perfect_userInfo.yml")
     # summary = runner.run("testcases/order/repayment_info/XXFTL.yml")
-    # summary = runner.run("testcases/order/lock_car/system_lock_car.yml")
+    # summary = runner.run("testcases/order/lock_car/vin_lock_car.yml")
     # summary = runner.run("testcases/order/repayment_info/ZYR.yml")
     # summary = runner.run("testcases/order/release_car/timed_release.yml")
     # summary = runner.run("testcases/transaction/create_car.yml")
     # runner.run("testcases/login/master_login.yml")
     # summary = runner.run("testcases/transaction/create_car.yml")
-    # summary = runner.run("testcases/order/pay_beforehand/purchase_certification.yml")
+    # summary = runner.run("testsuites/develop/transaction/release_car.yml")
+    # summary = runner.run("testsuites/develop/transaction/pay_beforehand.yml")
+    # summary = runner.run("testcases/order/lock_car/vin_lock_car.yml")
 
     # 获取用例执行情况
     result = BaseCommon.get_result(summary)

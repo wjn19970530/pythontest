@@ -4,8 +4,6 @@ config:
       phoneNum: ${ENV(phoneNum)}
       verifyCode: ${ENV(verifyCode)}
       access_token: ${get_token(access_token)}
-      sellerId: ${get_value_from_tmp(sellerId)}
-      keyword: 'AutoTestCarBrandAaddCar'
     base_url: ${ENV(base_url)}
     setup_hooks:
       - ${sql_init_order($phoneNum)}
@@ -14,49 +12,15 @@ config:
       - orderId
 
 teststeps:
-
--   name: 获取车辆ID api/mall/car-items/POST_LeaseParams.yml
-    api: api/mall/car-items/POST_LeaseParams.yml
-    variables:
-      keyword: ${keyword}
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${save_car_id_from_response($response,$keyword)}
-
--   name: 获取车辆详细信息  api/mall/car-items/GET_CarItemDetails.yml
-    api: api/mall/car-items/GET_CarItemDetails.yml
-    variables:
-      carId: ${get_value_from_tmp(carId)}
-    validate:
-      - eq: [status_code,200]
-    extract:
-      - leasePlanId: content.carLeasePlanList.0.id
-      - skuId: content.carItemSkuWrapperDTO.selectTrees.0.children.0.children.0.sku.skuId
-
--   name: 创建订单  api/mall/car-items/POST_SellerCreate.yml
+-   name: 创建订单
     api: api/mall/car-items/POST_SellerCreate.yml
-    variables:
-        itemId: ${get_value_from_tmp(carId)}
-        leasePlanId: ${leasePlanId}
-        phone: $phoneNum
-        sellerId: ${sellerId}
-        skuId: ${skuId}
-    teardown_hooks:
-      - sleep(15)
-
--   name: 获取订单号 api/mall/back-end/orders/POST_Params.yml
-    api: api/mall/back-end/orders/POST_Params.yml
-    variables:
-      orderStatus: '0'
-      carName: $keyword
+    extract:
+      orderId: content.orderId
     validate:
       - eq: [status_code, 200]
-      - eq: [content.0.orderStatusDesc,'待购车认证']
-    extract:
-      - orderId: content.0.order.id
+#      - eq: [content.orderStatus, 4]
 
--   name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
+-   name: 订单选择支付方式
     api: api/mall/car-items/POST_ScanCodePayment.yml
     variables:
       orderId: $orderId
