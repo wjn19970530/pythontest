@@ -717,16 +717,16 @@ def sql_delete_customer_info(phone_num, IDNum):
     DBOperate(mall).execute_sql(delete_tq_dc_call_log)
 
 
-def save_value_from_response(respons, num, key):
+def save_value_from_response(response, num, key):
     """
     保存接口响应中第num个数据中的key关键字对应的value值至data/tmp.json
-    :param respons: 接口响应
+    :param response: 接口响应
     :param num: 数据下标
     :param key: 关键字
     :return:
     """
-    respons = respons.json
-    data = respons[num]
+    response = response.json
+    data = response[num]
     value = data[key]
     save_message_to_tmp(key, value)
 

@@ -1,0 +1,18 @@
+config:
+    name: 更换车型用例  testsuites/develop/transaction/change_car.yml
+
+testcases:
+  - name: 更换车型-变更金融方案关联合同套件:还款方式、资方不变 testcases/order/change_car/change_car_type.yml
+    testcase: testcases/order/change_car/change_car_type.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 车型变更-更换金融方案:合同套件变更还款方式 testcases/order/change_car/change_repayment_method.yml
+    testcase: testcases/order/change_car/change_repayment_method.yml
+    validate:
+        - eq: [status_code,200]
+
+  - name: 车型不变-更换金融方案:合同套件变更还款方式 testcases/order/change_contract_suite/change_repayment_method.yml
+    testcase: testcases/order/change_contract_suite/change_repayment_method.yml
+    validate:
+        - eq: [status_code,200]

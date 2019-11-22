@@ -1,4 +1,4 @@
-name: 配置金融方案  api/mall/back-end/car-lease-plans/POST_Item
+name: 配置金融方案  api/mall/back-end/car-lease-plans/POST_Item.yml
 variables:
     access_token: ${get_token(access_token)}
     itemId: 34
