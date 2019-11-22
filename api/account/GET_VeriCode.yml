@@ -1,4 +1,4 @@
-name: 获取验证码 api/account/GET_VeriCode.yml
+name: 获取验证码 /uaaaccount/api/account/verify-code
 variables:
     phoneNum: ${ENV(phoneNum)}
     verifyCode: ${ENV(verifyCode)}

@@ -26,6 +26,7 @@ teststeps:
 -   name: 创建待售车辆订单并提交  testcases/order/master/create_order.yml
     testcase: testcases/order/master/create_order.yml
     variables:
+      orderPayType: 2
       keyword: $carTypeName
     validate:
       - eq: [status_code, 200]
@@ -58,7 +59,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${sleep(30)}
 
 -   name: 支付尾款 testcases/order/Earnestmoney/payment_of_tail.yml
     testcase: testcases/order/Earnestmoney/payment_of_tail.yml

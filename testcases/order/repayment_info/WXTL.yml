@@ -1,7 +1,6 @@
 config:
     name: 还款信息:万向通联 testcases/order/repayment_info/WXTL.yml
     variables:
-        payment: 2
         brandName: ${get_config(carBrandName)}
         seriesName: ${get_config(carSeriesName)}
         typeName: 'WXTL'
@@ -11,12 +10,32 @@ config:
         tradeNo: 20191113195819100153733438
 
 teststeps:
+#  - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
+#    testcase: testcases/order/nonaudit_order_count.yml
+#    validate:
+#      - eq: [status_code, 200]
+#
+#  - name: 审核订单  testcases/order/audit_order_without_sleep.yml
+#    testcase: testcases/order/audit_order_without_sleep.yml
+#    validate:
+#      - eq: [status_code, 200]
+
+  - name: 获取账户信息  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
+  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    variables:
+      queryName: ${ENV(phoneNum)}
+    validate:
+      - eq: [status_code,200]
 
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
-    setup_hooks:
-      - ${run_audit_order()}
-      - ${run_get_user_message()}
     variables:
       carTypeName: $carFullName
     validate:
@@ -150,7 +169,7 @@ teststeps:
     api: api/mall/mallSignAgreementInfo/tqtl/GET_Checkout.yml
     variables:
       orderId: $orderId
-      payment: $payment
+      payment: 2
     validate:
       - eq: [status_code,200]
 
@@ -158,7 +177,7 @@ teststeps:
     api: api/mall/mallSignAgreementInfo/tqtl/GET_BankInfo.yml
     variables:
       orderId: $orderId
-      payment: $payment
+      payment: 2
     validate:
       - eq: [status_code,200]
 
@@ -227,9 +246,9 @@ teststeps:
         - eq: [content.0.sold, true]
         - eq: [content.0.tradeNo,$tradeNo]
 
-#  - name: 更新客户outerKey  api/usercenter/users/POST_Customer.yml
-#    api: api/usercenter/users/POST_Customer.yml
-#    variables:
-#      queryName: ${ENV(phoneNum)}
-#    validate:
-#      - eq: [status_code,200]
+  - name: 更新客户outerKey  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    variables:
+      queryName: ${ENV(phoneNum)}
+    validate:
+      - eq: [status_code,200]

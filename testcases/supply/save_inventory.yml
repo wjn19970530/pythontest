@@ -1,0 +1,30 @@
+config:
+    name: 验证库存  testcases/supply/save_inventory.yml
+teststeps:
+  - name: 保存库存信息  api/mall/back-end/POST_CarItemSkus.yml
+    api: api/mall/back-end/POST_CarItemSkus.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: APP验证库存数量 api/mall/car-items/POST_LeaseParams.yml
+    api: api/mall/car-items/POST_LeaseParams.yml
+    variables:
+        black: 20
+        white: 30
+    validate:
+      - eq: [status_code,200]
+
+  - name: 保存库存信息  api/mall/back-end/POST_CarItemSkus.yml
+    api: api/mall/back-end/POST_CarItemSkus.yml
+    variables:
+        sellingInventory: 6
+    validate:
+      - eq: [status_code,200]
+
+  - name: APP验证库存数量 api/mall/car-items/POST_LeaseParams.yml
+    api: api/mall/car-items/POST_LeaseParams.yml
+    variables:
+      black: 12
+      white: 18
+    validate:
+      - eq: [status_code,200]

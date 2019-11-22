@@ -3,7 +3,6 @@ usercenter = "autotest-usercenter_1001"
 mall = "autotest-mall_1001"
 uaa_authority = "autotest-uaa-authority_1001"
 pay = "pay_platform_auto-test_"
-entry_sheet = 'autotest-entry-sheet_1001'
 
 # 从添加客户到交易完成链路配置车辆名称、车型全称
 carBrandName = "AutoTestCarBrand"
