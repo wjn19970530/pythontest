@@ -1,0 +1,16 @@
+name: 获取金融方案  api/mall/back-end/car-lease-plans/item/GET_ItemId.yml
+variables:
+    access_token: ${get_token(access_token)}
+    itemId: 719
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/back-end/car-lease-plans/item/${itemId}
+    method: POST
+    headers:
+        authorization: Bearer ${access_token}
+    params:
+        timestr: 1574393747476
+validate:
+  - eq: [status_code,200]
+teardown_hooks:
+  - ${save_value_from_response($response, 0, id)}
