@@ -1,0 +1,38 @@
+name: 更新车辆状态（上架）  api/mall/back-end/car-items/PUT_UpdateStatus
+variables:
+    access_token: ${get_token(access_token)}
+    itemId: 41
+base_url: ${ENV(base_url)}
+request:
+    url: /mall/api/v0.1/back-end/car-items/update-status/id/${itemId}/status/2
+    method: PUT
+    headers:
+        authorization: Bearer ${access_token}
+    json:
+      id: '${itemId}'
+      name: 接口自动化新增车辆
+      features: ''
+      carTypeName: A1
+      carTypeId: '16'
+      downPayment: '1000000'
+      monthlyPayment: '200000'
+      status: 3
+      gmtCreate: '2019-10-15T06:02:29.000Z'
+      gmtModified: '2019-10-15T06:44:57.000Z'
+      produceCompany: null
+      priceWith1Secure: null
+      priceWith2Secure: null
+      priceWith3Secure: null
+      payLess: null
+      sellProvinces: null
+      deliveryDays: null
+      carItemSkuList: null
+      carItemSkuStatis:
+        sellingNum: 0
+        storageNum: 0
+        transitNum: 0
+      belongType: null
+      belongChannelId: null
+      belongChannelName: null
+      carSaleCategory: null
+      carUsage: null

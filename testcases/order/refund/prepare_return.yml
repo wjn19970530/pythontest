@@ -1,0 +1,26 @@
+config:
+    name: 发起退款 testcases/order/refund/prepare_return.yml
+
+teststeps:
+-   name: 获取订单号 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.order.id
+    output:
+      - oderId
+
+-   name: 发起退款  api/mall/orders/PUT_PrepareReturn.yml
+    api: api/mall/orders/PUT_PrepareReturn.yml
+    validate:
+      - eq: [status_code,200]
+
+-   name: 验证订单状态（待退款、车源释放） api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.orderStatusDesc,"待退款"]
+      - eq: [content.0.order.status, 14]
+    extract:
+      - orderId: content.0.order.id

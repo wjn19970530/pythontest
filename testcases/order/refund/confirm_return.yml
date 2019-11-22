@@ -1,0 +1,25 @@
+config:
+    name: 确认退款  testcases/order/refund/confirm_return.yml
+
+teststeps:
+-   name: 获取订单号 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.order.id
+    output:
+      - orderId
+
+-   name: 确认退款  api/mall/orders/PUT_ConfirmReturn.yml
+    api: api/mall/orders/PUT_ConfirmReturn.yml
+    variables:
+        orderId: ${orderId}
+    validate:
+      - eq: [status_code,200]
+
+-   name: 验证订单状态（交易取消）  api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.orderStatusDesc,"交易取消"]
