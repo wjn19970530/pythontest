@@ -200,7 +200,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
 
   - name: 进件次数校验:2次 api/entrysheet/entry-sheets/Get_NotAuditList.yml
     api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
