@@ -58,3 +58,30 @@ teststeps:
       vin: content.vin
     validate:
       - eq: ["status_code", 201]
+
+-   name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
+    api: api/mall/back-end/car-item-skus/GET_Generate.yml
+    variables:
+      itemId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
+
+-   name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
+    api: api/mall/task-processes/GET_TaskStatus.yml
+    variables:
+      sku_task_id: ${get_value_from_tmp(sku_process)}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
+
+-   name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
+    api: api/mall/back-end/car-item-skus/POST_WithPage.yml
+    variables:
+      itemId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
