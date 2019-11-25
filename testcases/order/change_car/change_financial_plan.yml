@@ -1,12 +1,12 @@
 config:
-    name: 车型变更-更换金融方案:合同套件变更还款方式 testcases/order/change_car/change_repayment_method.yml
+    name: 更换车型-更换金融方案:变更首付月供等信息 testcases/order/change_car/change_financial_plan.yml
     variables:
         original_car_name: 'AutoTestCarBrandA2S'
-        chang_car_name: 'AutoTestCarBrandAGHHKFS'
+        chang_car_name: 'AutoTestCarBrandAGHJRFA'
         phoneNum: ${ENV(phoneNum)}
 
 teststeps:
-  - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
+  - name: 添加待售车辆  testcases/supply/testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
     variables:
       carFullName: ${original_car_name}
@@ -111,8 +111,8 @@ teststeps:
     validate:
       - eq: [content.0.orderStatusDesc,"待确认提车"]
 
-  - name: 创建更换目标车型待售车辆 testcases/supply/create_car.yml
-    testcase: testcases/supply/create_car.yml
+  - name: 创建更换目标车型待售车辆 testcases/supply/skipIf_create_car.yml
+    testcase: testcases/supply/skipIf_create_car.yml
     variables:
       carFullName: $chang_car_name
     validate:
@@ -228,25 +228,29 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
-  - name: 获取完善还款信息二维码 api/mall/orders/GET_UserBankInfoUrl.yml
-    api: api/mall/orders/GET_UserBankInfoUrl.yml
-    setup_hooks:
-      - ${sql_init_repayment($phoneNum)}
-      - ${sleep(5)}
+  - name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
+    api: api/mall/car-items/POST_ScanCodePayment.yml
     variables:
       orderId: $orderId
-      method: 2
+      orderPayType: '0'
     validate:
-      - eq: [status_code,200]
+      - eq: [status_code, 200]
 
-  - name: 完善还款信息  api/mall/mallSignAgreementInfo/bccbank/POST_Sign.yml
-    api: api/mall/mallSignAgreementInfo/bccbank/POST_Sign.yml
-    setup_hooks:
-      - ${sql_init_repayment($phoneNum)}
+  - name: 上传支付图片  api/usercenter/aliyun/POST_OssImg.yml
+    api: api/usercenter/aliyun/POST_OssImg.yml
+    validate:
+      - eq: [status_code, 200]
+    extract:
+      - ossUrl: content.ossUrl
+
+  - name: 提交订单  api/mall/offline-payments/POST_Submit.yml
+    api: api/mall/offline-payments/POST_Submit.yml
     variables:
       orderId: $orderId
+      billImages: $ossUrl
+      orderPayType: '0'
     validate:
-      - eq: [status_code,200]
+      - eq: [status_code, 200]
 
   - name: 验证订单状态:待签署合同 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
