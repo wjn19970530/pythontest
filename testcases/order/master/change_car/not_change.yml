@@ -1,5 +1,5 @@
 config:
-    name: 更换车型-车型与金融方案均不变更 testcases/order/change_car/not_change.yml
+    name: 更换车型-车型与金融方案均不变更 testcases/order/change_car/master/not_change.yml
     variables:
         carFullName: 'AutoTestCarBrandABGH'
 

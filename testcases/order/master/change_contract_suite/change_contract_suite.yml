@@ -1,5 +1,5 @@
 config:
-    name: 车型不变-更换合同套件:资方、还款方式不变 testcases/order/change_contract_suite/change_contract_suite.yml
+    name: 车型不变-更换合同套件:资方、还款方式不变 testcases/order/master/change_contract_suite/change_contract_suite.yml
     variables:
         carFullName: 'AutoTestCarBrandAHTDBH'
 

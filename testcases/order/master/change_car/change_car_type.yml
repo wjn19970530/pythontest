@@ -1,5 +1,5 @@
 config:
-    name: 更换车型-变更金融方案关联合同套件:还款方式、资方不变 testcases/order/change_car/change_car_type.yml
+    name: 更换车型-变更金融方案关联合同套件:还款方式、资方不变 testcases/order/master/change_car/change_car_type.yml
     variables:
         original_car_name: 'AutoTestCarBrandA2S'
         chang_car_name: 'AutoTestCarBrandAGHCX'

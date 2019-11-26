@@ -1,5 +1,5 @@
 config:
-    name: 车型不变-更换金融方案:合同套件变更还款方式 testcases/order/change_contract_suite/change_repayment_method.yml
+    name: 车型不变-更换金融方案:合同套件变更还款方式 testcases/order/master/change_contract_suite/change_repayment_method.yml
     variables:
         carFullName: 'AutoTestCarBrandAHTHKFS'
         phoneNum: ${ENV(phoneNum)}

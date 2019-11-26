@@ -1,5 +1,5 @@
 config:
-    name: 车型变更-更换金融方案:合同套件变更还款方式 testcases/order/change_car/change_repayment_method.yml
+    name: 车型变更-更换金融方案:合同套件变更还款方式 testcases/order/master/change_car/change_repayment_method.yml
     variables:
         original_car_name: 'AutoTestCarBrandA2S'
         chang_car_name: 'AutoTestCarBrandAGHHKFS'

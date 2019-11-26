@@ -1,5 +1,5 @@
 config:
-    name: 更换车型-更换金融方案:变更首付月供等信息 testcases/order/change_car/change_financial_plan.yml
+    name: 更换车型-更换金融方案:变更首付月供等信息 testcases/order/master/change_car/change_financial_plan.yml
     variables:
         original_car_name: 'AutoTestCarBrandA2S'
         chang_car_name: 'AutoTestCarBrandAGHJRFA'
