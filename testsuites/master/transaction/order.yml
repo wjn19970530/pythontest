@@ -13,4 +13,9 @@ testcases:
 -   name: 【交易链路】待确认提车后更换牌照 testcases/order/master/tobeconfirmed/change_ License_plate.yml
     testcase: testcases/order/master/tobeconfirmed/change_ License_plate.yml
     teardown_hooks:
-        - ${run_audit_order()}
+        - ${run_audit_order(90)}
+
+-   name: 【交易链路】完善还款信息(在库) testcases/order/master/repaymen_in_libray.yml
+    testcase: testcases/order/master/repaymen_in_libray.yml
+    teardown_hooks:
+        - ${run_audit_order(90)}
