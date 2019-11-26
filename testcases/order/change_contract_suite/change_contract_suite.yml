@@ -181,6 +181,6 @@ teststeps:
     validate:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
-#    teardown_hooks:
-#      - ${run_audit_order()}
-#      - ${release_car()}
+    teardown_hooks:
+      - ${run_audit_order()}
+      - ${release_car()}

@@ -163,7 +163,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 验证原车辆状态:待售、已锁定  api/supplychain/GET_Cars.yml
+  - name: 验证车辆状态:待售、已锁定  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
