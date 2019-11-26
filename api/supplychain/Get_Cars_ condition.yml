@@ -2,6 +2,7 @@ name: 获取车辆列表 api/supplychain/Get_Cars_ condition.yml
 variables:
     access_token: ${get_token(access_token)}
     carTypeName: "AutoTestCarBrandA1S"
+    carStatus: '4'
     vin: ""
 base_url: ${ENV(base_url)}
 request:
@@ -14,7 +15,7 @@ request:
         timestr: '1566814134884'
         carTypeName: ${carTypeName}
         isLocked: '0'
-        carStatus: '4'
+        carStatus: $carStatus
     url: /supplychain/api/cars
 validate:
 -   eq: [status_code, 200]

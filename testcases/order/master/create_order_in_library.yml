@@ -1,16 +1,12 @@
 config:
-    name: 创建待售车辆订单并提交  testcases/order/master/create_order.yml
-    variables:
-      phoneNum: ${ENV(phoneNum)}
-      verifyCode: ${ENV(verifyCode)}
-      access_token: ${get_token(access_token)}
-      keyword: ${get_config(carFullName)}
-    base_url: ${ENV(base_url)}
-    setup_hooks:
-      - ${sleep(5)}
-    export:
-      - orderId
-
+  name: 创建在库车辆订单并提交 testcases/order/master/create_order_in_library.yml
+  variables:
+          phoneNum: ${ENV(phoneNum)}
+          keyword: "AutoTestCarBrandLibrary1S"
+          orderPayType: 1
+  setup_hooks:
+    - ${sql_init_order($phoneNum)}
+    - ${sleep(5)}
 teststeps:
 -   name: 获取账户信息  api/account/GET_Account.yml
     api: api/account/GET_Account.yml
@@ -19,21 +15,12 @@ teststeps:
     teardown_hooks:
       - ${save_seller_id_form_response($response)}
 
-#-   name: 获取商品列表  api/mall/back-end/car-items/POST_List.yml
-#    api: api/mall/back-end/car-items/POST_List.yml
-#    variables:
-#      keyword: ${keyword}
-#    validate:
-#      - eq: [status_code,200]
-#    extract:
-#      - carId: content.0.id
-
 -   name: 获取车辆ID api/mall/car-items/POST_LeaseParams.yml
     api: api/mall/car-items/POST_LeaseParams.yml
     variables:
-        keyword: $keyword
+      keyword: ${keyword}
     validate:
-      - eq: [status_code, 200]
+      - eq: [status_code,200]
     teardown_hooks:
         - ${save_car_id_from_response($response,$keyword)}
 
@@ -69,7 +56,7 @@ teststeps:
     extract:
       - tradeNo: content.0.order.tradeNo
 
--   name: 搜索订单，验证订单状态(待支付)  api/mall/back-end/orders/POST_Params.yml
+-   name: 搜索订单，验证订单状态(待支付、代采购)  api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
         tradeNo: ${tradeNo}
@@ -81,6 +68,7 @@ teststeps:
     api: api/mall/car-items/POST_ScanCodePayment.yml
     variables:
       orderId: $orderId
+      orderPayType: $orderPayType
     validate:
       - eq: [status_code, 200]
 
@@ -96,5 +84,6 @@ teststeps:
     variables:
       orderId: $orderId
       billImages: $ossUrl
+      orderPayType: $orderPayType
     validate:
       - eq: [status_code, 200]

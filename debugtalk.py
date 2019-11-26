@@ -443,6 +443,7 @@ def save_car_id_from_response(response, keyword):
     print('keyword', keyword)
     response = response.json
     for item in response:
+        print(item['name'] == keyword)
         if item['name'] == keyword:
             carId = item['id']
             print(keyword, "carId:", carId)
@@ -608,9 +609,11 @@ def run_refund_order():
     """
     test_refund_release_car = 'testcases/order/master/refund_release_car.yml'
     test_refund_for_sale = 'testcases/order/master/refund_for_sale.yml'
+    test_refund_for_library = 'testcases/order/master/refund_for_library.yml'
     sleep(1)
     runner.run(test_refund_release_car)
     runner.run(test_refund_for_sale)
+    runner.run(test_refund_for_library)
 
 
 def run_refund_for_sale(second=1):
