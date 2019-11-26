@@ -163,20 +163,10 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 验证原车辆状态:待售、未锁定  api/supplychain/GET_Cars.yml
+  - name: 验证车辆状态:待售、已锁定  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
-    validate:
-      - eq: [status_code,200]
-      - eq: [content.0.locked, false]
-      - eq: [content.0.sold, false]
-      - eq: [content.0.tradeNo,null]
-
-  - name: 验证新车辆状态:待售、已锁定  api/supplychain/cars/GET_Cars.yml
-    api: api/supplychain/cars/GET_Cars.yml
-    variables:
-      new_vin: ${get_value_from_tmp(vin)}
     validate:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
