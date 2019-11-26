@@ -1,0 +1,85 @@
+config:
+  name: 新建在途车辆 testcases/supply/create_car_the_way.yml
+  variables:
+       engineNumber: ${generate_number()}
+       carFullName: "AutoTestCarBrandWay1S"
+       carStatus: 2
+
+teststeps:
+  - name: 获取brandId api/mall/back-end/GET_CarBrands.yml
+    api: api/mall/back-end/GET_CarBrands.yml
+    variables:
+      keyword: 'AutoTestCarBrand'
+    validate:
+      - eq: ["status_code", 200]
+
+  - name: 获取产权归属  api/supplychain/cars/POST_PropertyList.yml
+    api: api/supplychain/cars/POST_PropertyList.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - propertyId: content.0.signPartId
+
+  - name: 获取车辆详细信息  api/mall/back-end/GET_CarTypesParams.yml
+    api: api/mall/back-end/GET_CarTypesParams.yml
+    variables:
+      carFullName: $carFullName
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_car_details_info($response,$carFullName)}
+
+  - name: 获取在途车辆数量  api/supplychain/GET_UnlockedCars.yml
+    api: api/supplychain/GET_UnlockedCars.yml
+    variables:
+      carTypeName: $carFullName
+      carStatus: $carStatus
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_skip_create_car($response)}
+
+  - name: 保存新的车辆基本信息  api/supplychain/POST_Cars.yml
+    api: api/supplychain/POST_Cars.yml
+    #    skipIf: ${get_value_from_tmp(skip)}
+    variables:
+      engineNumber: $engineNumber
+      brandId: ${get_value_from_tmp(brand_id)}
+      seriesId: ${get_value_from_tmp(seriesId)}
+      typeId: ${get_value_from_tmp(typeId)}
+      propertyId: ${propertyId}
+      carStatus: $carStatus
+    extract:
+      carId: content.carId
+      vin: content.vin
+    validate:
+      - eq: ["status_code", 201]
+
+  - name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
+    api: api/mall/back-end/car-item-skus/GET_Generate.yml
+    variables:
+      itemId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
+
+  - name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
+    api: api/mall/task-processes/GET_TaskStatus.yml
+    variables:
+      sku_task_id: ${get_value_from_tmp(sku_process)}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
+
+  - name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
+    api: api/mall/back-end/car-item-skus/POST_WithPage.yml
+#    skipIf: ${get_value_from_tmp(skip)}
+    variables:
+      itemId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
+
