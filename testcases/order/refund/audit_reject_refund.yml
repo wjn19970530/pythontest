@@ -1,8 +1,11 @@
 config:
-      name: 审核拒绝后退款 testcases/order/refund/audit_reject_refund.yml
+      name: 初审核拒绝后退款 testcases/order/refund/audit_reject_refund.yml
       base_url: ${ENV(base_url)}
       variables:
         carTypeName: ${get_config(carFullName)}
+        environment: ${ENV(environment)}
+        orderstatustimeout: ${get_config(orderstatustimeout)}
+
 teststeps:
 -   name: 创建车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
@@ -61,12 +64,14 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
 
 -   name: 审核拒绝  testcases/order/audit_refund.yml
     testcase: testcases/order/audit_refund.yml
     validate:
       - eq: [status_code, 200]
+    setup_hooks:
+      - ${get_audit_list()}
 
 -   name: 验证订单状态：审核拒绝、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml

@@ -10,7 +10,6 @@ log = BCommon.log()
 file = 'data/tmp.json'
 runner = HttpRunner(log_level="ERROR", failfast=True)
 
-
 def sleep(n_secs):
     time.sleep(n_secs)
 
@@ -324,7 +323,6 @@ def save_car_details_info(response, keyword):
                 message["typeId"] = item["typeId"]
     BCommon.write_tmp_file(file, message)
 
-
 def get_car_full_name(brand_name, series_name, type_name):
     """
     拼接车辆全名
@@ -370,6 +368,10 @@ def get_config(key):
         value = carSeriesName
     if key == "carTypeName":
         value = carTypeName
+    if key == "orderstatustimeout":
+        value = orderstatustimeout
+    if key == "environment":
+        value = environment
     return value
 
 
@@ -744,8 +746,75 @@ def release_car(time=2):
     runner.run(testcase)
 
 
+def order_status_change_time(orderstatustimeout,environment):
+    """
+    1.在指定时间内循环执行订单状态判断用例
+    2.记录状态变更所需要时间
+    :return:
+    """
+    test_api='testcases/order/while_order_status_judge.yml'
+    begintime = int(time.time())
+    currenttime = begintime
+    endtime = begintime + int(orderstatustimeout)
+    message = BCommon.read_tmp_file(file)
+
+    if 'orderStatusDesc' in message:
+        orderStatusDesc = message['orderStatusDesc']
+    else:
+        orderStatusDesc =list()
+    while(orderStatusDesc != '订单处理中' and currenttime < endtime):
+        runner.run(test_api)
+        currenttime = int(time.time())
+        orderStatusDesc= get_value_from_tmp('orderStatusDesc')
+        sleep(5)
+
+    if currenttime > endtime:
+        currenttime= -1
+    else:
+        currenttime=currenttime - begintime
+    print(currenttime)
+    BCommon.save_msg_to_database(audit, "order_status_change_time", currenttime , environment)
+
+
+
+def save_orderStatusDesc_tmp(response):
+    """
+    从response中提取订单状态写入data/tmp.json
+    :param response:接口返回数据
+    :return:
+    """
+    response = response.json
+    if len(response) !=0:
+        message = BCommon.read_tmp_file(file)
+        message["orderStatusDesc"] = response[0]['orderStatusDesc']
+        print(message["orderStatusDesc"])
+        BCommon.write_tmp_file(file, message)
+
+def get_audit_list():
+    """
+    1、循环获取未审核列表，防止2分钟未进件用例测试失败；
+    2、用于计算进件耗时、并保存至数据库。
+    :return:
+    """
+    test_api = "api/entrysheet/entry-sheets/Get_NotAuditList.yml"
+    spend_time = 60
+    while True:
+        runner.run(test_api)
+        if get_value_from_tmp("skip") is False:
+            break
+        elif spend_time >= audit_timeout:
+            spend_time = -1
+            break
+        else:
+            sleep(10)
+            spend_time = spend_time + 10
+    sleep(10)
+    print("进件耗时:", spend_time)
+
+
 if __name__ == '__main__':
-    c = CsvOperate()
+    # c = CsvOperate()
+    order_status_change_time(60,1)
     # access_token = '111222333'
     # refresh_token = '444555666'
     # CsvOperate.write_token_csv('data/token.csv', access_token, refresh_token)
@@ -761,4 +830,4 @@ if __name__ == '__main__':
     # print(type(sell), sell)
     # transcation_no = "a7767b33ecef4abb8157a522fc935401"
     # print(sql_get_verify_code(transcation_no))
-    sql_delete_customer_info('15012340007', '350505196910212333')
+    # sql_delete_customer_info('15012340007', '350505196910212333')

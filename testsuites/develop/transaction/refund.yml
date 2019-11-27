@@ -17,7 +17,12 @@ testcases:
     teardown_hooks:
         - ${run_audit_order(90)}
 
-  - name: 【交易系统】【订单管理】购车支付定金后支付尾款 testcases/order/Earnestmoney/pay_earnest_tailmoney.yml
-    testcase: testcases/order/Earnestmoney/pay_earnest_tailmoney.yml
+  - name: 【交易系统】【订单管理】复审核拒绝后退款 testcases/order/refund/review_audit_reject_refund.yml
+    testcase: testcases/order/refund/review_audit_reject_refund.yml
+    teardown_hooks:
+            - ${run_audit_order(90)}
+
+  - name: 【交易系统】【订单管理】待签署合同时退款 testcases/order/refund/contract_to_be_signed.yml
+    testcase: testcases/order/refund/contract_to_be_signed.yml
     teardown_hooks:
             - ${run_audit_order(90)}
