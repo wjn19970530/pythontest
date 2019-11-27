@@ -1,5 +1,5 @@
 config:
-    name: 更换车型用例  testsuites/develop/transaction/change_car.yml
+    name: 更换车型用例  testsuites/master/transaction/change_car.yml
 
 testcases:
   - name: 【APP】【订单管理】更换车型-更换金融方案关联合同套件:还款方式、资方不变 testcases/order/master/change_car/change_car_type.yml

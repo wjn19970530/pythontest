@@ -6,17 +6,10 @@ config:
         typeName: 'ZYR'
         carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
         phoneNum: ${ENV(phoneNum)}
+        environment: ${ENV(environment)}
+        orderstatustimeout: ${get_config(orderstatustimeout)}
 
 teststeps:
-#  - name: 保存未审核订单数量 testcases/order/nonaudit_order_count.yml
-#    testcase: testcases/order/nonaudit_order_count.yml
-#    validate:
-#      - eq: [status_code, 200]
-#
-#  - name: 审核订单  testcases/order/audit_order_without_sleep.yml
-#    testcase: testcases/order/audit_order_without_sleep.yml
-#    validate:
-#      - eq: [status_code, 200]
 
   - name: 获取账户信息  api/account/GET_Account.yml
     api: api/account/GET_Account.yml
@@ -113,10 +106,12 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
+    setup_hooks:
+      - ${get_audit_list()}
     validate:
       - eq: [status_code,200]
 
@@ -128,7 +123,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${order_status_change_time($orderstatustimeout,$environment)}
 
   - name: 完善还款信息  api/mall/mallSignAgreementInfo/zry/GET_QueryZyrCardNo.yml
     api: api/mall/mallSignAgreementInfo/zry/GET_QueryZyrCardNo.yml

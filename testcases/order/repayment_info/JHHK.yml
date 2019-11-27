@@ -6,12 +6,12 @@ config:
         typeName: 'JHHK'
         carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
         phoneNum: ${ENV(phoneNum)}
-        orderId: '1486'
-        tradeNo: 20191113211128100150853082
+        environment: ${ENV(environment)}
+        orderstatustimeout: ${get_config(orderstatustimeout)}
 
 teststeps:
 
- - name: 获取账户信息  api/account/GET_Account.yml
+  - name: 获取账户信息  api/account/GET_Account.yml
     api: api/account/GET_Account.yml
     validate:
       - eq: [status_code, 200]
@@ -106,10 +106,12 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
+    setup_hooks:
+      - ${get_audit_list()}
     validate:
       - eq: [status_code,200]
 
@@ -121,7 +123,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${order_status_change_time($orderstatustimeout,$environment)}
 
   - name: 获取完善还款信息二维码 api/mall/orders/GET_UserBankInfoUrl.yml
     api: api/mall/orders/GET_UserBankInfoUrl.yml
