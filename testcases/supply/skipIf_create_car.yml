@@ -6,6 +6,7 @@ config:
       access_token: ${get_token(access_token)}
       refresh_token: ${get_token(refresh_token)}
       engineNumber: ${generate_number()}
+      carFullName: ${carFullName}
       carStatus: 4
     base_url: ${ENV(base_url)}
     teardown_hooks:
@@ -27,7 +28,7 @@ teststeps:
 -   name: 获取车辆详细信息  api/mall/back-end/GET_CarTypesParams.yml
     api: api/mall/back-end/GET_CarTypesParams.yml
     variables:
-        carFullName: ${get_config(carFullName)}
+        carFullName: ${carFullName}
     validate:
       - eq: [status_code,200]
     teardown_hooks:
@@ -36,7 +37,7 @@ teststeps:
 -   name: 获取待售车辆数量  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
-      carTypeName: ${get_config(carFullName)}
+      carTypeName: ${carFullName}
       carStstus: 4
     validate:
       - eq: [status_code,200]

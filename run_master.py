@@ -1,6 +1,5 @@
 from httprunner.api import HttpRunner
 from httprunner.report import gen_html_report
-
 from common.BaseCommon import BaseCommon
 import json
 import os
@@ -20,12 +19,12 @@ if __name__ == '__main__':
         for i in range(times):
             runner.run("testcases/order/master/audit_order_without_sleep.yml")
 
-    runner.run("testcases/login/master_login.yml")
+    summary = runner.run("testcases/login/master_login.yml")
     summary = runner.run("testsuites/master/")
-    # summary = runner.run("testsuites/master/transaction/release_car.yml")
+    # summary = runner.run("testcases/supply/create_car.yml")
+    # summary = runner.run("testcases/order/master/change_car/not_change.yml")
     # summary = runner.run("testcases/order/master/release_car/")
     # summary = runner.run("testcases/transaction/master/create_car.yml")
-
     # summary = runner.run("testcases/order/master/vin_lock_car.yml")
     # summary = runner.run("testcases/supply/master/confirm_inventory.yml")
 

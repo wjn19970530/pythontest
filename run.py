@@ -19,9 +19,9 @@ if __name__ == '__main__':
             summary = runner.run("testcases/order/audit_order_without_sleep.yml")
 
     summary = runner.run("testcases/login/web_login.yml")
-    # summary = runner.run("testsuites/develop/")
-    summary = runner.run("testcases/order/change_contract_suite/change_financial_plan.yml")
-    # summary = runner.run("testsuites/develop/transaction/change_car.yml")
+    summary = runner.run("testsuites/develop/")
+    # summary = runner.run("testcases/order/change_contract_suite/change_financial_plan.yml")
+    # summary = runner.run("testcases/order/change_car/change_car_type.yml")
     # summary = runner.run("testcases/order/repayment_info/XXFTL.yml")
     # summary = runner.run("testcases/order/pay_beforehand/purchase_certification.yml")
     # summary = runner.run("testcases/usercenter/add_customer.yml")

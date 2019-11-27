@@ -15,4 +15,4 @@ teststeps:
       - eq: [status_code,200]
     teardown_hooks:
       - ${save_trial_token($response)}
-      - ${sleep(1)}
+#      - ${sleep(10)}

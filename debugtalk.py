@@ -550,13 +550,15 @@ def save_response_length(response):
     """
     response = response.json
     length = len(response)
+    print(response)
+    print(length)
     save_message_to_tmp("length", length)
     if length == 0:
         save_message_to_tmp("skip", True)
-        # print("skip:true")
+        print("skip:true")
     else:
         save_message_to_tmp("skip", False)
-        # print("skip:False")
+        print("skip:False")
 
 
 def get_release_time():
@@ -601,16 +603,19 @@ def run_audit_order(second=1):
         runner.run(test_audit)
 
 
-def run_refund_order():
+def refund_and_release_car():
     """
-    订单发起退款
+    已支付有效订单发起退款、已锁车订车释放车源
     :return:
     """
     test_refund_release_car = 'testcases/order/master/refund_release_car.yml'
     test_refund_for_sale = 'testcases/order/master/refund_for_sale.yml'
     sleep(1)
-    runner.run(test_refund_release_car)
     runner.run(test_refund_for_sale)
+    runner.run(test_refund_release_car)
+    sleep(1)
+    testcase = 'testcases/supply/release_car.yml'
+    runner.run(testcase)
 
 
 def run_refund_for_sale(second=1):
@@ -731,14 +736,28 @@ def save_value_from_response(response, num, key):
     save_message_to_tmp(key, value)
 
 
-def release_car(time=2):
+def get_audit_list():
     """
-    取消订单后释放车源
+    1、循环获取未审核列表，防止2分钟未进件用例测试失败；
+    2、用于计算进件耗时、并保存至数据库。
     :return:
     """
-    sleep(time)
-    testcase = 'testcases/supply/release_car.yml'
-    runner.run(testcase)
+    test_api = "api/entrysheet/entry-sheets/Get_NotAuditList.yml"
+    spend_time = 60
+    while True:
+        runner.run(test_api)
+        if get_value_from_tmp("skip") is False:
+            break
+        elif spend_time > audit_timeout:
+            spend_time = -1
+            break
+        else:
+            sleep(10)
+            spend_time = spend_time + 10
+        print("当前耗时:", spend_time)
+    sleep(10)
+    print("进件总耗时:", spend_time, "environment:", environment)
+    BCommon.save_msg_to_database(audit, "entry_time", spend_time, environment)
 
 
 if __name__ == '__main__':
@@ -758,4 +777,4 @@ if __name__ == '__main__':
     # print(type(sell), sell)
     # transcation_no = "a7767b33ecef4abb8157a522fc935401"
     # print(sql_get_verify_code(transcation_no))
-    sql_delete_customer_info('15012340007', '350505196910212333')
+    get_audit_list()
