@@ -15,5 +15,3 @@ teststeps:
         tradeNo: ${tradeNo}
     validate:
       - eq: [status_code,200]
-    teardown_hooks:
-      - ${save_orderStatusDesc_tmp($response)}
