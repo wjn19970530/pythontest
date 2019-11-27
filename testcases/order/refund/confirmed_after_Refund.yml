@@ -3,6 +3,8 @@ config:
       base_url: ${ENV(base_url)}
       variables:
         carTypeName: ${get_config(carFullName)}
+        environment: ${ENV(environment)}
+        orderstatustimeout: ${get_config(orderstatustimeout)}
 teststeps:
 -   name: 创建车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
@@ -11,6 +13,7 @@ teststeps:
       - ${run_get_user_message()}
     validate:
       - eq: [status_code, 200]
+
 
 -   name: 获取待售未锁车辆列表 api/supplychain/Get_Cars_ condition.yml
     api: api/supplychain/Get_Cars_ condition.yml
@@ -61,13 +64,19 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
 
 
 -   name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
     validate:
       - eq: [status_code, 200]
+    setup_hooks:
+      - ${get_audit_list()}
+    teardown_hooks:
+      - ${order_status_change_time($orderstatustimeout,$environment)}
+
+
 
 -   name: 验证订单状态：订单处理中、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
@@ -76,8 +85,6 @@ teststeps:
     validate:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
-    setup_hooks:
-      - ${sleep(30)}
 
 -   name: 完善还款信息  api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
     api: api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
