@@ -628,10 +628,12 @@ def run_refund_order():
     test_refund_release_car = 'testcases/order/master/refund_release_car.yml'
     test_refund_for_sale = 'testcases/order/master/refund_for_sale.yml'
     test_refund_for_library = 'testcases/order/master/refund_for_library.yml'
+    test_refund_for_manual = 'testcases / order / refund_manual.yml'
     sleep(1)
     runner.run(test_refund_release_car)
     runner.run(test_refund_for_sale)
     runner.run(test_refund_for_library)
+    runner.run(test_refund_for_manual)
 
 
 def release_car(time=2):
