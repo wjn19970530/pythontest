@@ -1,7 +1,5 @@
 import time
-
-from httprunner.api import HttpRunner
-
+from common.DBOperate import DBOperate
 from common.log import MyLog
 import json
 import os
@@ -64,11 +62,16 @@ class BaseCommon(object):
         return result
 
     @staticmethod
-    def run_test(second, case):
-        """
-        :param second: 休眠时间
-        :param case: 用例
-        :return:
-        """
-        runner = HttpRunner(log_level="ERROR", failfast=True)
-        runner.run(case)
+    def save_msg_to_database(db, table, time, type):
+        sql = "insert into "+table+"(spend_time,type) values(" + str(time) + "," + str(type) + ")"
+        DBOperate(db).execute_sql(sql)
+
+    @staticmethod
+    def get_value_from_env(key):
+        value = ''
+        with open(".env", "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            for line in lines:
+                if key in line:
+                    value = (line.split('='))[1]
+        return value

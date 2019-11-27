@@ -1,7 +1,9 @@
 config:
-    name: 车型不变-更换合同套件:资方、还款方式不变 testcases/order/change_contract_suite/change_contract_suite.yml
+    name: 更换车型-车型与金融方案均不变更 testcases/order/master/change_car/not_change.yml
     variables:
-        carFullName: 'AutoTestCarBrandAHTDBH'
+        carFullName: 'AutoTestCarBrandABGH'
+        environment: ${ENV(environment)}
+        orderstatustimeout: ${get_config(orderstatustimeout)}
 
 teststeps:
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
@@ -9,8 +11,10 @@ teststeps:
     variables:
       carFullName: ${carFullName}
     setup_hooks:
-      - ${run_audit_order()}
       - ${run_get_user_message()}
+      - ${run_master_audit_order()}
+      - ${refund_and_release_car()}
+      - ${sleep(5)}
     validate:
       - eq: [status_code,200]
 
@@ -27,17 +31,8 @@ teststeps:
     output:
       - vin
 
-  - name: 获取车辆ID api/mall/car-items/POST_LeaseParams.yml
-    api: api/mall/car-items/POST_LeaseParams.yml
-    variables:
-      keyword: ${carFullName}
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${save_car_id_from_response($response,$keyword)}
-
-  - name: 下单 testcases/order/APP_create_order.yml
-    testcase: testcases/order/APP_create_order.yml
+  - name: 下单 testcases/order/master/create_order.yml
+    testcase: testcases/order/master/create_order.yml
     variables:
       keyword: ${carFullName}
     validate:
@@ -69,15 +64,17 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
-  - name: 信审账号登录  testcases/login/trial_account_login.yml
-    testcase: testcases/login/trial_account_login.yml
+  - name: 信审账号登录  testcases/login/master_trial_account_login.yml
+    testcase: testcases/login/master_trial_account_login.yml
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
 
-  - name: 审核订单  testcases/order/audit_order.yml
-    testcase: testcases/order/audit_order.yml
+  - name: 审核订单  testcases/order/master/audit_order.yml
+    testcase: testcases/order/master/audit_order.yml
+    setup_hooks:
+      - ${get_audit_list()}
     validate:
       - eq: [status_code,200]
 
@@ -89,16 +86,31 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${order_status_change_time($orderstatustimeout,$environment)}
 
-  - name: 客户完善还款信息  testcases/order/perfect_repayment_info.yml
-    testcase: testcases/order/perfect_repayment_info.yml
-    setup_hooks:
-      - ${sql_init_repayment($phoneNum)}
+  - name: 获取完善还款信息二维码 api/mall/orders/GET_UserBankInfoUrl.yml
+    api: api/mall/orders/GET_UserBankInfoUrl.yml
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${get_outer_key($response)}
+
+  - name: 客户完善还款信息  api/mall/find/GET_TongLianInfo.yml
+    api: api/mall/find/GET_TongLianInfo.yml
+    variables:
+      orderId: $orderId
+      payment: '5'
     validate:
       - eq: [status_code,200]
 
-  - name: 搜索订单,验证订单状态:待签署合同 api/mall/back-end/orders/POST_Params.yml
+  - name: 确认开通  api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
+    api: api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
+    validate:
+      - eq: [status_code,200]
+
+  - name: 验证订单状态:待签署合同 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
       tradeNo: ${tradeNo}
@@ -106,26 +118,16 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
-  - name: 签署合同  testcases/contracts/sign_contract.yml
-    testcase: testcases/contracts/sign_contract.yml
-    validate:
-      - eq: [status_code,200]
-
-  - name: 验证订单状态:待确认提车 api/mall/back-end/orders/POST_Params.yml
-    api: api/mall/back-end/orders/POST_Params.yml
-    variables:
-      tradeNo: ${tradeNo}
-    validate:
-      - eq: [content.0.orderStatusDesc,"待确认提车"]
-
-  - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
+  - name: 创建待售车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
     variables:
-      carFullName: ${carFullName}
+      carFullName: $carFullName
     validate:
       - eq: [status_code,200]
+    teardown_hooks:
+      - ${sleep(5)}
 
-  - name: 获取待售车辆车架号  api/supplychain/GET_UnlockedCars.yml
+  - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
     variables:
       carTypeName: $carFullName
@@ -143,17 +145,26 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 获取车辆详细信息  api/mall/car-items/GET_CarItemDetails.yml
-    api: api/mall/car-items/GET_CarItemDetails.yml
+  - name: 获取更换目标车型车辆ID  api/mall/car-items/POST_LeaseParams.yml
+    api: api/mall/car-items/POST_LeaseParams.yml
     variables:
-      carId: ${get_value_from_tmp(carId)}
+      keyword: $carFullName
     validate:
       - eq: [status_code,200]
     extract:
-      - leasePlanId: content.carLeasePlanList.1.id
+      - carId: content.0.id
+
+  - name: 获取车辆详细信息  api/mall/car-items/GET_CarItemDetails.yml
+    api: api/mall/car-items/GET_CarItemDetails.yml
+    variables:
+      carId: ${carId}
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - leasePlanId: content.carLeasePlanList.0.id
       - skuId: content.carItemSkuWrapperDTO.selectTrees.0.children.0.children.0.sku.skuId
 
-  - name: 更换金融方案  api/mall/orders/change-car-type/PUT_ChangCarType.yml
+  - name: 更换车型  api/mall/orders/change-car-type/PUT_ChangCarType.yml
     api: api/mall/orders/change-car-type/PUT_ChangCarType.yml
     variables:
       orderId: $orderId
@@ -162,7 +173,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 验证库存:待售、已锁车  api/supplychain/GET_Cars.yml
+  - name: 验证车辆状态:待售、已锁定  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}
@@ -171,8 +182,6 @@ teststeps:
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, false]
       - eq: [content.0.tradeNo,$tradeNo]
-    setup_hooks:
-      - ${sleep(2)}
 
   - name: 验证订单状态:待签署合同 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
@@ -181,6 +190,8 @@ teststeps:
     validate:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
+    setup_hooks:
+      - ${sleep(20)}
     teardown_hooks:
-      - ${run_audit_order()}
-      - ${release_car()}
+      - ${refund_and_release_car()}
+      - ${run_master_audit_order()}
