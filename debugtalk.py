@@ -825,10 +825,11 @@ def save_orderStatusDesc_tmp(response):
     :return:
     """
     response = response.json
-    message = BCommon.read_tmp_file(file)
-    message["orderStatusDesc"] = response[0]['orderStatusDesc']
-    print(message["orderStatusDesc"])
-    BCommon.write_tmp_file(file, message)
+    if len(response) != 0:
+        message = BCommon.read_tmp_file(file)
+        message["orderStatusDesc"] = response[0]['orderStatusDesc']
+        print(message["orderStatusDesc"])
+        BCommon.write_tmp_file(file, message)
 
 
 if __name__ == '__main__':
