@@ -1,47 +1,16 @@
 config:
     name: 从添加待售车辆到待签署合同   testcases/transaction/master/create_car.yml
+    variables:
+      environment: ${ENV(environment)}
+      orderstatustimeout: ${get_config(orderstatustimeout)}
 
 teststeps:
-#  - name: 保存未审核订单数量 testcases/order/master/nonaudit_order_count.yml
-#    testcase: testcases/order/master/nonaudit_order_count.yml
-#    validate:
-#      - eq: [status_code, 200]
-#
-#  - name: 审核订单  testcases/order/master/audit_order_without_sleep.yml
-#    testcase: testcases/order/master/audit_order_without_sleep.yml
-#    validate:
-#      - eq: [status_code, 200]
-#
-#  - name: 获取账户信息  api/account/GET_Account.yml
-#    api: api/account/GET_Account.yml
-#    validate:
-#      - eq: [status_code, 200]
-#    teardown_hooks:
-#      - ${save_seller_id_form_response($response)}
-#
-#  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
-#    api: api/usercenter/users/POST_Customer.yml
-#    validate:
-#      - eq: [status_code,200]
-#
-#  - name: 释放车源状态的有效订单发起退款 testcases/order/master/refund_release_car.yml
-#    testcase: testcases/order/master/refund_release_car.yml
-#    validate:
-#      - eq: [status_code,200]
-#
-#  - name: 待售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
-#    testcase: testcases/order/master/refund_for_sale.yml
-#    validate:
-#      - eq: [status_code,200]
-#    teardown_hooks:
-#      - ${sleep(5)}
-
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
-    testcase: testcases/supply/skipIf_create_car.yml
+    testcase: testcases/supply/create_car.yml
     setup_hooks:
       - ${run_get_user_message()}
       - ${run_master_audit_order()}
-      - ${run_refund_order()}
+      - ${refund_and_release_car()}
       - ${sleep(5)}
     validate:
       - eq: [status_code,200]
@@ -104,10 +73,12 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
 
   - name: 审核订单  testcases/order/master/audit_order.yml
     testcase: testcases/order/master/audit_order.yml
+    setup_hooks:
+      - ${get_audit_list()}
     validate:
       - eq: [status_code,200]
 
@@ -119,7 +90,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${order_status_change_time($orderstatustimeout,$environment)}
 
   - name: 完善还款信息  testcases/order/master/perfect_repayment_info.yml
     testcase: testcases/order/master/perfect_repayment_info.yml
@@ -134,5 +105,5 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     teardown_hooks:
+      - ${refund_and_release_car()}
       - ${run_master_audit_order()}
-      - ${run_refund_order()}

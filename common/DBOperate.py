@@ -1,7 +1,5 @@
 import pymysql
 
-from config import *
-
 
 class DBOperate():
     def __init__(self, db):

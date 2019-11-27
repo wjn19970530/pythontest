@@ -4,7 +4,7 @@ config:
       engineNumber: ${generate_number()}
       brandName: ${get_config(carBrandName)}
       seriesName: ${get_config(carSeriesName)}
-      typeName: '1S'
+      typeName: '2S'
       carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
 
 teststeps:
