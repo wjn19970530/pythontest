@@ -1,0 +1,44 @@
+config:
+  name: 复审拒绝订单  testcases/order/review_refund.yml
+  base_url: ${ENV(base_url)}
+
+teststeps:
+-   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    variables:
+      token: ${get_value_from_tmp(token)}
+    extract:
+      -  id: content.0.entrySheet.id
+      -  task_id: content.0.unFinishTaskId
+    validate:
+      -  eq: [status_code,200]
+
+-   name: 初审信息提交  api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
+    api: api/entrysheet/entry-sheets/PUT_SubmitFirstTrial.yml
+    variables:
+      id: $id
+      task_id: $task_id
+      token: ${get_value_from_tmp(token)}
+    validate:
+      -  eq: [status_code,200]
+      -  eq: [content.status,'2']
+
+-   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
+    variables:
+      token: ${get_value_from_tmp(token)}
+    extract:
+      - id: content.0.entrySheet.id
+      - task_id: content.0.unFinishTaskId
+    validate:
+      - eq: [status_code,200]
+
+-   name: 复审拒绝  api/entrysheet/entry-sheets/PUT_SubmitReview.yml
+    api: api/entrysheet/entry-sheets/PUT_SubmitReview.yml
+    variables:
+      id: $id
+      audit: {"auditResult": "0","auditOpinion": "自动化测试，复审拒绝","taskId":$task_id }
+      token: ${get_value_from_tmp(token)}
+    validate:
+      -  eq: [status_code,200]
+      -  eq: [content.status,'3']

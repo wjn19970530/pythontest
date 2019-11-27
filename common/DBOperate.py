@@ -1,10 +1,9 @@
 import pymysql
 
-from common.BaseCommon import BaseCommon
 from config import *
 
 
-class DBOperate(BaseCommon):
+class DBOperate():
     def __init__(self, db):
         self.db = db
 
