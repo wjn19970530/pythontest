@@ -4,10 +4,14 @@ config:
         original_car_name: 'AutoTestCarBrandA2S'
         chang_car_name: 'AutoTestCarBrandAGHHKFS'
         phoneNum: ${ENV(phoneNum)}
+        environment: ${ENV(environment)}
+        orderstatustimeout: ${get_config(orderstatustimeout)}
 
 teststeps:
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
+    variables:
+      carFullName: $original_car_name
     setup_hooks:
       - ${run_get_user_message()}
       - ${run_master_audit_order()}
@@ -84,7 +88,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${order_status_change_time($orderstatustimeout,$environment)}
 
   - name: 获取完善还款信息二维码 api/mall/orders/GET_UserBankInfoUrl.yml
     api: api/mall/orders/GET_UserBankInfoUrl.yml
@@ -256,7 +260,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(5)}
+      - ${sleep(20)}
     teardown_hooks:
       - ${refund_and_release_car()}
       - ${run_master_audit_order()}

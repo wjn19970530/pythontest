@@ -370,6 +370,8 @@ def get_config(key):
         value = carSeriesName
     if key == "carTypeName":
         value = carTypeName
+    if key == "orderstatustimeout":
+        value = orderstatustimeout
     return value
 
 
@@ -618,6 +620,30 @@ def refund_and_release_car():
     runner.run(testcase)
 
 
+def run_refund_order():
+    """
+    订单发起退款
+    :return:
+    """
+    test_refund_release_car = 'testcases/order/master/refund_release_car.yml'
+    test_refund_for_sale = 'testcases/order/master/refund_for_sale.yml'
+    test_refund_for_library = 'testcases/order/master/refund_for_library.yml'
+    sleep(1)
+    runner.run(test_refund_release_car)
+    runner.run(test_refund_for_sale)
+    runner.run(test_refund_for_library)
+
+
+def release_car(time=2):
+    """
+    取消订单后释放车源
+    :return:
+    """
+    sleep(time)
+    testcase = 'testcases/supply/release_car.yml'
+    runner.run(testcase)
+
+
 def run_refund_for_sale(second=1):
     """
     车辆状态为“待售”的订单发起退款
@@ -685,7 +711,7 @@ def get_outer_key(response, method=1):
         outerKey = value[start_index + 1:end_index]
         save_message_to_tmp("outerKey", outerKey)
 
-
+'''
 def sql_delete_customer_info(phone_num, IDNum):
     """
     数据库中删除客户相关信息
@@ -720,6 +746,7 @@ def sql_delete_customer_info(phone_num, IDNum):
     DBOperate(entry_sheet).execute_sql(delete_tq_auth_info)
     delete_tq_dc_call_log = "delete from tq_dc_call_log where query_params_info like '%" + phone_num + "%'"
     DBOperate(mall).execute_sql(delete_tq_dc_call_log)
+'''
 
 
 def save_value_from_response(response, num, key):
@@ -742,6 +769,7 @@ def get_audit_list():
     2、用于计算进件耗时、并保存至数据库。
     :return:
     """
+    environment = BCommon.get_value_from_env("environment")
     test_api = "api/entrysheet/entry-sheets/Get_NotAuditList.yml"
     spend_time = 60
     while True:
@@ -758,6 +786,49 @@ def get_audit_list():
     sleep(10)
     print("进件总耗时:", spend_time, "environment:", environment)
     BCommon.save_msg_to_database(audit, "entry_time", spend_time, environment)
+
+
+def order_status_change_time(orderstatustimeout, environment):
+    """
+    1.在指定时间内循环执行订单状态判断用例
+    2.记录状态变更所需要时间
+    :return:
+    """
+    test_api = 'testcases/order/while_order_status_judge.yml'
+    begintime = int(time.time())
+    currenttime = begintime
+    endtime = begintime + int(orderstatustimeout)
+    message = BCommon.read_tmp_file(file)
+
+    if 'orderStatusDesc' in message:
+        orderStatusDesc = message['orderStatusDesc']
+    else:
+        orderStatusDesc = list()
+    while (orderStatusDesc != '订单处理中' and currenttime < endtime):
+        runner.run(test_api)
+        currenttime = int(time.time())
+        orderStatusDesc = get_value_from_tmp('orderStatusDesc')
+        sleep(5)
+
+    if currenttime > endtime:
+        currenttime = -1
+    else:
+        currenttime = currenttime - begintime
+    print(currenttime)
+    BCommon.save_msg_to_database(audit, "order_status_change_time", currenttime, environment)
+
+
+def save_orderStatusDesc_tmp(response):
+    """
+    从response中提取订单状态写入data/tmp.json
+    :param response:接口返回数据
+    :return:
+    """
+    response = response.json
+    message = BCommon.read_tmp_file(file)
+    message["orderStatusDesc"] = response[0]['orderStatusDesc']
+    print(message["orderStatusDesc"])
+    BCommon.write_tmp_file(file, message)
 
 
 if __name__ == '__main__':

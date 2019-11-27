@@ -1,0 +1,19 @@
+config:
+  name: 订单状态循环判断(订单处理中) testcases/order/while_order_status_judge.yml
+teststeps:
+-   name: 获取订单号 api/mall/salesman/POST_Order.yml
+    api: api/mall/salesman/POST_Order.yml
+    validate:
+      - eq: [status_code,200]
+    extract:
+      - orderId: content.0.orderId
+      - tradeNo: content.0.tradeNo
+
+-   name: 验证订单状态：订单处理中、待售 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+        tradeNo: ${tradeNo}
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${save_orderStatusDesc_tmp($response)}

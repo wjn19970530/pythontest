@@ -16,4 +16,4 @@ carTypeName = "1S"
 
 # 获取未审核列表超时时间
 audit_timeout = 300
-environment = 1
+orderstatustimeout = 60

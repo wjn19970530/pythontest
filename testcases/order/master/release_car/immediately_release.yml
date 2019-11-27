@@ -5,6 +5,8 @@ config:
       seriesName: ${get_config(carSeriesName)}
       typeName: ${get_config(carTypeName)}
       carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
+      environment: ${ENV(environment)}
+      orderstatustimeout: ${get_config(orderstatustimeout)}
 
 teststeps:
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
@@ -12,7 +14,7 @@ teststeps:
     setup_hooks:
       - ${run_get_user_message()}
       - ${run_master_audit_order()}
-      - ${run_refund_order()}
+      - ${refund_and_release_car()}
       - ${sleep(5)}
     validate:
       - eq: [status_code,200]
@@ -64,6 +66,30 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
+  - name: 信审账号登录  testcases/login/master_trial_account_login.yml
+    testcase: testcases/login/master_trial_account_login.yml
+    validate:
+      - eq: [status_code,200]
+    setup_hooks:
+      - ${sleep(60)}
+
+  - name: 审核订单  testcases/order/master/audit_order.yml
+    testcase: testcases/order/master/audit_order.yml
+    setup_hooks:
+      - ${get_audit_list()}
+    validate:
+      - eq: [status_code,200]
+
+  - name: 验证订单状态:订单处理中 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+      tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"订单处理中"]
+      - eq: [content.0.orderDetail.carItemStatus, 9]
+    setup_hooks:
+      - ${order_status_change_time($orderstatustimeout,$environment)}
+
   - name: 释放车源-立即释放 api/mall/orders/release-car/PUT_Manual.yml
     api: api/mall/orders/release-car/PUT_Manual.yml
     variables:
@@ -71,12 +97,12 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 验证订单状态：等待审核、释放车源 api/mall/back-end/orders/POST_Params.yml
+  - name: 验证订单状态：订单处理中、释放车源 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
       tradeNo: ${tradeNo}
     validate:
-      - eq: [content.0.orderStatusDesc,"等待审核"]
+      - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 11]
 
   - name: 验证库存：未锁车、待售  api/supplychain/GET_Cars.yml
@@ -97,7 +123,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
-  - name: 验证订单状态：等待审核、待退款 api/mall/back-end/orders/POST_Params.yml
+  - name: 验证订单状态：待退款 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
       tradeNo: ${tradeNo}
@@ -118,5 +144,5 @@ teststeps:
     validate:
       - eq: [content.0.orderStatusDesc,"交易取消"]
     teardown_hooks:
+      - ${refund_and_release_car()}
       - ${run_master_audit_order()}
-      - ${run_refund_order()}

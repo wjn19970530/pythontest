@@ -7,3 +7,5 @@ testcases:
 
   - name: 【APP】【订单管理】发起锁车-使用车架号锁车  testcases/order/master/vin_lock_car.yml
     testcase: testcases/order/master/vin_lock_car.yml
+    teardown_hooks:
+      - ${refund_and_release_car()}

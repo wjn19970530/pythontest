@@ -65,3 +65,13 @@ class BaseCommon(object):
     def save_msg_to_database(db, table, time, type):
         sql = "insert into "+table+"(spend_time,type) values(" + str(time) + "," + str(type) + ")"
         DBOperate(db).execute_sql(sql)
+
+    @staticmethod
+    def get_value_from_env(key):
+        value = ''
+        with open(".env", "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            for line in lines:
+                if key in line:
+                    value = (line.split('='))[1]
+        return value
