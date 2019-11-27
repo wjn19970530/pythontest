@@ -1,5 +1,5 @@
 config:
-      name: 购车支付定金后支付尾款 testcases/order/master/Earnestmoney/pay_earnest_tailmoney.yml
+      name: 待签署合同时退款 testcases/order/master/refund/contract_to_be_signed.yml
       base_url: ${ENV(base_url)}
       variables:
         carTypeName: ${get_config(carFullName)}
@@ -8,13 +8,13 @@ config:
 teststeps:
 -   name: 创建车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
+    validate:
+      - eq: [status_code, 200]
     setup_hooks:
       - ${run_get_user_message()}
       - ${run_master_audit_order()}
       - ${run_refund_order()}
       - ${sleep(5)}
-    validate:
-      - eq: [status_code, 200]
 
 -   name: 获取待售未锁车辆列表 api/supplychain/Get_Cars_ condition.yml
     api: api/supplychain/Get_Cars_ condition.yml
@@ -28,7 +28,6 @@ teststeps:
 -   name: 创建待售车辆订单并提交  testcases/order/master/create_order.yml
     testcase: testcases/order/master/create_order.yml
     variables:
-      orderPayType: 2
       keyword: $carTypeName
     validate:
       - eq: [status_code, 200]
@@ -40,6 +39,7 @@ teststeps:
     extract:
       - orderId: content.0.orderId
       - tradeNo: content.0.tradeNo
+
 
 -   name: 验证库存：已锁车、待售  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
@@ -67,12 +67,13 @@ teststeps:
     setup_hooks:
       - ${sleep(60)}
 
+
 -   name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
     validate:
       - eq: [status_code, 200]
     teardown_hooks:
-      - ${order_status_change_time($orderstatustimeout,$environment)}\
+      - ${order_status_change_time($orderstatustimeout,$environment)}
     setup_hooks:
       - ${get_audit_list()}
 
@@ -84,12 +85,45 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${sleep(30)}
 
--   name: 支付尾款 testcases/order/Earnestmoney/payment_of_tail.yml
-    testcase: testcases/order/Earnestmoney/payment_of_tail.yml
-    variables:
-       orderId: $orderId
-       orderPayType: 0
+
+-   name: 完善还款信息  testcases/order/master/perfect_repayment_info.yml
+    testcase: testcases/order/master/perfect_repayment_info.yml
     validate:
-      - eq: [status_code, 200]
+      - eq: [status_code,200]
+
+
+-   name: 验证订单状态：待签署合同 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+        tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"待签署合同"]
+      - eq: [content.0.orderDetail.carItemStatus, 9]
+
+-     name: 发起退款   api/mall/orders/PUT_PrepareReturn.yml
+      api: api/mall/orders/PUT_PrepareReturn.yml
+      variables:
+        orderId: $orderId
+      validate:
+        - eq: [status_code,200]
+
+-   name: 验证订单状态：待退款 api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+      tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"待退款"]
+
+-   name: 验证车辆状态:未锁车、待售  api/supplychain/GET_Cars.yml
+    api: api/supplychain/GET_Cars.yml
+    variables:
+      vin: ${vin}
+      carTypeName: ${get_config(carFullName)}
+    validate:
+      - eq: [status_code,200]
+      - eq: [content.0.locked, false]
+      - eq: [content.0.sold, false]
+      - eq: [content.0.tradeNo,null]
+

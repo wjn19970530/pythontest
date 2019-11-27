@@ -19,6 +19,8 @@ request:
     url: /mall/api/v0.1/back-end/orders/params?page=0
 validate:
     - eq: [status_code,200]
+teardown_hooks:
+    - ${save_orderStatusDesc_tmp($response)}
 #extract:
 #    - orderId: content.0.order.id
 teardown_hooks:
