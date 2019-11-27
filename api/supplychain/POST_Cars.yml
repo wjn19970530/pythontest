@@ -6,6 +6,7 @@ variables:
     seriesId: 33
     typeId: 52
     propertyId: 3694609620539547688
+    carStatus: 4
 base_url: ${ENV(base_url)}
 request:
     url: /supplychain/api/cars
@@ -17,7 +18,7 @@ request:
         brandId: '${brandId}'
         seriesId: '${seriesId}'
         typeId: '${typeId}'
-        carStatus: 4
+        carStatus: $carStatus
         purchaserType: '1'
         purchaserId: 'null'
         colorId: '38'

@@ -14,3 +14,13 @@ testcases:
     testcase: testcases/order/tobeconfirmed/change_ License_plate.yml
     teardown_hooks:
         - ${run_audit_order()}
+
+-   name: 【交易链路】完善还款信息(在库) testcases/order/repaymen_in_libray.yml
+    testcase: testcases/order/repaymen_in_libray.yml
+    teardown_hooks:
+        - ${run_audit_order(90)}
+
+-   name: 【交易系统】【订单管理】购车支付定金后支付尾款 testcases/order/Earnestmoney/pay_earnest_tailmoney.yml
+    testcase: testcases/order/Earnestmoney/pay_earnest_tailmoney.yml
+    teardown_hooks:
+            - ${run_audit_order(90)}

@@ -1,0 +1,9 @@
+config:
+    name: 发起锁车用例  testsuites/develop/transaction/release_car.yml
+
+testcases:
+  - name: 【APP】【订单管理】发起锁车-使用系统锁车  testcases/order/lock_car/system_lock_car.yml
+    testcase: testcases/order/lock_car/system_lock_car.yml
+
+  - name: 【APP】【订单管理】发起锁车-使用车架号锁车  testcases/order/lock_car/vin_lock_car.yml
+    testcase: testcases/order/lock_car/vin_lock_car.yml

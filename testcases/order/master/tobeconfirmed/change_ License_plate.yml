@@ -3,6 +3,8 @@ config:
    variables:
       carTypeName: ${get_config(carFullName)}
       phoneNum: ${ENV(phoneNum)}
+      environment: ${ENV(environment)}
+      orderstatustimeout: ${get_config(orderstatustimeout)}
 teststeps:
 -   name: 创建车辆 testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
@@ -58,17 +60,22 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
+
 -   name: master分支信审账号登录  testcases/login/master_trial_account_login.yml
     testcase: testcases/login/master_trial_account_login.yml
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(150)}
+      - ${sleep(120)}
 
 -   name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
     validate:
       - eq: [status_code, 200]
+    teardown_hooks:
+      - ${order_status_change_time($orderstatustimeout,$environment)}
+    setup_hooks:
+      - ${get_audit_list()}
 
 -   name: 验证订单状态：订单处理中、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml

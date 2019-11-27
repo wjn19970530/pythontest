@@ -3,6 +3,7 @@ variables:
     token: ${get_token(access_token)}
     task_id: e38343ad-e8a1-11e9-b7e4-00163e0a1bd2
     id: 126
+    audit: {"auditResult":"1","auditOpinion":"自动化复审通过","taskId":"${task_id}"}
 base_url: ${ENV(base_url)}
 request:
     headers:
@@ -11,7 +12,7 @@ request:
     json:
         currentVersion : 0
         id: ${id}
-        audit: {"auditResult":"1","auditOpinion":"自动化复审通过","taskId":"${task_id}"}
+        audit: $audit
     method: PUT
     url: /entrysheet/api/entry-sheets/submit
 validate:

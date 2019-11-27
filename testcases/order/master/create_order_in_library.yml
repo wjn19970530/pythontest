@@ -1,19 +1,19 @@
 config:
-    name: 创建待售车辆订单并提交  testcases/order/create_order.yml
-    variables:
-      phoneNum: ${ENV(phoneNum)}
-      verifyCode: ${ENV(verifyCode)}
-      access_token: ${get_token(access_token)}
-      sellerId: ${get_value_from_tmp(sellerId)}
-      keyword: 'AutoTestCarBrandAaddCar'
-    base_url: ${ENV(base_url)}
-    setup_hooks:
-      - ${sql_init_order($phoneNum)}
-      - ${sleep(2)}
-    export:
-      - orderId
-
+  name: 创建在库车辆订单并提交 testcases/order/master/create_order_in_library.yml
+  variables:
+          phoneNum: ${ENV(phoneNum)}
+          keyword: "AutoTestCarBrandLibrary1S"
+          orderPayType: 1
+  setup_hooks:
+    - ${sql_init_order($phoneNum)}
+    - ${sleep(5)}
 teststeps:
+-   name: 获取账户信息  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
 
 -   name: 获取车辆ID api/mall/car-items/POST_LeaseParams.yml
     api: api/mall/car-items/POST_LeaseParams.yml
@@ -22,7 +22,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
     teardown_hooks:
-      - ${save_car_id_from_response($response,$keyword)}
+        - ${save_car_id_from_response($response,$keyword)}
 
 -   name: 获取车辆详细信息  api/mall/car-items/GET_CarItemDetails.yml
     api: api/mall/car-items/GET_CarItemDetails.yml
@@ -37,43 +37,53 @@ teststeps:
 -   name: 创建订单  api/mall/car-items/POST_SellerCreate.yml
     api: api/mall/car-items/POST_SellerCreate.yml
     variables:
-        itemId: ${get_value_from_tmp(carId)}
         leasePlanId: ${leasePlanId}
-        phone: $phoneNum
-        sellerId: ${sellerId}
         skuId: ${skuId}
+        itemId: ${get_value_from_tmp(carId)}
+    extract:
+      orderId: content.orderId
+    validate:
+      - eq: [status_code, 200]
     teardown_hooks:
-      - sleep(15)
+      - ${sleep(5)}
 
 -   name: 获取订单号 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:
-      orderStatus: '0'
-      carName: $keyword
+        phoneNum: ${ENV(phoneNum)}
     validate:
-      - eq: [status_code, 200]
-      - eq: [content.0.orderStatusDesc,'待购车认证']
+      - eq: [status_code,200]
     extract:
-      - orderId: content.0.order.id
+      - tradeNo: content.0.order.tradeNo
+
+-   name: 搜索订单，验证订单状态(待支付、代采购)  api/mall/back-end/orders/POST_Params.yml
+    api: api/mall/back-end/orders/POST_Params.yml
+    variables:
+        tradeNo: ${tradeNo}
+    validate:
+      - eq: [content.0.orderStatusDesc,"待支付"]
+      - eq: [content.0.orderDetail.carItemStatus, 7]
 
 -   name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
     api: api/mall/car-items/POST_ScanCodePayment.yml
     variables:
       orderId: $orderId
+      orderPayType: $orderPayType
     validate:
       - eq: [status_code, 200]
 
--   name: 上传支付图片
+-   name: 上传支付图片  api/usercenter/aliyun/POST_OssImg.yml
     api: api/usercenter/aliyun/POST_OssImg.yml
     validate:
       - eq: [status_code, 200]
     extract:
       - ossUrl: content.ossUrl
 
--   name: 提交订单
+-   name: 提交订单  api/mall/offline-payments/POST_Submit.yml
     api: api/mall/offline-payments/POST_Submit.yml
     variables:
       orderId: $orderId
       billImages: $ossUrl
+      orderPayType: $orderPayType
     validate:
       - eq: [status_code, 200]

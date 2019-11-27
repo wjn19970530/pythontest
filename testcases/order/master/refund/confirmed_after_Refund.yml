@@ -3,10 +3,12 @@ config:
       base_url: ${ENV(base_url)}
       variables:
         carTypeName: ${get_config(carFullName)}
+        environment: ${ENV(environment)}
+        orderstatustimeout: ${get_config(orderstatustimeout)}
 
 teststeps:
--   name: 获取selleId  api/account/GET_Account.yml
-    api: api/account/GET_Account.yml
+-   name: 创建车辆 testcases/supply/skipIf_create_car.yml
+    testcase: testcases/supply/skipIf_create_car.yml
     validate:
       - eq: [status_code, 200]
     setup_hooks:
@@ -14,31 +16,6 @@ teststeps:
       - ${run_master_audit_order()}
       - ${run_refund_order()}
       - ${sleep(5)}
-    teardown_hooks:
-      - ${save_seller_id_form_response($response)}
-
--   name: 获取outerKey  api/usercenter/users/POST_Customer.yml
-    api: api/usercenter/users/POST_Customer.yml
-    validate:
-      - eq: [status_code,200]
-
--   name: 释放车源状态的有效订单发起退款 testcases/order/master/refund_release_car.yml
-    testcase: testcases/order/master/refund_release_car.yml
-    validate:
-      - eq: [status_code,200]
-
--   name: 待售状态的有效订单发起退款  testcases/order/master/refund_for_sale.yml
-    testcase: testcases/order/master/refund_for_sale.yml
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${sleep(5)}
-
-
--   name: 创建车辆 testcases/supply/skipIf_create_car.yml
-    testcase: testcases/supply/skipIf_create_car.yml
-    validate:
-      - eq: [status_code, 200]
 
 -   name: 获取待售未锁车辆列表 api/supplychain/Get_Cars_ condition.yml
     api: api/supplychain/Get_Cars_ condition.yml
@@ -89,12 +66,16 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
 
 -   name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
     validate:
       - eq: [status_code, 200]
+    teardown_hooks:
+      - ${order_status_change_time($orderstatustimeout,$environment)}
+    setup_hooks:
+      - ${get_audit_list()}
 
 -   name: 验证订单状态：订单处理中、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
@@ -120,8 +101,6 @@ teststeps:
     validate:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
-
-
 
 -     name: 发起退款   api/mall/orders/PUT_PrepareReturn.yml
       api: api/mall/orders/PUT_PrepareReturn.yml

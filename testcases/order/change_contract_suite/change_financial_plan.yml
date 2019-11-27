@@ -182,6 +182,13 @@ teststeps:
     validate:
       - eq: [content.0.orderStatusDesc,"等待审核"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
+      
+  - name: 信审账号登录  testcases/login/trial_account_login.yml
+    testcase: testcases/login/trial_account_login.yml
+    validate:
+      - eq: [status_code,200]
+    setup_hooks:
+      - ${sleep(60)}
 
   - name: 进件次数校验:2次 api/entrysheet/entry-sheets/Get_NotAuditList.yml
     api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
@@ -192,13 +199,6 @@ teststeps:
     validate:
       - eq: [status_code,200]
       - eq: [content.0.entrySheet.times,2]
-
-  - name: 信审账号登录  testcases/login/trial_account_login.yml
-    testcase: testcases/login/trial_account_login.yml
-    validate:
-      - eq: [status_code,200]
-    setup_hooks:
-      - ${sleep(60)}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
