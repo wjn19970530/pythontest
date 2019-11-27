@@ -134,7 +134,6 @@ teststeps:
       - ${sleep(5)}
     variables:
       orderId: $orderId
-      method: '2'
     validate:
       - eq: [status_code,200]
 

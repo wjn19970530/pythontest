@@ -1,0 +1,9 @@
+config:
+    name: 释放车源用例  testsuites/develop/transaction/release_car.yml
+
+testcases:
+  - name: 【交易系统】【订单管理】立即释放车源    testcases/order/release_car/immediately_release.yml
+    testcase: testcases/order/release_car/immediately_release.yml
+
+  - name: 【交易系统】【订单管理】定时释放车源    testcases/order/release_car/timed_release.yml
+    testcase: testcases/order/release_car/timed_release.yml

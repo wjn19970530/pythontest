@@ -153,7 +153,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"待签署合同"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
 
-  - name: 验证车辆状态:未锁车、待售  api/supplychain/GET_Cars.yml
+  - name: 验证车辆状态:已锁车、待售  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
       vin: ${vin}

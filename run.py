@@ -28,7 +28,7 @@ if __name__ == '__main__':
     # summary = runner.run("testcases/usercenter/purchase_certification.yml")
     # summary = runner.run("testcases/usercenter/perfect_userInfo.yml")
     # summary = runner.run("testcases/supply/generate_inventory.yml")
-    # summary = runner.run("testcases/transaction/create_car.yml")
+    # summary = runner.run("testsuites/develop/transaction/change_car.yml")
 
     # 获取用例执行情况
     result = BaseCommon.get_result(summary)
