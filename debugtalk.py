@@ -12,6 +12,8 @@ runner = HttpRunner(log_level="ERROR", failfast=True)
 
 
 def sleep(n_secs):
+    if n_secs > 5:
+        print("休眠%s秒开始..." % n_secs)
     time.sleep(n_secs)
 
 
@@ -689,7 +691,7 @@ def get_value_from_response(response, key):
     save_message_to_tmp(key, value)
 
 
-def get_outer_key(response, method=1):
+def get_outer_key(response, method='1'):
     """
     从完善还款信息二维码接口获取outerKey
     :param response: 接口响应
@@ -698,7 +700,9 @@ def get_outer_key(response, method=1):
     # print(method,type(method))
     response = response.json
     value = response['url']
-    if method != 1:
+    # print("method", method)
+    # print(value)
+    if method != '1':
         start_index = value.index('outerKey=') + 8
         # end_index = value.index("'")
         outerKey = value[start_index + 1:]
@@ -782,7 +786,6 @@ def get_audit_list():
             spend_time = -1
             break
         else:
-            print("10秒后再次获取未审核列表...")
             sleep(10)
             spend_time = spend_time + 10
         print("当前耗时:", spend_time)
@@ -812,6 +815,7 @@ def get_token_from_database():
     get_token_sql = "select token from tq_token where user_id='"+user_id+"' and status='1' order by id desc"
     token = str(DBOperate(uaa_account).query_sql(get_token_sql)[0])
     print("token:", token)
+    save_message_to_tmp("token", token)
     return token
 
 
