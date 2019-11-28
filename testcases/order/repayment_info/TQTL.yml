@@ -1,22 +1,32 @@
 config:
     name: 还款信息:淘汽通联 testcases/order/repayment_info/TQTL.yml
     variables:
-        payment: 5
         brandName: ${get_config(carBrandName)}
         seriesName: ${get_config(carSeriesName)}
         typeName: 'TQTL'
         carFullName: ${get_car_full_name($brandName,$seriesName,$typeName)}
         phoneNum: ${ENV(phoneNum)}
-        orderId: '1474'
-        tradeNo: 20191113192757100158255112
+        environment: ${ENV(environment)}
+        orderstatustimeout: ${get_config(orderstatustimeout)}
 
 teststeps:
 
+  - name: 获取账户信息  api/account/GET_Account.yml
+    api: api/account/GET_Account.yml
+    validate:
+      - eq: [status_code, 200]
+    teardown_hooks:
+      - ${save_seller_id_form_response($response)}
+
+  - name: 获取客户列表  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    variables:
+      queryName: ${ENV(phoneNum)}
+    validate:
+      - eq: [status_code,200]
+
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
-    setup_hooks:
-      - ${run_audit_order()}
-      - ${run_get_user_message()}
     variables:
       carTypeName: $carFullName
     validate:
@@ -33,27 +43,6 @@ teststeps:
     teardown_hooks:
       - ${save_car_id_from_response($response,$carFullName)}
       - ${sleep(2)}
-
-  - name: 生成sku任务 api/mall/back-end/car-item-skus/GET_Generate.yml
-    api: api/mall/back-end/car-item-skus/GET_Generate.yml
-    variables:
-      itemId: ${get_value_from_tmp(carId)}
-    validate:
-      - eq: [status_code,200]
-
-  - name: 获取生成sku状态 api/mall/task-processes/GET_TaskStatus.yml
-    api: api/mall/task-processes/GET_TaskStatus.yml
-    variables:
-      sku_task_id: ${get_value_from_tmp(sku_process)}
-    validate:
-      - eq: [status_code,200]
-
-  - name: 生成库存 api/mall/back-end/car-item-skus/POST_WithPage.yml
-    api: api/mall/back-end/car-item-skus/POST_WithPage.yml
-    variables:
-      itemId: ${get_value_from_tmp(carId)}
-    validate:
-      - eq: [status_code,200]
 
   - name: 获取待售车辆  api/supplychain/GET_UnlockedCars.yml
     api: api/supplychain/GET_UnlockedCars.yml
@@ -117,7 +106,8 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(120)}
+      - ${sleep(60)}
+      - ${get_audit_list()}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
@@ -132,7 +122,7 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${sleep(10)}
+      - ${order_status_change_time($orderstatustimeout,$environment)}
 
   - name: 获取完善还款信息二维码 api/mall/orders/GET_UserBankInfoUrl.yml
     api: api/mall/orders/GET_UserBankInfoUrl.yml
@@ -149,7 +139,7 @@ teststeps:
     api: api/mall/mallSignAgreementInfo/tqtl/GET_Checkout.yml
     variables:
       orderId: $orderId
-      payment: $payment
+      payment: 5
     validate:
       - eq: [status_code,200]
 
@@ -157,7 +147,7 @@ teststeps:
     api: api/mall/mallSignAgreementInfo/tqtl/GET_BankInfo.yml
     variables:
       orderId: $orderId
-      payment: $payment
+      payment: 5
     validate:
       - eq: [status_code,200]
 
@@ -165,7 +155,7 @@ teststeps:
     api: api/mall/mallSignAgreementInfo/tqtl/GET_SigningBusinessName.yml
     variables:
       orderId: $orderId
-      payment: $payment
+      payment: 5
     validate:
       - eq: [status_code,200]
     extract:
@@ -174,7 +164,7 @@ teststeps:
   - name: 打开完善还款信息页面 api/mall/find/GET_TongLianInfo.yml
     api: api/mall/find/GET_TongLianInfo.yml
     variables:
-      payment: $payment
+      payment: 5
       orderId: $orderId
     validate:
       - eq: [status_code,200]
@@ -183,7 +173,7 @@ teststeps:
     api: api/mall/mallSignAgreementInfo/tqtl/POST_SaveCommonTonglianInfo.yml
     variables:
       orderId: $orderId
-      payment: $payment
+      payment: 5
     validate:
       - eq: [status_code,200]
 
@@ -191,7 +181,7 @@ teststeps:
     api: api/mall/mallSignAgreementInfo/tqtl/POST_OpenCommonTonglianInfo.yml
     variables:
       orderId: $orderId
-      payment: $payment
+      payment: 5
       businessName: $businessName
     validate:
       - eq: [status_code,200]
@@ -245,9 +235,9 @@ teststeps:
         - eq: [content.0.sold, true]
         - eq: [content.0.tradeNo,$tradeNo]
 
-#  - name: 更新客户outerKey  api/usercenter/users/POST_Customer.yml
-#    api: api/usercenter/users/POST_Customer.yml
-#    variables:
-#      queryName: ${ENV(phoneNum)}
-#    validate:
-#      - eq: [status_code,200]
+  - name: 更新客户outerKey  api/usercenter/users/POST_Customer.yml
+    api: api/usercenter/users/POST_Customer.yml
+    variables:
+      queryName: ${ENV(phoneNum)}
+    validate:
+      - eq: [status_code,200]

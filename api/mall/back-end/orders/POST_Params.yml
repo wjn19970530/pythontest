@@ -23,3 +23,5 @@ teardown_hooks:
     - ${save_orderStatusDesc_tmp($response)}
 #extract:
 #    - orderId: content.0.order.id
+teardown_hooks:
+  - ${save_orderStatusDesc_tmp($response)}

@@ -1,0 +1,19 @@
+name: 获取未审核列表   api/entrysheet/entry-sheets/GET_AuditList.yml
+variables:
+    token: ${get_token_from_database()}
+    name: ${ENV(name)}
+
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer $token
+    method: GET
+    url: /entrysheet/api/entry-sheet/workflow/query/list?searchKey=${name}&page=0&workflowType=1&sort=submitTime,DESC
+#extract:
+#-   id: content.0.entrySheet.id
+#-   task_id: content.0.unFinishTaskId
+validate:
+-   eq: [status_code,200]
+-   eq: [headers.Content-Type,application/json;charset=UTF-8]
+teardown_hooks:
+    - ${save_response_length($response)}
