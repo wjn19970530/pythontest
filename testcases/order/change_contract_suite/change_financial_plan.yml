@@ -113,6 +113,8 @@ teststeps:
 
   - name: 确认开通  api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
     api: api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
+      variables:
+        orderId: $orderId
     validate:
       - eq: [status_code,200]
 
