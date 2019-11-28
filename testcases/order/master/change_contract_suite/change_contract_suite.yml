@@ -1,10 +1,7 @@
 config:
-    name: 车型不变-更换金融方案:变更首付月供等信息 testcases/order/change_contract_suite/change_financial_plan.yml
+    name: 车型不变-更换合同套件:资方、还款方式不变 testcases/order/master/change_contract_suite/change_contract_suite.yml
     variables:
-        carFullName: 'AutoTestCarBrandAHTJRFA'
-        phoneNum: ${ENV(phoneNum)}
-        environment: ${ENV(environment)}
-        orderstatustimeout: ${get_config(orderstatustimeout)}
+        carFullName: 'AutoTestCarBrandAHTDBH'
 
 teststeps:
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
@@ -77,8 +74,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
     setup_hooks:
-      - ${sleep(60)}
-      - ${get_audit_list()}
+      - ${sleep(120)}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
@@ -93,26 +89,12 @@ teststeps:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 9]
     setup_hooks:
-      - ${order_status_change_time($orderstatustimeout,$environment)}
-
-  - name: 获取完善还款信息二维码 api/mall/orders/GET_UserBankInfoUrl.yml
-    api: api/mall/orders/GET_UserBankInfoUrl.yml
-    variables:
-      orderId: $orderId
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${get_outer_key($response)}
+      - ${sleep(10)}
 
   - name: 客户完善还款信息  testcases/order/perfect_repayment_info.yml
     testcase: testcases/order/perfect_repayment_info.yml
     setup_hooks:
       - ${sql_init_repayment($phoneNum)}
-    validate:
-      - eq: [status_code,200]
-
-  - name: 确认开通  api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
-    api: api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
     validate:
       - eq: [status_code,200]
 
@@ -191,72 +173,6 @@ teststeps:
       - eq: [content.0.tradeNo,$tradeNo]
     setup_hooks:
       - ${sleep(2)}
-
-  - name: 验证订单状态:等待审核 api/mall/back-end/orders/POST_Params.yml
-    api: api/mall/back-end/orders/POST_Params.yml
-    variables:
-      tradeNo: ${tradeNo}
-    validate:
-      - eq: [content.0.orderStatusDesc,"等待审核"]
-      - eq: [content.0.orderDetail.carItemStatus, 9]
-
-  - name: 信审账号登录  testcases/login/trial_account_login.yml
-    testcase: testcases/login/trial_account_login.yml
-    validate:
-      - eq: [status_code,200]
-    setup_hooks:
-      - ${sleep(60)}
-
-  - name: 进件次数校验:2次 api/entrysheet/entry-sheets/Get_NotAuditList.yml
-    api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
-    setup_hooks:
-      - ${sleep(5)}
-    variables:
-      token: ${get_value_from_tmp(token)}
-    validate:
-      - eq: [status_code,200]
-      - eq: [content.0.entrySheet.times,2]
-
-  - name: 审核订单  testcases/order/audit_order.yml
-    testcase: testcases/order/audit_order.yml
-    validate:
-      - eq: [status_code,200]
-    teardown_hooks:
-      - ${sleep(20)}
-
-  - name: 验证订单状态:订单处理中  api/mall/back-end/orders/POST_Params.yml
-    api: api/mall/back-end/orders/POST_Params.yml
-    variables:
-      tradeNo: ${tradeNo}
-    validate:
-      - eq: [content.0.orderStatusDesc,"订单处理中"]
-      - eq: [content.0.orderDetail.carItemStatus, 9]
-    setup_hooks:
-      - ${sleep(10)}
-
-  - name: 订单选择支付方式  api/mall/car-items/POST_ScanCodePayment.yml
-    api: api/mall/car-items/POST_ScanCodePayment.yml
-    variables:
-      orderId: $orderId
-      orderPayType: '0'
-    validate:
-      - eq: [status_code, 200]
-
-  - name: 上传支付图片  api/usercenter/aliyun/POST_OssImg.yml
-    api: api/usercenter/aliyun/POST_OssImg.yml
-    validate:
-      - eq: [status_code, 200]
-    extract:
-      - ossUrl: content.ossUrl
-
-  - name: 提交订单  api/mall/offline-payments/POST_Submit.yml
-    api: api/mall/offline-payments/POST_Submit.yml
-    variables:
-      orderId: $orderId
-      billImages: $ossUrl
-      orderPayType: '0'
-    validate:
-      - eq: [status_code, 200]
 
   - name: 验证订单状态:待签署合同 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml

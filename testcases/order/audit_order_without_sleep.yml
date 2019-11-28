@@ -1,5 +1,7 @@
 config:
   name: 审核订单  testcases/order/audit_order_without_sleep.yml
+  variables:
+    token: ${get_token_from_database()}
   base_url: ${ENV(base_url)}
   setup_hooks:
     - ${sleep(1)}
@@ -10,7 +12,7 @@ teststeps:
     api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
     skipIf: ${get_value_from_tmp(skip)}
     variables:
-      token: ${get_value_from_tmp(token)}
+      token: ${token}
     extract:
       -  id: content.0.entrySheet.id
       -  task_id: content.0.unFinishTaskId
@@ -22,7 +24,7 @@ teststeps:
     variables:
       id: $id
       task_id: $task_id
-      token: ${get_value_from_tmp(token)}
+      token: ${token}
     validate:
       -  eq: [status_code,200]
 #      -  eq: [content.status,'2']
@@ -30,7 +32,7 @@ teststeps:
 -   name: 获取未审核列表 api/entrysheet/entry-sheets/Get_NotAuditList.yml
     api: api/entrysheet/entry-sheets/Get_NotAuditList.yml
     variables:
-      token: ${get_value_from_tmp(token)}
+      token: ${token}
     extract:
       - id: content.0.entrySheet.id
       - task_id: content.0.unFinishTaskId
@@ -42,7 +44,7 @@ teststeps:
     variables:
       id: $id
       task_id: $task_id
-      token: ${get_value_from_tmp(token)}
+      token: ${token}
     validate:
       -  eq: [status_code,200]
 #      -  eq: [content.status,'4']

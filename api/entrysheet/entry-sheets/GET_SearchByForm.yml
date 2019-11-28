@@ -1,0 +1,15 @@
+name: 获取审核报表内容  api/entrysheet/entry-sheets/GET_SearchByForm.yml
+variables:
+    access_token: ${get_token(access_token)}
+    name: ${ENV(name)}
+base_url: ${ENV(base_url)}
+request:
+    headers:
+        Authorization: Bearer ${access_token}
+    method: GET
+    url: /entrysheet/api/entry-sheets/searchByForm?status=2&searchKey=${name}&sort=submitTime,DESC&page=0
+validate:
+  - eq: [status_code, 200]
+teardown_hooks:
+  - ${save_response_length($response)}
+  - ${save_value_from_response($response,0,custId)}

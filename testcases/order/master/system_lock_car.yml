@@ -151,14 +151,6 @@ teststeps:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, false]
-
-  - name: 释放车源  api/mall/orders/release-car/PUT_Manual.yml
-    api: api/mall/orders/release-car/PUT_Manual.yml
-    variables:
-        orderId: ${orderId}
-        remarks: 退款前释放车源
-    validate:
-      - eq: [status_code,200]
     teardown_hooks:
       - ${refund_and_release_car()}
       - ${run_master_audit_order()}

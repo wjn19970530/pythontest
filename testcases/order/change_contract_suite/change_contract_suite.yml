@@ -77,11 +77,10 @@ teststeps:
       - eq: [status_code,200]
     setup_hooks:
       - ${sleep(60)}
+      - ${get_audit_list()}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
-    setup_hooks:
-      - ${get_audit_list()}
     validate:
       - eq: [status_code,200]
 
@@ -95,10 +94,24 @@ teststeps:
     setup_hooks:
       - ${order_status_change_time($orderstatustimeout,$environment)}
 
+  - name: 获取完善还款信息二维码 api/mall/orders/GET_UserBankInfoUrl.yml
+    api: api/mall/orders/GET_UserBankInfoUrl.yml
+    variables:
+      orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+    teardown_hooks:
+      - ${get_outer_key($response)}
+
   - name: 客户完善还款信息  testcases/order/perfect_repayment_info.yml
     testcase: testcases/order/perfect_repayment_info.yml
     setup_hooks:
       - ${sql_init_repayment($phoneNum)}
+    validate:
+      - eq: [status_code,200]
+
+  - name: 确认开通  api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
+    api: api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
     validate:
       - eq: [status_code,200]
 
