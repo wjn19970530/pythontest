@@ -72,7 +72,7 @@ teststeps:
     validate:
       - eq: [status_code, 200]
     teardown_hooks:
-      - ${order_status_change_time($orderstatustimeout,$environment)}\
+      - ${order_status_change_time($orderstatustimeout,$environment)}
     setup_hooks:
       - ${get_audit_list()}
 
