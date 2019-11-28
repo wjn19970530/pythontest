@@ -144,6 +144,13 @@ teststeps:
     validate:
       - eq: [status_code,200]
 
+  - name: 确认开通  api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
+    api: api/mall/orders/GET_NotCompleteRepaymentQuantity.yml
+      variables:
+        orderId: $orderId
+    validate:
+      - eq: [status_code,200]
+
   - name: 搜索订单，验证订单状态：待签署合同 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
     variables:

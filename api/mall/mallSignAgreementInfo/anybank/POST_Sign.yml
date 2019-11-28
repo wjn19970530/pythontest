@@ -1,4 +1,4 @@
-name: 开通银行卡 api/mall/mallSignAgreementInfo/anybank/POST_Sign
+name: 开通银行卡 api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
 variables:
     access_token: ${get_token(access_token)}
     refresh_token: ${get_token(refresh_token)}
