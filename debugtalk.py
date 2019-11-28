@@ -763,27 +763,56 @@ def save_value_from_response(response, num, key):
 
 def get_audit_list():
     """
-    1、循环获取未审核列表，防止2分钟未进件用例测试失败；
-    2、用于计算进件耗时、并保存至数据库。
+    1、循环获取未审核列表，防止2分钟未进件用例失败；
+    2、用于计算进件耗时、并保存至数据库;
     :return:
     """
-    environment = BCommon.get_value_from_env("environment")
-    test_api = "api/entrysheet/entry-sheets/Get_NotAuditList.yml"
+    environment = int(BCommon.get_value_from_env("environment"))
+    master_api = "api/entrysheet/entry-sheets/Get_NotAuditList.yml"
+    test_api = "api/entrysheet/entry-sheets/GET_AuditList.yml"
     spend_time = 60
     while True:
-        runner.run(test_api)
+        if environment == 2:
+            runner.run(test_api)
+        elif environment == 1:
+            runner.run(master_api)
         if get_value_from_tmp("skip") is False:
             break
         elif spend_time > audit_timeout:
             spend_time = -1
             break
         else:
+            print("10秒后再次获取未审核列表...")
             sleep(10)
             spend_time = spend_time + 10
         print("当前耗时:", spend_time)
-    sleep(10)
     print("进件总耗时:", spend_time, "environment:", environment)
-    BCommon.save_msg_to_database(audit, "entry_time", spend_time, environment)
+    BCommon.save_msg_to_database(audit, "entry_time", spend_time, environment, 1)
+
+
+def get_proc_inst_id():
+    cust_id = str(get_value_from_tmp("custId"))
+    sql = "select proc_inst_id from entry_sheet where cust_id='" + cust_id + "'"
+    proc_inst_id = str(DBOperate(entry_sheet).query_sql(sql)[0])
+    while True:
+        if len(proc_inst_id) != 0:
+            break
+        else:
+            sleep(5)
+
+
+def get_token_from_database():
+    """
+    从数据库获取审核账号最新的token
+    :return:
+    """
+    phone_num = BCommon.get_value_from_env("trialPhoneNum").strip()
+    sql = "SELECT user_id from tq_user where phone_num='" + phone_num + "'"
+    user_id = str(DBOperate(uaa_account).query_sql(sql)[0])
+    get_token_sql = "select token from tq_token where user_id='"+user_id+"' and status='1' order by id desc"
+    token = str(DBOperate(uaa_account).query_sql(get_token_sql)[0])
+    print("token:", token)
+    return token
 
 
 def order_status_change_time(orderstatustimeout, environment):
@@ -813,7 +842,7 @@ def order_status_change_time(orderstatustimeout, environment):
     else:
         currenttime = currenttime - begintime
     print(currenttime)
-    BCommon.save_msg_to_database(audit, "order_status_change_time", currenttime, environment)
+    BCommon.save_msg_to_database(audit, "entry_time", currenttime, environment, 2)
 
 
 def save_orderStatusDesc_tmp(response):
@@ -832,19 +861,4 @@ def save_orderStatusDesc_tmp(response):
 
 if __name__ == '__main__':
     c = CsvOperate()
-    # access_token = '111222333'
-    # refresh_token = '444555666'
-    # CsvOperate.write_token_csv('data/token.csv', access_token, refresh_token)
-    # print(CsvOperate().read_row_csv('data/token.csv', 1, 'access_token'))
-    # refresh_token(source='WEB', accesstoken='111222333', refreshtoken='444555666')
-    # APP = get_token('access_token',source='APP')
-    # print(APP)
-    # content = c.generate_text('data/token.csv', 'WEB', access_token, refresh_token)
-    # c.write_token_csv('data/token.csv', content)
-    # print(get_token('refresh_token'))
-    # sql_init_order('15012340001')
-    # sql_init_contract_info('15060138093')
-    # print(type(sell), sell)
-    # transcation_no = "a7767b33ecef4abb8157a522fc935401"
-    # print(sql_get_verify_code(transcation_no))
-    sql_delete_customer_info('15012340007', '350505196910212333')
+

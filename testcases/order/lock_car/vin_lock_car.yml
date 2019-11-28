@@ -9,10 +9,8 @@ teststeps:
   - name: 添加待售车辆  testcases/supply/skipIf_create_car.yml
     testcase: testcases/supply/skipIf_create_car.yml
     setup_hooks:
+      - ${run_audit_order()}
       - ${run_get_user_message()}
-      - ${run_master_audit_order()}
-      - ${refund_and_release_car()}
-      - ${sleep(5)}
     validate:
       - eq: [status_code,200]
 
@@ -77,11 +75,10 @@ teststeps:
       - eq: [status_code,200]
     setup_hooks:
       - ${sleep(60)}
+      - ${get_audit_list()}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
-    setup_hooks:
-      - ${get_audit_list()}
     validate:
       - eq: [status_code,200]
     teardown_hooks:
@@ -157,5 +154,3 @@ teststeps:
       - eq: [status_code,200]
       - eq: [content.0.locked, true]
       - eq: [content.0.sold, false]
-    teardown_hooks:
-      - ${run_audit_order()}

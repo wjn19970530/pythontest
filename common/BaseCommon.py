@@ -62,8 +62,8 @@ class BaseCommon(object):
         return result
 
     @staticmethod
-    def save_msg_to_database(db, table, time, type):
-        sql = "insert into "+table+"(spend_time,type) values(" + str(time) + "," + str(type) + ")"
+    def save_msg_to_database(db, table, time, type, method):
+        sql = "insert into "+table+"(spend_time,type,method) values(" + str(time) + "," + str(type) + ","+str(method)+")"
         DBOperate(db).execute_sql(sql)
 
     @staticmethod

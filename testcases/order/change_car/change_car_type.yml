@@ -69,11 +69,10 @@ teststeps:
       - eq: [status_code,200]
     setup_hooks:
       - ${sleep(60)}
+      - ${get_audit_list()}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
-    setup_hooks:
-      - ${get_audit_list()}
     validate:
       - eq: [status_code,200]
 
@@ -235,7 +234,7 @@ teststeps:
     validate:
       - eq: [status_code,200]
     teardown_hooks:
-      - ${sleep(10)}
+      - ${sleep(20)}
 
   - name: 验证订单状态:待签署合同 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml

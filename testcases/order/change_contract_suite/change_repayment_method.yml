@@ -78,11 +78,10 @@ teststeps:
       - eq: [status_code,200]
     setup_hooks:
       - ${sleep(60)}
+      - ${get_audit_list()}
 
   - name: 审核订单  testcases/order/audit_order.yml
     testcase: testcases/order/audit_order.yml
-    setup_hooks:
-      - ${get_audit_list()}
     validate:
       - eq: [status_code,200]
 
