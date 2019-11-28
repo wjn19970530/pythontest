@@ -1,13 +1,14 @@
 from httprunner.api import HttpRunner
 from httprunner.report import gen_html_report
-from common.BaseCommon import BaseCommon
+from common.BaseCommon import BaseCommon as BCommon
 import json
 import os
+from config import *
 
 from debugtalk import get_value_from_tmp
 
 if __name__ == '__main__':
-    log_file = BaseCommon.get_logfile()
+    log_file = BCommon.get_logfile()
     runner = HttpRunner(log_level="DEBUG", log_file=log_file, failfast=True)
     tmp_file = "data/tmp.json"
     if os.path.exists(tmp_file):
@@ -31,11 +32,13 @@ if __name__ == '__main__':
     # summary = runner.run("testcases/order/repayment_info/XXFTL.yml")
 
     # 获取用例执行情况
-    result = BaseCommon.get_result(summary)
+    result = BCommon.get_result(summary)
     file = "summary.json"
     with open(file, "w", encoding='utf-8') as f:
         json.dump(result, f)
     f.close()
     gen_html_report(summary, report_template=r"./template/report_template.html")
+    environment = str(BCommon.get_value_from_env("environment"))
+    BCommon.save_report_to_database(audit, "report", summary, environment)
 
 
