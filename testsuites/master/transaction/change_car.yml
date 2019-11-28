@@ -13,3 +13,9 @@ testcases:
 
   - name: 【APP】【订单管理】车型与金融方案均不变更 testcases/order/master/change_car/not_change.yml
     testcase: testcases/order/master/change_car/not_change.yml
+
+  - name: 【APP】【订单管理】车型不变-更换合同套件:资方、还款方式不变 testcases/order/master/change_contract_suite/change_contract_suite.yml
+    testcase: testcases/order/master/change_contract_suite/change_contract_suite.yml
+
+  - name: 【APP】【订单管理】车型不变-更换金融方案:变更首付月供等信息 testcases/order/master/change_contract_suite/change_financial_plan.yml
+    testcase: testcases/order/master/change_contract_suite/change_financial_plan.yml
