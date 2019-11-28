@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     summary = runner.run("testcases/login/master_login.yml")
     summary = runner.run("testsuites/master/")
-    # summary = runner.run("testcases/order/master/change_car/change_financial_plan.yml")
+    # summary = runner.run("testcases/order/master/change_contract_suite/change_repayment_method.yml")
     # summary = runner.run("testsuites/master/transaction/change_car.yml")
     # summary = runner.run("testcases/supply/create_car.yml")
     # summary = runner.run("testcases/order/master/change_car/not_change.yml")

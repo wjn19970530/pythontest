@@ -5,11 +5,11 @@ testcases:
   - name: 【APP】【订单管理】更换车型-更换金融方案关联合同套件:还款方式、资方不变 testcases/order/master/change_car/change_car_type.yml
     testcase: testcases/order/master/change_car/change_car_type.yml
 
-  - name: 【APP】【订单管理】更换车型-更换金融方案关联合同套件:还款方式变更 testcases/order/master/change_car/change_repayment_method.yml
-    testcase: testcases/order/master/change_car/change_repayment_method.yml
-
   - name: 【APP】【订单管理】更换车型-更换金融方案:首付月供等信息变更 testcases/order/master/change_car/change_financial_plan.yml
     testcase: testcases/order/master/change_car/change_financial_plan.yml
+
+  - name: 【APP】【订单管理】更换车型-更换金融方案关联合同套件:还款方式变更 testcases/order/master/change_car/change_repayment_method.yml
+    testcase: testcases/order/master/change_car/change_repayment_method.yml
 
   - name: 【APP】【订单管理】车型与金融方案均不变更 testcases/order/master/change_car/not_change.yml
     testcase: testcases/order/master/change_car/not_change.yml
@@ -19,3 +19,6 @@ testcases:
 
   - name: 【APP】【订单管理】车型不变-更换金融方案:变更首付月供等信息 testcases/order/master/change_contract_suite/change_financial_plan.yml
     testcase: testcases/order/master/change_contract_suite/change_financial_plan.yml
+
+  - name: 【APP】【订单管理】车型不变-更换金融方案:合同套件变更还款方式 testcases/order/master/change_contract_suite/change_repayment_method.yml
+    testcase: testcases/order/master/change_contract_suite/change_repayment_method.yml

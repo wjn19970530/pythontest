@@ -88,7 +88,7 @@ class BaseCommon(object):
             success = "true"
         else:
             success = "false"
-        field = "environment,result,case_total,case_success,case_fail,step_total,step_success,step_fail,step_error," \
+        field = "environment,success,case_total,case_success,case_fail,step_total,step_success,step_fail,step_error," \
                 "step_skip,step_expectedFailures,step_unexpectedSuccesses"
         totalNum = str(data["stat"]["testcases"]["total"])
         successNum = str(data["stat"]["testcases"]["success"])
