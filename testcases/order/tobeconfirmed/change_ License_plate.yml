@@ -62,7 +62,7 @@ teststeps:
      testcase: testcases/login/trial_account_login.yml
      validate:
         - eq: [status_code,200]
-    setup_hooks:
+     setup_hooks:
       - ${sleep(60)}
       - ${get_audit_list()}
 
