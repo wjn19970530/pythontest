@@ -5,7 +5,6 @@ config:
           keyword: "AutoTestCarBrandLibrary1S"
           orderPayType: 1
   setup_hooks:
-    - ${sql_init_order($phoneNum)}
     - ${sleep(5)}
 teststeps:
 -   name: 获取账户信息  api/account/GET_Account.yml

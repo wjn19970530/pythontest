@@ -68,8 +68,8 @@ teststeps:
     setup_hooks:
       - ${sleep(120)}
 
--   name: 审核订单  testcases/order/audit_order.yml
-    testcase: testcases/order/audit_order.yml
+-   name: 审核订单  testcases/order/master/audit_order.yml
+    testcase: testcases/order/master/audit_order.yml
     validate:
       - eq: [status_code, 200]
     teardown_hooks:
