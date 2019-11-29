@@ -31,7 +31,6 @@ if __name__ == '__main__':
     # summary = runner.run("testcases/order/master/vin_lock_car.yml")
     # summary = runner.run("testsuites/master/transaction/release_car.yml")
 
-
     # 获取用例执行情况
     result = BCommon.get_result(summary)
     file = "summary.json"
