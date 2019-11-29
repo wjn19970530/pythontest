@@ -14,6 +14,10 @@ config:
       - orderId
 
 teststeps:
+-   name: 获取车辆价格 api/usercenter/users/GET_GuidePriceIntervals.yml
+    api: api/usercenter/users/GET_GuidePriceIntervals.yml
+    validate:
+      - eq: [status_code, 200]
 
 -   name: 获取车辆ID api/mall/car-items/POST_LeaseParams.yml
     api: api/mall/car-items/POST_LeaseParams.yml

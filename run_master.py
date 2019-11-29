@@ -21,8 +21,8 @@ if __name__ == '__main__':
             runner.run("testcases/order/master/audit_order_without_sleep.yml")
 
     summary = runner.run("testcases/login/master_login.yml")
-    # summary = runner.run("testsuites/master/")
-    summary = runner.run("testsuites/master/transaction/change_car.yml")
+    summary = runner.run("testsuites/master/")
+    # summary = runner.run("testcases/order/master/change_contract_suite/change_repayment_method.yml")
     # summary = runner.run("testsuites/master/transaction/change_car.yml")
     # summary = runner.run("testcases/supply/create_car.yml")
     # summary = runner.run("testcases/order/master/change_car/not_change.yml")
@@ -39,7 +39,6 @@ if __name__ == '__main__':
         json.dump(result, f)
     f.close()
     gen_html_report(summary, report_template=r"./template/report_template.html")
-
-    environment = str(BCommon.get_value_from_env("environment"))
-    BCommon.save_report_to_database(audit, "report", summary, environment)
+    branch = str(BCommon.get_value_from_env("branch"))
+    BCommon.save_report_to_database(audit, "report", summary, branch)
 
