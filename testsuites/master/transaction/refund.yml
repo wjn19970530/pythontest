@@ -7,7 +7,6 @@ testcases:
     teardown_hooks:
         - ${run_master_audit_order()}
 
-
   - name: 【交易系统】【订单管理】待确认提车后退款 testcases/order/master/refund/confirmed_after_Refund.yml
     testcase: testcases/order/master/refund/confirmed_after_Refund.yml
     teardown_hooks:
