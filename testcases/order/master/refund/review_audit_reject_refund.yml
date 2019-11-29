@@ -65,6 +65,7 @@ teststeps:
       - eq: [status_code,200]
     setup_hooks:
       - ${sleep(60)}
+      - ${get_audit_list()}
 
 -   name: 复审拒绝  testcases/order/review_refund.yml
     testcase: testcases/order/review_refund.yml

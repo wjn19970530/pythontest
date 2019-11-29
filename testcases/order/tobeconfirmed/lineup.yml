@@ -82,8 +82,6 @@ teststeps:
      validate:
         - eq: [content.0.orderStatusDesc,"订单处理中"]
         - eq: [content.0.orderDetail.carItemStatus, 9]
-     setup_hooks:
-        - ${sleep(30)}
 
    - name: 完善还款信息  api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
      api: api/mall/mallSignAgreementInfo/anybank/POST_Sign.yml
