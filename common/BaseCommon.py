@@ -83,12 +83,12 @@ class BaseCommon(object):
         return value
 
     @staticmethod
-    def save_report_to_database(db, table, data, environment):
+    def save_report_to_database(db, table, data, branch):
         if data['success'] is True:
             success = "true"
         else:
             success = "false"
-        field = "environment,success,case_total,case_success,case_fail,step_total,step_success,step_fail,step_error," \
+        field = "branch,success,case_total,case_success,case_fail,step_total,step_success,step_fail,step_error," \
                 "step_skip,step_expectedFailures,step_unexpectedSuccesses"
         totalNum = str(data["stat"]["testcases"]["total"])
         successNum = str(data["stat"]["testcases"]["success"])
@@ -100,7 +100,7 @@ class BaseCommon(object):
         steps_successNum = str(data["stat"]["teststeps"]["successes"])
         steps_expectedFailuresNum = str(data["stat"]["teststeps"]["expectedFailures"])
         steps_unexpectedSuccessesNum = str(data["stat"]["teststeps"]["unexpectedSuccesses"])
-        value = "'"+environment+"','"+success+"','"+totalNum+"','"+successNum+"','"+failNum+"','"+steps_totalNum+"','"\
+        value = "'"+branch+"','"+success+"','"+totalNum+"','"+successNum+"','"+failNum+"','"+steps_totalNum+"','"\
                 +steps_successNum+"','"+steps_failNum+"','"+steps_errorNum+"','"+steps_skipNum+"','"\
                 +steps_expectedFailuresNum+"','"+steps_unexpectedSuccessesNum+"'"
         sql = "insert into "+table+"("+field+") values("+value+")"
