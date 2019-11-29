@@ -2,6 +2,8 @@ config:
       name: 完善还款信息(在库) testcases/order/repaymen_in_libray.yml
       variables:
         carTypeName: "AutoTestCarBrandLibrary1S"
+        orderstatustimeout: ${get_config(orderstatustimeout)}
+        environment: ${ENV(environment)}
 teststeps:
 -   name: 新建在库车辆 testcases/supply/create_in_library_car.yml
     testcase: testcases/supply/create_in_library_car.yml
@@ -95,5 +97,3 @@ teststeps:
     validate:
       - eq: [content.0.orderStatusDesc,"订单处理中"]
       - eq: [content.0.orderDetail.carItemStatus, 8]
-    setup_hooks:
-      - ${order_status_change_time($orderstatustimeout,$environment)}
