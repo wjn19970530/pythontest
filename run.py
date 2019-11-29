@@ -38,7 +38,7 @@ if __name__ == '__main__':
         json.dump(result, f)
     f.close()
     gen_html_report(summary, report_template=r"./template/report_template.html")
-    environment = str(BCommon.get_value_from_env("environment"))
-    BCommon.save_report_to_database(audit, "report", summary, environment)
+    branch = str(BCommon.get_value_from_env("branch"))
+    BCommon.save_report_to_database(audit, "report", summary, branch)
 
 
