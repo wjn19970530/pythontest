@@ -19,14 +19,10 @@ teststeps:
     teardown_hooks:
       - ${save_seller_id_form_response($response)}
 
-#-   name: 获取商品列表  api/mall/back-end/car-items/POST_List.yml
-#    api: api/mall/back-end/car-items/POST_List.yml
-#    variables:
-#      keyword: ${keyword}
-#    validate:
-#      - eq: [status_code,200]
-#    extract:
-#      - carId: content.0.id
+-   name: 获取车辆价格 api/usercenter/users/GET_GuidePriceIntervals.yml
+    api: api/usercenter/users/GET_GuidePriceIntervals.yml
+    validate:
+      - eq: [status_code, 200]
 
 -   name: 获取车辆ID api/mall/car-items/POST_LeaseParams.yml
     api: api/mall/car-items/POST_LeaseParams.yml
