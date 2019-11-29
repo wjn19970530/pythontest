@@ -174,3 +174,5 @@ teststeps:
       tradeNo: ${tradeNo}
     validate:
       - eq: [content.0.orderStatusDesc,"交易取消"]
+    teardown_hooks:
+      - ${run_audit_order()}

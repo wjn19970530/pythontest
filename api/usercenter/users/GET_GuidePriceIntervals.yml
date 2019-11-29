@@ -1,0 +1,13 @@
+name: 获取用户指导价格  api/usercenter/users/GET_GuidePriceIntervals.yml
+variables:
+    userId: ${get_value_from_tmp(userId)}
+    access_token: ${get_token(access_token)}
+base_url: ${ENV(base_url)}
+request:
+    url: /usercenter/api/v0.1/user/customer/guide-price-intervals/${userId}
+    method: GET
+    headers:
+        Authorization: Bearer $access_token
+validate:
+  - eq: [status_code,200]
+  - eq: [content.0.userId,$userId]
