@@ -40,7 +40,6 @@ teststeps:
       - orderId: content.0.orderId
       - tradeNo: content.0.tradeNo
 
-
 -   name: 验证库存：已锁车、待售  api/supplychain/GET_Cars.yml
     api: api/supplychain/GET_Cars.yml
     variables:
@@ -66,15 +65,12 @@ teststeps:
       - eq: [status_code,200]
     setup_hooks:
       - ${sleep(60)}
+      - ${get_audit_list()}
 
 -   name: 审核拒绝  testcases/order/audit_refund.yml
     testcase: testcases/order/audit_refund.yml
     validate:
       - eq: [status_code, 200]
-    teardown_hooks:
-      - ${order_status_change_time($orderstatustimeout,$environment)}
-    setup_hooks:
-      - ${get_audit_list()}
 
 -   name: 验证订单状态：审核拒绝、待售 api/mall/back-end/orders/POST_Params.yml
     api: api/mall/back-end/orders/POST_Params.yml
@@ -82,7 +78,6 @@ teststeps:
       tradeNo: ${tradeNo}
     validate:
       - eq: [content.0.order.status,11]
-
 
 - name: 发起退款   api/mall/orders/PUT_PrepareReturn.yml
   api: api/mall/orders/PUT_PrepareReturn.yml
